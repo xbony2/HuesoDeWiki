@@ -1,0 +1,16 @@
+[
+{
+  "modid": "huesosdewiki",
+  "name": "HuesosDeWiki",
+  "description": "A small utility mod for editors of the Official FTB Wiki- automatically creates a base page in the clipboard from in-game items.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Xbony2"],
+  "credits": "Xbony2",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
