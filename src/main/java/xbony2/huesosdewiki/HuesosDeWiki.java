@@ -104,7 +104,12 @@ public class HuesosDeWiki {
 								page += "|type=" + blockOrItem + "\n";
 								page += "}}" + "\n";
 								page += "\n";
-								page += "The '''" + name + "''' is a " + blockOrItem + " added by [[" + modName + "]]." + "\n";
+								page += "The '''" + name + "''' is a " + blockOrItem + " added by [[";
+								if(linkFix == null)
+									page += modName;
+								else
+									page += linkFix + "|" + modName;
+								page += "]].\n";
 								
 								//TODO: recipes. Fun.
 							}
