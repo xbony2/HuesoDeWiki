@@ -1,7 +1,10 @@
 package xbony2.huesosdewiki;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
@@ -14,6 +17,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -104,9 +109,21 @@ public class HuesosDeWiki {
 								page += "|type=" + blockOrItem + "\n";
 								page += "}}" + "\n";
 								page += "\n";
-								page += "The '''" + name + "''' is a " + blockOrItem + " added by [[" + modName + "]]." + "\n";
+								page += "The '''" + name + "''' is a " + blockOrItem + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
 								
-								//TODO: recipes. Fun.
+								List<IRecipe> recipes = new ArrayList<IRecipe>();
+								
+								for(Iterator<IRecipe> interator = CraftingManager.getInstance().getRecipeList().iterator(); interator.hasNext();){
+									IRecipe recipe = interator.next();
+									
+									if(recipe.getRecipeOutput().isItemEqual(itemstack))
+										recipes.add(recipe);
+								}
+								
+								if(!recipes.isEmpty()){
+									page += "\n";
+									page += (use2SpaceStyle ? "== Recipes ==" : "Recipe") + "\n";
+								}
 							}
 						}
 					}
