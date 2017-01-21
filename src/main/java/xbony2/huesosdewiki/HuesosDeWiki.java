@@ -1,5 +1,7 @@
 package xbony2.huesosdewiki;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -39,10 +42,10 @@ public class HuesosDeWiki {
 	public static KeyBinding key;
 	private boolean isKeyDown = false;
 	
-	public boolean use2SpaceStyle;
+	public static boolean use2SpaceStyle;
 	
-	public Map<String, String> nameCorrections = new HashMap<String, String>();
-	public Map<String, String> linkCorrections = new HashMap<String, String>();
+	public static Map<String, String> nameCorrections = new HashMap<String, String>();
+	public static Map<String, String> linkCorrections = new HashMap<String, String>();
 	
 	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests"};
 	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Roots", "Roots (Mod)", "Esteemed Innovation", "Esteemed Innovation (Mod)"};
@@ -83,20 +86,9 @@ public class HuesosDeWiki {
 						
 						if(hovered != null){
 							ItemStack itemstack = hovered.getStack();
-							if(itemstack != null){
+							if(!itemstack.isEmpty()){
 								String name = itemstack.getDisplayName();
-								String modName;
-								
-								ModContainer container = Loader.instance().getIndexedModList().get(Item.REGISTRY.getNameForObject(hovered.getStack().getItem()).getResourceDomain());
-								
-								if(container == null)
-									modName = "Vanilla";
-								else{
-									modName = container.getName();
-									
-									if(nameCorrections.get(modName) != null)
-										modName = nameCorrections.get(modName);
-								}
+								String modName = Utils.getModName(itemstack);
 								
 								String linkFix = linkCorrections.get(modName); //is null if there isn't a change required.
 								String blockOrItem = itemstack.getItem() instanceof ItemBlock ? "block" : "item";
@@ -104,17 +96,17 @@ public class HuesosDeWiki {
 								//And now for the magic
 								String page = "{{Infobox" + "\n";
 								page += "|name=" + name + "\n";
-								page += "|imageicon={{Gc|mod={{subst:#invoke:Mods|getAbbrv|" + modName + "}}" + "\n";
+								page += "|imageicon={{Gc|mod=" + Utils.getModAbbrevation(modName) + "|link=none|" + name + "}}" + "\n";
 								page += "|mod=" + modName + "\n";
 								page += "|type=" + blockOrItem + "\n";
 								page += "}}" + "\n";
 								page += "\n";
-								page += "The '''" + name + "''' is a " + blockOrItem + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
+								page += "The '''" + name + "''' is " + (blockOrItem == "block" ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
 								
 								List<IRecipe> recipes = new ArrayList<IRecipe>();
 								
-								for(Iterator<IRecipe> interator = CraftingManager.getInstance().getRecipeList().iterator(); interator.hasNext();){
-									IRecipe recipe = interator.next();
+								for(Iterator<IRecipe> iterator = CraftingManager.getInstance().getRecipeList().iterator(); iterator.hasNext();){
+									IRecipe recipe = iterator.next();
 									
 									if(recipe.getRecipeOutput().isItemEqual(itemstack))
 										recipes.add(recipe);
@@ -122,8 +114,43 @@ public class HuesosDeWiki {
 								
 								if(!recipes.isEmpty()){
 									page += "\n";
-									page += (use2SpaceStyle ? "== Recipes ==" : "Recipe") + "\n";
+									page += (use2SpaceStyle ? "== Recipes ==" : "==Recipe==") + "\n";
+									
+									for(Iterator<IRecipe> iterator = recipes.iterator(); iterator.hasNext();){
+										IRecipe recipe = iterator.next();
+										
+										if(recipe instanceof ShapedRecipes){
+											ShapedRecipes shapedrecipe = (ShapedRecipes)recipe;
+											page += "{{Cg/Crafting Table" + "\n";
+											
+											for(int h = 1; h <= shapedrecipe.recipeHeight; h++){
+												for(int w = 1; w <= shapedrecipe.recipeWidth; w++){
+													ItemStack itemstack2 = shapedrecipe.recipeItems[(h == 1 ? 0 : (h == 2 ? 3 : 6)) + w - 1]; //XXX: only supports 3x3 recipes
+													if(itemstack2.isEmpty())
+														continue;
+													
+													page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation(itemstack2) + "|dis=false|" + itemstack2.getDisplayName() + "}}" + "\n";
+												}
+											}
+											
+											ItemStack output = shapedrecipe.getRecipeOutput();
+											
+											page += "|O={{Gc|mod=" + Utils.getModAbbrevation(output) + "|link=none|" + name + (output.getCount() != 1 ? "|" + output.getCount() : "") + "}}" + "\n";
+											page += "}}" + "\n";
+										}//TODO: shapeless and oredict
+									}
 								}
+								
+								page += "\n";
+								page += "\n";
+								page += "{{Navbox " + modName + "}}" + "\n";
+								page += "\n";
+								page += "[[Category:" + modName + "]]" + "\n";
+								page += "\n";
+								page += "<languages />" + "\n";
+								page += "\n";
+								
+								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(page), null);
 							}
 						}
 					}
