@@ -125,7 +125,8 @@ public class HuesosDeWiki {
 											
 											for(int h = 1; h <= shapedrecipe.recipeHeight; h++){
 												for(int w = 1; w <= shapedrecipe.recipeWidth; w++){
-													ItemStack itemstack2 = shapedrecipe.recipeItems[(h == 1 ? 0 : (h == 2 ? 3 : 6)) + w - 1]; //XXX: only supports 3x3 recipes
+													ItemStack itemstack2 = shapedrecipe.recipeItems[(h == 1 ? 0 : (h == 2 ? 3 : 6)) + w - 1]; //XXX: only supports 3x3 recipes (also still not sure if the position is right)
+													
 													if(itemstack2.isEmpty())
 														continue;
 													
