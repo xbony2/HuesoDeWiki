@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @Mod(modid = HuesosDeWiki.MODID, version = HuesosDeWiki.VERSION)
 public class HuesosDeWiki {
@@ -123,9 +124,24 @@ public class HuesosDeWiki {
 											ShapedRecipes shapedrecipe = (ShapedRecipes)recipe;
 											page += "{{Cg/Crafting Table" + "\n";
 											
-											for(int h = 1; h <= shapedrecipe.recipeHeight; h++){
-												for(int w = 1; w <= shapedrecipe.recipeWidth; w++){
-													ItemStack itemstack2 = shapedrecipe.recipeItems[(h == 1 ? 0 : (h == 2 ? 3 : 6)) + w - 1]; //XXX: only supports 3x3 recipes (also still not sure if the position is right)
+											int maxHeight = shapedrecipe.recipeHeight;
+											int maxWidth = shapedrecipe.recipeWidth;
+											
+											for(int h = 1; h <= maxHeight; h++){
+												for(int w = 1; w <= maxWidth; w++){
+													ItemStack itemstack2 = null;
+													
+													switch(h){
+													case 1:
+														itemstack2 = shapedrecipe.recipeItems[w - 1];
+														break;
+													case 2:
+														itemstack2 = shapedrecipe.recipeItems[maxWidth + (w - 1)];
+														break;
+													case 3:
+														itemstack2 = shapedrecipe.recipeItems[(maxWidth * 2) + (w - 1)];
+														break;
+													}
 													
 													if(itemstack2.isEmpty())
 														continue;
@@ -138,7 +154,41 @@ public class HuesosDeWiki {
 											
 											page += "|O={{Gc|mod=" + Utils.getModAbbrevation(output) + "|link=none|" + name + (output.getCount() != 1 ? "|" + output.getCount() : "") + "}}" + "\n";
 											page += "}}" + "\n";
-										}//TODO: shapeless and oredict
+											
+											if(iterator.hasNext())
+												page += "\n";
+										}else if(recipe instanceof ShapedOreRecipe){ //TODO: complete and shapeless recipes
+											ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
+											page += "{{Cg/Crafting Table" + "\n";
+											
+											int maxHeight = shapedrecipe.getHeight();
+											int maxWidth = shapedrecipe.getWidth();
+											
+											for(int h = 1; h <= maxHeight; h++){
+												for(int w = 1; w <= maxWidth; w++){
+													Object object = null;
+													
+													switch(h){
+													case 1:
+														object = shapedrecipe.getInput()[w - 1];
+														break;
+													case 2:
+														object = shapedrecipe.getInput()[maxWidth + (w - 1)];
+														break;
+													case 3:
+														object = shapedrecipe.getInput()[(maxWidth * 2) + (w - 1)];
+														break;
+													}
+													
+													if(object == null)
+														continue;
+													
+													if(object instanceof ItemStack)
+														page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation((ItemStack)object) + "|dis=false|" + ((ItemStack)object).getDisplayName() + "}}" + "\n";
+													
+												}
+											}
+										}
 									}
 								}
 								
