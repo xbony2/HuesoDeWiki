@@ -185,7 +185,8 @@ public class HuesosDeWiki {
 													
 													if(object instanceof ItemStack)
 														page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation((ItemStack)object) + "|dis=false|" + ((ItemStack)object).getDisplayName() + "}}" + "\n";
-													
+													else if(object instanceof List)
+														page += "|" + ((char)(w + 64)) + h + "=oredict crap"; //It's a list of valid itemstacks. What a pain.
 												}
 											}
 										}
