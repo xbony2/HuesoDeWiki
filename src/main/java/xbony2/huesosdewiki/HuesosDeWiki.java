@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @Mod(modid = HuesosDeWiki.MODID, version = HuesosDeWiki.VERSION)
@@ -183,12 +184,49 @@ public class HuesosDeWiki {
 													if(object == null)
 														continue;
 													
-													if(object instanceof ItemStack)
+													if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
 														page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation((ItemStack)object) + "|dis=false|" + ((ItemStack)object).getDisplayName() + "}}" + "\n";
-													else if(object instanceof List)
-														page += "|" + ((char)(w + 64)) + h + "=oredict crap"; //It's a list of valid itemstacks. What a pain.
+													else if(object instanceof List && !((List)object).isEmpty()){
+														//page += "|" + ((char)(w + 64)) + h + "=oredict crap"; //It's a list of valid itemstacks. What a pain.
+														List<ItemStack> list = ((List)object);
+														
+														String entry = null;
+														ItemStack stack = list.iterator().next();
+														
+														if(stack != null){
+															int[] ids = OreDictionary.getOreIDs(stack);
+															
+															for(int i = 0; i < ids.length; i++){
+																String potentialEntry = OreDictionary.getOreName(ids[i]);
+																List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
+																
+																boolean isEqual = potentialCognate.size() == list.size();
+																
+																if(isEqual) //so far, that is
+																	for(int j = 0; j < list.size(); j++)
+																		if(potentialCognate.get(j).getItem() != list.get(j).getItem() && potentialCognate.get(j).getItemDamage() != list.get(j).getItemDamage())
+																			isEqual = false;
+																
+																if(isEqual){
+																	entry = potentialEntry;
+																	break;
+																}
+															}
+														}
+														
+														if(entry != null)
+															page += "|" + ((char)(w + 64)) + h + "={{O|" + entry + "}}" + "\n";
+													}
 												}
 											}
+											
+											ItemStack output = shapedrecipe.getRecipeOutput();
+											
+											page += "|O={{Gc|mod=" + Utils.getModAbbrevation(output) + "|link=none|" + name + (output.getCount() != 1 ? "|" + output.getCount() : "") + "}}" + "\n";
+											page += "}}" + "\n";
+											
+											if(iterator.hasNext())
+												page += "\n";
 										}
 									}
 								}
