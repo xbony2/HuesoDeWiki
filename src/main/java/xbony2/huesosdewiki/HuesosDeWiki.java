@@ -116,7 +116,7 @@ public class HuesosDeWiki {
 								
 								if(!recipes.isEmpty()){
 									page += "\n";
-									page += (use2SpaceStyle ? "== Recipes ==" : "==Recipe==") + "\n";
+									page += (use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n";
 									
 									for(Iterator<IRecipe> iterator = recipes.iterator(); iterator.hasNext();){
 										IRecipe recipe = iterator.next();
