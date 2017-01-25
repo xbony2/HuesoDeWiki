@@ -58,12 +58,56 @@ public class Utils {
 							isEqual = false;
 				
 				if(isEqual){
-					ret = potentialEntry;
+					ret = "{{O|" + potentialEntry + "}}";
 					break;
 				}
 			}
 		}
 		
 		return ret;
+	}
+	
+	public static String getShapedLocation(int height, int width){
+		return ((char)(width + 64)) + "" + height;
+	}
+	
+	public static String getShapelessLocation(int index, int max){
+		if(max > 6)
+			switch(index){
+			case 0:
+				return "A1";
+			case 1:
+				return "B1";
+			case 2:
+				return "C1";
+			case 3:
+				return "A2";
+			case 4:
+				return "B2";
+			case 5:
+				return "C2";
+			case 6:
+				return "A3";
+			case 7:
+				return "B3";
+			case 8:
+				return "C3";
+			}
+		else
+			switch(index){
+			case 0:
+				return "A1";
+			case 1:
+				return "B1";
+			case 2:
+				return "A2";
+			case 3:
+				return "B2";
+			case 4:
+				return "A3";
+			case 5:
+				return "B3";
+			}
+		return null;
 	}
 }

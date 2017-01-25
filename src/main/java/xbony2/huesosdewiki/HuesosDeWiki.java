@@ -36,6 +36,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 @Mod(modid = HuesosDeWiki.MODID, version = HuesosDeWiki.VERSION)
 public class HuesosDeWiki {
@@ -148,7 +149,7 @@ public class HuesosDeWiki {
 													if(itemstack2.isEmpty())
 														continue;
 													
-													page += "|" + ((char)(w + 64)) + h + "=" + Utils.outputItem(itemstack2) + "\n";
+													page += "|" + Utils.getShapedLocation(h, w) + "=" + Utils.outputItem(itemstack2) + "\n";
 												}
 											}
 											
@@ -157,7 +158,7 @@ public class HuesosDeWiki {
 											
 											if(iterator.hasNext())
 												page += "\n";
-										}else if(recipe instanceof ShapedOreRecipe){ //TODO: complete and shapeless recipes
+										}else if(recipe instanceof ShapedOreRecipe){
 											ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
 											page += "{{Cg/Crafting Table" + "\n";
 											
@@ -184,12 +185,12 @@ public class HuesosDeWiki {
 														continue;
 													
 													if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
-														page += "|" + ((char)(w + 64)) + h + "=" + Utils.outputItem((ItemStack)object) + "\n";
+														page += "|" + Utils.getShapedLocation(h, w) + "=" + Utils.outputItem((ItemStack)object) + "\n";
 													else if(object instanceof List && !((List)object).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
 														String entry = Utils.outputOreDictionaryEntry((List)object);
 														
 														if(entry != null)
-															page += "|" + ((char)(w + 64)) + h + "={{O|" + entry + "}}" + "\n";
+															page += "|" + Utils.getShapedLocation(h, w) + "=" + entry + "\n";
 													}
 												}
 											}
@@ -201,6 +202,51 @@ public class HuesosDeWiki {
 												page += "\n";
 										}else if(recipe instanceof ShapelessRecipes){
 											ShapelessRecipes shapelessrecipe = (ShapelessRecipes)recipe;
+											page += "{{Cg/Crafting Table" + "\n";
+											
+											List<ItemStack> recipeItems = shapelessrecipe.recipeItems;
+											
+											for(int i = 0; i < recipeItems.size(); i++){
+												ItemStack component = recipeItems.get(i);
+												
+												if(!component.isEmpty())
+													page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + Utils.outputItem(component) + "\n";
+											}
+											
+											page += "|O=" + Utils.outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
+											page += "|shapeless=true" + "\n";
+											page += "}}" + "\n";
+											
+											if(iterator.hasNext())
+												page += "\n";
+										}else if(recipe instanceof ShapelessOreRecipe){
+											ShapelessOreRecipe shapelessrecipe = (ShapelessOreRecipe)recipe;
+											page += "{{Cg/Crafting Table" + "\n";
+											
+											List<Object> recipeItems = shapelessrecipe.getInput();
+											
+											for(int i = 0; i < recipeItems.size(); i++){
+												Object object = recipeItems.get(i);
+												
+												if(object == null)
+													continue;
+												
+												if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
+													page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + Utils.outputItem((ItemStack)object) + "\n";
+												else if(object instanceof List && !((List)object).isEmpty()){
+													String entry = Utils.outputOreDictionaryEntry((List)object);
+													
+													if(entry != null)
+														page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + entry + "\n";
+												}
+											}
+											
+											page += "|O=" + Utils.outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
+											page += "|shapeless=true" + "\n";
+											page += "}}" + "\n";
+											
+											if(iterator.hasNext())
+												page += "\n";
 										}
 									}
 								}
