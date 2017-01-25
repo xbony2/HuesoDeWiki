@@ -1,6 +1,6 @@
-package xbony2.huesosdewiki;
+package xbony2.huesodewiki;
 
-import static xbony2.huesosdewiki.Utils.*;
+import static xbony2.huesodewiki.Utils.*;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -36,10 +36,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-@Mod(modid = HuesosDeWiki.MODID, version = HuesosDeWiki.VERSION)
-public class HuesosDeWiki {
-	public static final String MODID = "huesosdewiki";
-	public static final String VERSION = "1.0.0a";
+@Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
+public class HuesoDeWiki {
+	public static final String MODID = "huesodewiki";
+	public static final String VERSION = "1.0.1c";
 	
 	public static KeyBinding key;
 	private boolean isKeyDown = false;
@@ -54,11 +54,11 @@ public class HuesosDeWiki {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		key = new KeyBinding("key.copybasepage", Keyboard.KEY_SEMICOLON, "key.categories.huesosdewiki");
+		key = new KeyBinding("key.copybasepage", Keyboard.KEY_SEMICOLON, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(key);
 		MinecraftForge.EVENT_BUS.register(new RenderTickEventEventHanlder());
 		
-		Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "HuesosDeWiki.cfg"));
+		Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "HuesoDeWiki.cfg"));
 		config.load();
 		use2SpaceStyle = config.getBoolean("Use2SpaceStyle", "Main", false, "Use \"2spacestyle\"- put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").");
 		String[] nameCorrections = config.getStringList("NameCorrections", "Main", DEFAULT_NAME_CORRECTIONS, "Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.");
