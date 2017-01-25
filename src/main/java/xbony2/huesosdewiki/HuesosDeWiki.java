@@ -1,5 +1,7 @@
 package xbony2.huesosdewiki;
 
+import static xbony2.huesosdewiki.Utils.*;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
@@ -16,7 +18,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -26,15 +27,12 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -92,20 +90,20 @@ public class HuesosDeWiki {
 							ItemStack itemstack = hovered.getStack();
 							if(!itemstack.isEmpty()){
 								String name = itemstack.getDisplayName();
-								String modName = Utils.getModName(itemstack);
+								String modName = getModName(itemstack);
 								
 								String linkFix = linkCorrections.get(modName); //is null if there isn't a change required.
-								String blockOrItem = itemstack.getItem() instanceof ItemBlock ? "block" : "item";
+								String type = itemstack.getItem() instanceof ItemBlock ? "block" : "item";
 								
 								//And now for the magic
 								String page = "{{Infobox" + "\n";
 								page += "|name=" + name + "\n";
-								page += "|imageicon=" + Utils.outputItemOutput(itemstack) + "\n";
+								page += "|imageicon=" + outputItemOutput(itemstack) + "\n";
 								page += "|mod=" + modName + "\n";
-								page += "|type=" + blockOrItem + "\n";
+								page += "|type=" + type + "\n";
 								page += "}}" + "\n";
 								page += "\n";
-								page += "The '''" + name + "''' is " + (blockOrItem == "block" ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
+								page += "The '''" + name + "''' is " + (type == "block" ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
 								
 								List<IRecipe> recipes = new ArrayList<IRecipe>();
 								
@@ -132,28 +130,28 @@ public class HuesosDeWiki {
 											
 											for(int h = 1; h <= maxHeight; h++){
 												for(int w = 1; w <= maxWidth; w++){
-													ItemStack itemstack2 = null;
+													ItemStack component = null;
 													
 													switch(h){
 													case 1:
-														itemstack2 = shapedrecipe.recipeItems[w - 1];
+														component = shapedrecipe.recipeItems[w - 1];
 														break;
 													case 2:
-														itemstack2 = shapedrecipe.recipeItems[maxWidth + (w - 1)];
+														component = shapedrecipe.recipeItems[maxWidth + (w - 1)];
 														break;
 													case 3:
-														itemstack2 = shapedrecipe.recipeItems[(maxWidth * 2) + (w - 1)];
+														component = shapedrecipe.recipeItems[(maxWidth * 2) + (w - 1)];
 														break;
 													}
 													
-													if(itemstack2.isEmpty())
+													if(component.isEmpty())
 														continue;
 													
-													page += "|" + Utils.getShapedLocation(h, w) + "=" + Utils.outputItem(itemstack2) + "\n";
+													page += "|" + getShapedLocation(h, w) + "=" + outputItem(component) + "\n";
 												}
 											}
 											
-											page += "|O=" + Utils.outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
+											page += "|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
 											page += "}}" + "\n";
 											
 											if(iterator.hasNext())
@@ -167,35 +165,35 @@ public class HuesosDeWiki {
 											
 											for(int h = 1; h <= maxHeight; h++){
 												for(int w = 1; w <= maxWidth; w++){
-													Object object = null;
+													Object component = null;
 													
 													switch(h){
 													case 1:
-														object = shapedrecipe.getInput()[w - 1];
+														component = shapedrecipe.getInput()[w - 1];
 														break;
 													case 2:
-														object = shapedrecipe.getInput()[maxWidth + (w - 1)];
+														component = shapedrecipe.getInput()[maxWidth + (w - 1)];
 														break;
 													case 3:
-														object = shapedrecipe.getInput()[(maxWidth * 2) + (w - 1)];
+														component = shapedrecipe.getInput()[(maxWidth * 2) + (w - 1)];
 														break;
 													}
 													
-													if(object == null)
+													if(component == null)
 														continue;
 													
-													if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
-														page += "|" + Utils.getShapedLocation(h, w) + "=" + Utils.outputItem((ItemStack)object) + "\n";
-													else if(object instanceof List && !((List)object).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
-														String entry = Utils.outputOreDictionaryEntry((List)object);
+													if(component instanceof ItemStack && !((ItemStack)component).isEmpty())
+														page += "|" + getShapedLocation(h, w) + "=" + outputItem((ItemStack)component) + "\n";
+													else if(component instanceof List && !((List)component).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
+														String entry = outputOreDictionaryEntry((List)component);
 														
 														if(entry != null)
-															page += "|" + Utils.getShapedLocation(h, w) + "=" + entry + "\n";
+															page += "|" + getShapedLocation(h, w) + "=" + entry + "\n";
 													}
 												}
 											}
 											
-											page += "|O=" + Utils.outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
+											page += "|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
 											page += "}}" + "\n";
 											
 											if(iterator.hasNext())
@@ -210,10 +208,10 @@ public class HuesosDeWiki {
 												ItemStack component = recipeItems.get(i);
 												
 												if(!component.isEmpty())
-													page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + Utils.outputItem(component) + "\n";
+													page += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem(component) + "\n";
 											}
 											
-											page += "|O=" + Utils.outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
+											page += "|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
 											page += "|shapeless=true" + "\n";
 											page += "}}" + "\n";
 											
@@ -232,16 +230,16 @@ public class HuesosDeWiki {
 													continue;
 												
 												if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
-													page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + Utils.outputItem((ItemStack)object) + "\n";
+													page += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem((ItemStack)object) + "\n";
 												else if(object instanceof List && !((List)object).isEmpty()){
-													String entry = Utils.outputOreDictionaryEntry((List)object);
+													String entry = outputOreDictionaryEntry((List)object);
 													
 													if(entry != null)
-														page += "|" + Utils.getShapelessLocation(i, recipeItems.size()) + "=" + entry + "\n";
+														page += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + entry + "\n";
 												}
 											}
 											
-											page += "|O=" + Utils.outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
+											page += "|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
 											page += "|shapeless=true" + "\n";
 											page += "}}" + "\n";
 											
