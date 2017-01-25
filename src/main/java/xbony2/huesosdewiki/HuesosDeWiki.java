@@ -82,11 +82,15 @@ public class HuesosDeWiki {
 						isKeyDown = true;
 						Minecraft mc = Minecraft.getMinecraft();
 						GuiScreen currentScreen = mc.currentScreen;
+						
 						if(currentScreen instanceof GuiContainer){
 							Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
-							if (hovered == null)
+							
+							if(hovered == null)
 								return;
+							
 							ItemStack itemstack = hovered.getStack();
+							
 							if(!itemstack.isEmpty()){
 								String name = itemstack.getDisplayName();
 								String modName = getModName(itemstack);
