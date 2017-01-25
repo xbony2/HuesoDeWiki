@@ -5,6 +5,7 @@ import static xbony2.huesosdewiki.Utils.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,14 +82,17 @@ public class HuesosDeWiki {
 					if(!isKeyDown){
 						isKeyDown = true;
 						Minecraft mc = Minecraft.getMinecraft();
-						Slot hovered = null;
 						GuiScreen currentScreen = mc.currentScreen;
-						if(currentScreen instanceof GuiContainer)
-							hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
 						
-						if(hovered != null){
+						if(currentScreen instanceof GuiContainer){
+							Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
+							
+							if(hovered == null)
+								return;
+							
 							ItemStack itemstack = hovered.getStack();
-							if(!itemstack.isEmpty()){
+							
+							if(itemstack != null){
 								String name = itemstack.getDisplayName();
 								String modName = getModName(itemstack);
 								
@@ -110,13 +114,13 @@ public class HuesosDeWiki {
 								for(Iterator<IRecipe> iterator = CraftingManager.getInstance().getRecipeList().iterator(); iterator.hasNext();){
 									IRecipe recipe = iterator.next();
 									
-									if(recipe.getRecipeOutput().isItemEqual(itemstack))
+									if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().isItemEqual(itemstack))
 										recipes.add(recipe);
 								}
 								
 								if(!recipes.isEmpty()){
 									page += "\n";
-									page += (use2SpaceStyle ? "== Recipes ==" : "==Recipe==") + "\n";
+									page += (use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n";
 									
 									for(Iterator<IRecipe> iterator = recipes.iterator(); iterator.hasNext();){
 										IRecipe recipe = iterator.next();
@@ -144,7 +148,7 @@ public class HuesosDeWiki {
 														break;
 													}
 													
-													if(component.isEmpty())
+													if(component == null)
 														continue;
 													
 													page += "|" + getShapedLocation(h, w) + "=" + outputItem(component) + "\n";
@@ -160,8 +164,21 @@ public class HuesosDeWiki {
 											ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
 											page += "{{Cg/Crafting Table" + "\n";
 											
-											int maxHeight = shapedrecipe.getHeight();
-											int maxWidth = shapedrecipe.getWidth();
+											int maxHeight = 0;
+											int maxWidth = 0;
+											
+											try{
+												Field heightField = ShapedOreRecipe.class.getDeclaredField("height");
+												Field widthField = ShapedOreRecipe.class.getDeclaredField("width");
+												
+												heightField.setAccessible(true);
+												widthField.setAccessible(true);
+												
+												maxHeight = heightField.getInt(shapedrecipe);
+												maxWidth = widthField.getInt(shapedrecipe);
+											}catch(Exception e){ //¯\_(ツ)_/¯
+												e.printStackTrace();
+											}
 											
 											for(int h = 1; h <= maxHeight; h++){
 												for(int w = 1; w <= maxWidth; w++){
@@ -182,7 +199,7 @@ public class HuesosDeWiki {
 													if(component == null)
 														continue;
 													
-													if(component instanceof ItemStack && !((ItemStack)component).isEmpty())
+													if(component instanceof ItemStack && ((ItemStack)component) != null)
 														page += "|" + getShapedLocation(h, w) + "=" + outputItem((ItemStack)component) + "\n";
 													else if(component instanceof List && !((List)component).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
 														String entry = outputOreDictionaryEntry((List)component);
@@ -207,7 +224,7 @@ public class HuesosDeWiki {
 											for(int i = 0; i < recipeItems.size(); i++){
 												ItemStack component = recipeItems.get(i);
 												
-												if(!component.isEmpty())
+												if(component != null)
 													page += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem(component) + "\n";
 											}
 											
@@ -229,7 +246,7 @@ public class HuesosDeWiki {
 												if(object == null)
 													continue;
 												
-												if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
+												if(object instanceof ItemStack && ((ItemStack)object) != null)
 													page += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem((ItemStack)object) + "\n";
 												else if(object instanceof List && !((List)object).isEmpty()){
 													String entry = outputOreDictionaryEntry((List)object);

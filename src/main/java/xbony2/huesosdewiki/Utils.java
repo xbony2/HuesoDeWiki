@@ -33,7 +33,7 @@ public class Utils {
 	}
 	
 	public static String outputItemOutput(ItemStack itemstack){
-		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName() + (itemstack.stackSize != 1 ? "|" + itemstack.stackSize : "") + "}}";
 	}
 	
 	/**
