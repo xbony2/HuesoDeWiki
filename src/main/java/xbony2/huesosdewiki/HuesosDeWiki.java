@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -98,7 +99,7 @@ public class HuesosDeWiki {
 								//And now for the magic
 								String page = "{{Infobox" + "\n";
 								page += "|name=" + name + "\n";
-								page += "|imageicon={{Gc|mod=" + Utils.getModAbbrevation(modName) + "|link=none|" + name + "}}" + "\n";
+								page += "|imageicon=" + Utils.outputItemOutput(itemstack) + "\n";
 								page += "|mod=" + modName + "\n";
 								page += "|type=" + blockOrItem + "\n";
 								page += "}}" + "\n";
@@ -147,13 +148,11 @@ public class HuesosDeWiki {
 													if(itemstack2.isEmpty())
 														continue;
 													
-													page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation(itemstack2) + "|dis=false|" + itemstack2.getDisplayName() + "}}" + "\n";
+													page += "|" + ((char)(w + 64)) + h + "=" + Utils.outputItem(itemstack2) + "\n";
 												}
 											}
 											
-											ItemStack output = shapedrecipe.getRecipeOutput();
-											
-											page += "|O={{Gc|mod=" + Utils.getModAbbrevation(output) + "|link=none|" + name + (output.getCount() != 1 ? "|" + output.getCount() : "") + "}}" + "\n";
+											page += "|O=" + Utils.outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
 											page += "}}" + "\n";
 											
 											if(iterator.hasNext())
@@ -185,34 +184,9 @@ public class HuesosDeWiki {
 														continue;
 													
 													if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
-														page += "|" + ((char)(w + 64)) + h + "={{Gc|mod=" + Utils.getModAbbrevation((ItemStack)object) + "|dis=false|" + ((ItemStack)object).getDisplayName() + "}}" + "\n";
-													else if(object instanceof List && !((List)object).isEmpty()){
-														//page += "|" + ((char)(w + 64)) + h + "=oredict crap"; //It's a list of valid itemstacks. What a pain.
-														List<ItemStack> list = ((List)object);
-														
-														String entry = null;
-														ItemStack stack = list.iterator().next();
-														
-														if(stack != null){
-															int[] ids = OreDictionary.getOreIDs(stack);
-															
-															for(int i = 0; i < ids.length; i++){
-																String potentialEntry = OreDictionary.getOreName(ids[i]);
-																List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
-																
-																boolean isEqual = potentialCognate.size() == list.size();
-																
-																if(isEqual) //so far, that is
-																	for(int j = 0; j < list.size(); j++)
-																		if(potentialCognate.get(j).getItem() != list.get(j).getItem() && potentialCognate.get(j).getItemDamage() != list.get(j).getItemDamage())
-																			isEqual = false;
-																
-																if(isEqual){
-																	entry = potentialEntry;
-																	break;
-																}
-															}
-														}
+														page += "|" + ((char)(w + 64)) + h + "=" + Utils.outputItem((ItemStack)object) + "\n";
+													else if(object instanceof List && !((List)object).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
+														String entry = Utils.outputOreDictionaryEntry((List)object);
 														
 														if(entry != null)
 															page += "|" + ((char)(w + 64)) + h + "={{O|" + entry + "}}" + "\n";
@@ -220,13 +194,13 @@ public class HuesosDeWiki {
 												}
 											}
 											
-											ItemStack output = shapedrecipe.getRecipeOutput();
-											
-											page += "|O={{Gc|mod=" + Utils.getModAbbrevation(output) + "|link=none|" + name + (output.getCount() != 1 ? "|" + output.getCount() : "") + "}}" + "\n";
+											page += "|O=" + Utils.outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
 											page += "}}" + "\n";
 											
 											if(iterator.hasNext())
 												page += "\n";
+										}else if(recipe instanceof ShapelessRecipes){
+											ShapelessRecipes shapelessrecipe = (ShapelessRecipes)recipe;
 										}
 									}
 								}

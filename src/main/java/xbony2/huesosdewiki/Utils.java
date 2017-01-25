@@ -1,9 +1,12 @@
 package xbony2.huesosdewiki;
 
+import java.util.List;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class Utils {
 	public static String getModName(ItemStack itemstack){
@@ -23,5 +26,44 @@ public class Utils {
 	
 	public static String getModAbbrevation(ItemStack itemstack){
 		return getModAbbrevation(getModName(itemstack));
+	}
+	
+	public static String outputItem(ItemStack itemstack){
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName() + "}}";
+	}
+	
+	public static String outputItemOutput(ItemStack itemstack){
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
+	}
+	
+	/**
+	 * *Will* return null if nothing can be found.
+	 */
+	public static String outputOreDictionaryEntry(List<ItemStack> list){
+		String ret = null;
+		ItemStack stack = list.iterator().next();
+		
+		if(stack != null){
+			int[] ids = OreDictionary.getOreIDs(stack);
+			
+			for(int i = 0; i < ids.length; i++){
+				String potentialEntry = OreDictionary.getOreName(ids[i]);
+				List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
+				
+				boolean isEqual = potentialCognate.size() == list.size();
+				
+				if(isEqual) //so far, that is
+					for(int j = 0; j < list.size(); j++)
+						if(potentialCognate.get(j).getItem() != list.get(j).getItem() && potentialCognate.get(j).getItemDamage() != list.get(j).getItemDamage())
+							isEqual = false;
+				
+				if(isEqual){
+					ret = potentialEntry;
+					break;
+				}
+			}
+		}
+		
+		return ret;
 	}
 }
