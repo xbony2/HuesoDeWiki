@@ -1,7 +1,7 @@
 [
 {
-  "modid": "huesosdewiki",
-  "name": "HuesosDeWiki",
+  "modid": "huesodewiki",
+  "name": "HuesoDeWiki",
   "description": "A small utility mod for editors of the Official FTB Wiki- automatically creates a base page in the clipboard from in-game items.",
   "version": "${version}",
   "mcversion": "${mcversion}",

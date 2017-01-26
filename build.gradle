@@ -13,9 +13,9 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.9.0a"
-group= "xbony2.huesosdewiki"
-archivesBaseName = "huesosdewiki"
+version = "0.9.0b"
+group= "xbony2.huesodewiki"
+archivesBaseName = "huesodewiki"
 
 sourceCompatibility = targetCompatibility = "1.6"
 compileJava {

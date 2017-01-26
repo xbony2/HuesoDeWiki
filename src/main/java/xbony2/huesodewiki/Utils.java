@@ -1,4 +1,4 @@
-package xbony2.huesosdewiki;
+package xbony2.huesodewiki;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Utils {
 			return "Vanilla";
 		else{
 			String modName = container.getName();
-			return HuesosDeWiki.nameCorrections.get(modName) != null ? HuesosDeWiki.nameCorrections.get(modName) : modName;
+			return HuesoDeWiki.nameCorrections.get(modName) != null ? HuesoDeWiki.nameCorrections.get(modName) : modName;
 		}
 	}
 	
