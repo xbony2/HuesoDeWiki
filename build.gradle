@@ -1,9 +1,13 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
     dependencies {
@@ -13,8 +17,8 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "0.9.0b"
-group= "xbony2.huesodewiki"
+version = "0.8.0b"
+group = "xbony2.huesodewiki"
 archivesBaseName = "huesodewiki"
 
 sourceCompatibility = targetCompatibility = "1.6"
@@ -23,10 +27,9 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.1.2011"
+    version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "run"
-
-    mappings = "snapshot_20160804"
+    mappings = "snapshot_20140925"
 }
 
 dependencies {
