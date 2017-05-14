@@ -5,7 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
-public class BlockResistanceParameter implements IInfoboxParameter {
+public class BlastResistanceParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
