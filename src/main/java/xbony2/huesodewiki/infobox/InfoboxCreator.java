@@ -23,6 +23,8 @@ public class InfoboxCreator {
 		parameters.add(new HardnessParameter());
 		parameters.add(new FoodPointsParameter());
 		parameters.add(new SaturationParameter());
+		parameters.add(new ArmorRatingParameter());
+		parameters.add(new ToughnessParameter());
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
