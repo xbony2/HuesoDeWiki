@@ -25,6 +25,7 @@ public class InfoboxCreator {
 		parameters.add(new SaturationParameter());
 		parameters.add(new ArmorRatingParameter());
 		parameters.add(new ToughnessParameter());
+		parameters.add(new DamageParameter()); //Consider it WIP, it's dumb.
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
