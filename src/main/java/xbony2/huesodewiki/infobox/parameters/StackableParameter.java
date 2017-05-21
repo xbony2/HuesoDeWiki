@@ -1,25 +1,27 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import static xbony2.huesodewiki.Utils.outputItemOutput;
-
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
-public class ImageIconParameter implements IInfoboxParameter {
+public class StackableParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return true;
+		return itemstack.getMaxStackSize() != 64;
 	}
 
 	@Override
 	public String parameterName(){
-		return "imageicon";
+		return "stackable";
 	}
 
 	@Override
 	public String parameterText(ItemStack itemstack){
-		itemstack.setCount(1);
-		return outputItemOutput(itemstack);
+		int stacksize = itemstack.getMaxStackSize();
+		
+		if(stacksize == 1)
+			return "No";
+		
+		return "Yes (" + stacksize + ")";
 	}
 }

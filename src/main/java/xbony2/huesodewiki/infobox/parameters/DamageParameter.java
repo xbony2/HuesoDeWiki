@@ -19,7 +19,6 @@ public class DamageParameter implements IInfoboxParameter {
 
 	@Override
 	public String parameterText(ItemStack itemstack){
-		return Float.toString(((ItemSword)itemstack.getItem()).getDamageVsEntity());
+		return Float.toString(((ItemSword)itemstack.getItem()).getDamageVsEntity() + 4.0F); //Damage behaviour is super weird...
 	}
-
 }
