@@ -30,7 +30,6 @@ public class InfoboxCreator {
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
-		
 		String page = "{{Infobox" + "\n";
 		
 		for(IInfoboxParameter parameter : parameters)

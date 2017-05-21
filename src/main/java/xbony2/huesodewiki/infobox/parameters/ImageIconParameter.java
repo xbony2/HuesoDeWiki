@@ -19,7 +19,8 @@ public class ImageIconParameter implements IInfoboxParameter {
 
 	@Override
 	public String parameterText(ItemStack itemstack){
-		itemstack.setCount(1);
-		return outputItemOutput(itemstack);
+		ItemStack copy = itemstack.copy();
+		copy.setCount(1);
+		return outputItemOutput(copy);
 	}
 }
