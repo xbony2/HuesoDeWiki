@@ -34,7 +34,7 @@ public class InfoboxCreator {
 		
 		for(IInfoboxParameter parameter : parameters)
 			if(parameter.canAdd(itemstack))
-				page += "|" + parameter.parameterName() + "=" + parameter.parameterText(itemstack) + "\n";
+				page += "|" + parameter.getParameterName() + "=" + parameter.getParameterText(itemstack) + "\n";
 		
 		page += "}}" + "\n";
 		return page;

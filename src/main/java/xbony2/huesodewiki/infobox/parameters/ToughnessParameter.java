@@ -12,12 +12,12 @@ public class ToughnessParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "toughness";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		return Float.toString(((ItemArmor)itemstack.getItem()).toughness);
 	}
 }

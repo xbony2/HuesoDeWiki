@@ -11,17 +11,13 @@ public class StackableParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "stackable";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		int stacksize = itemstack.getMaxStackSize();
-		
-		if(stacksize == 1)
-			return "No";
-		
-		return "Yes (" + stacksize + ")";
+		return stacksize == 1 ? "No" : "Yes (" + stacksize + ")";
 	}
 }

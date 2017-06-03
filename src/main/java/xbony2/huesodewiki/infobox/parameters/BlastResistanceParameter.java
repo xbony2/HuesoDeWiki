@@ -13,12 +13,12 @@ public class BlastResistanceParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "blastresistance";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		String ret;
 		
 		try{

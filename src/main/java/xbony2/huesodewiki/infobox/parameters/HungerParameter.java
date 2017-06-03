@@ -12,12 +12,12 @@ public class HungerParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "hunger";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		ItemFood food = (ItemFood)itemstack.getItem();
 		return "{{Shanks|" + Integer.toString(food.getHealAmount(itemstack)) + "|" + Float.toString(food.getSaturationModifier(itemstack)) + "}}";
 	}

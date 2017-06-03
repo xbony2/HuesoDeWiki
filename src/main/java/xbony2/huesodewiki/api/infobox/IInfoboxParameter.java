@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 public interface IInfoboxParameter {
 	public boolean canAdd(ItemStack itemstack);
 	
-	public String parameterName();
+	public String getParameterName();
 	
-	public String parameterText(ItemStack itemstack);
+	public String getParameterText(ItemStack itemstack);
 }

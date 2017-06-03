@@ -12,12 +12,12 @@ public class SaturationParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "saturation";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		return Float.toString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack));
 	}
 }

@@ -12,12 +12,12 @@ public class ArmorRatingParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "armorrating";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		return Integer.toString(((ItemArmor)itemstack.getItem()).damageReduceAmount);
 	}
 }

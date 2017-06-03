@@ -13,12 +13,12 @@ public class ImageIconParameter implements IInfoboxParameter {
 	}
 
 	@Override
-	public String parameterName(){
+	public String getParameterName(){
 		return "imageicon";
 	}
 
 	@Override
-	public String parameterText(ItemStack itemstack){
+	public String getParameterText(ItemStack itemstack){
 		ItemStack copy = itemstack.copy();
 		copy.setCount(1);
 		return outputItemOutput(copy);
