@@ -16,6 +16,9 @@ public class TypeParameter implements IInfoboxParameter {
 		types.add(new BlockType());
 		types.add(new FoodType());
 		types.add(new ItemType());
+		types.add(new ArmorType());
+		types.add(new ToolType());
+		types.add(new WeaponType());
 	}
 
 	@Override
