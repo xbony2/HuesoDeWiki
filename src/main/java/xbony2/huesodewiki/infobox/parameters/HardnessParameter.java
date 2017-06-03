@@ -2,6 +2,7 @@ package xbony2.huesodewiki.infobox.parameters;
 
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
 public class HardnessParameter implements IInfoboxParameter {
@@ -21,7 +22,7 @@ public class HardnessParameter implements IInfoboxParameter {
 String ret;
 		
 		try{
-			ret = Float.toString(((ItemBlock)itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
+			ret = Utils.floatToString(((ItemBlock)itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
 		}catch(Exception e){ //In case of a null pointer
 			ret = "?";
 		}

@@ -110,4 +110,11 @@ public class Utils {
 			}
 		return null;
 	}
+	
+	public static String floatToString(float f){
+		String ret = Float.toString(f);
+		if(ret.endsWith(".0"))
+				ret = ret.replaceAll(".0$", "");
+		return ret;
+	}
 }
