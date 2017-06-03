@@ -20,5 +20,4 @@ public class ItemType implements IType {
 	public boolean isApplicable(ItemStack itemstack){
 		return true;
 	}
-
 }

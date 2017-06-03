@@ -30,13 +30,13 @@ public class InfoboxCreator {
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
-		String page = "{{Infobox" + "\n";
+		String ret = "{{Infobox" + "\n";
 		
 		for(IInfoboxParameter parameter : parameters)
 			if(parameter.canAdd(itemstack))
-				page += "|" + parameter.getParameterName() + "=" + parameter.getParameterText(itemstack) + "\n";
+				ret += "|" + parameter.getParameterName() + "=" + parameter.getParameterText(itemstack) + "\n";
 		
-		page += "}}" + "\n";
-		return page;
+		ret += "}}" + "\n";
+		return ret;
 	}
 }

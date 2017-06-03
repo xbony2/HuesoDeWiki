@@ -21,6 +21,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.infobox.InfoboxCreator;
 
 public class PageCreator {
@@ -185,7 +186,7 @@ public class PageCreator {
 		page += "\n";
 		page += "{{Navbox " + modName + "}}" + "\n";
 		page += "\n";
-		page += "[[Category:" + modName + "]]" + "\n";
+		page += CategoryCreator.createCategories(itemstack) + "\n";
 		page += "\n";
 		page += "<languages />" + "\n";
 		page += "\n";
