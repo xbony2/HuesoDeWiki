@@ -1,6 +1,5 @@
 package xbony2.huesodewiki.infobox.parameters.types;
 
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IType;
 

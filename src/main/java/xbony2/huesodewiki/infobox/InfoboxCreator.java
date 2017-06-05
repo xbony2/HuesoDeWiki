@@ -1,12 +1,8 @@
 package xbony2.huesodewiki.infobox;
 
-import static xbony2.huesodewiki.Utils.getModName;
-import static xbony2.huesodewiki.Utils.outputItemOutput;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.infobox.parameters.*;

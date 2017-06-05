@@ -1,6 +1,5 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import xbony2.huesodewiki.Utils;
