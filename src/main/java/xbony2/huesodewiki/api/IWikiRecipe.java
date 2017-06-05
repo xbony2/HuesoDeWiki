@@ -8,5 +8,5 @@ public interface IWikiRecipe {
 	 * @param itemstack
 	 * @return null or "" if there are no recipes to add.
 	 */
-	public String getRecipes(ItemStack itemstack);
+	String getRecipes(ItemStack itemstack);
 }

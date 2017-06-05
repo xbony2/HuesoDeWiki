@@ -9,9 +9,9 @@ public interface IType {
 	 * For example, the "item" type has a priority of 0, but the "food" type has a priority of 10 so it will always be choosen over "item,"
 	 * even though both would be applicable.
 	 */
-	public int getPriority();
+	int getPriority();
 	
-	public String getName();
+	String getName();
 	
-	public boolean isApplicable(ItemStack itemstack);
+	boolean isApplicable(ItemStack itemstack);
 }
