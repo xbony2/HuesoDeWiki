@@ -1,14 +1,14 @@
 package xbony2.huesodewiki.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.common.base.Joiner;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.HuesoDeWiki;
 import xbony2.huesodewiki.api.ICategory;
 import xbony2.huesodewiki.category.categories.FoodCategory;
 import xbony2.huesodewiki.category.categories.ModCategory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CategoryCreator {
 	public static List<ICategory> categories = new ArrayList();
