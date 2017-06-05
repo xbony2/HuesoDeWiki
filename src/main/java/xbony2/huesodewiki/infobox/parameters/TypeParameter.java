@@ -10,17 +10,6 @@ import xbony2.huesodewiki.api.infobox.IType;
 import xbony2.huesodewiki.infobox.parameters.types.*;
 
 public class TypeParameter implements IInfoboxParameter {
-	public static List<IType> types = new ArrayList();
-	
-	static {
-		types.add(new BlockType());
-		types.add(new FoodType());
-		types.add(new ItemType());
-		types.add(new ArmorType());
-		types.add(new ToolType());
-		types.add(new WeaponType());
-	}
-
 	@Override
 	public boolean canAdd(ItemStack itemstack){
 		return true;
@@ -33,9 +22,9 @@ public class TypeParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		IType possibleType = new ItemType(); //per default
+		IType possibleType = Types.ITEM; //per default
 		
-		for(IType type : types)
+		for(IType type : Types.values())
 			if(type.isApplicable(itemstack) && type.getPriority() > possibleType.getPriority())
 				possibleType = type;
 		
