@@ -31,6 +31,7 @@ public class HuesoDeWiki {
 	private boolean isKeyDown = false;
 	
 	public static boolean use2SpaceStyle;
+	public static boolean useStackedCategoryStyle;
 	
 	public static Map<String, String> nameCorrections = new HashMap<String, String>();
 	public static Map<String, String> linkCorrections = new HashMap<String, String>();
@@ -47,6 +48,7 @@ public class HuesoDeWiki {
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "HuesoDeWiki.cfg"));
 		config.load();
 		use2SpaceStyle = config.getBoolean("Use2SpaceStyle", "Main", false, "Use \"2spacestyle\"- put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").");
+		useStackedCategoryStyle = config.getBoolean("UseStackedCategoryStyle", "Main", false, "Use \"stacked\" category style– put each category on its own line.");
 		String[] nameCorrections = config.getStringList("NameCorrections", "Main", DEFAULT_NAME_CORRECTIONS, "Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.");
 		String[] linkCorrections = config.getStringList("LinkCorrections", "Main", DEFAULT_LINK_CORRECTIONS, "Link fixes. Is a map- first entry is the mod's name, second is the FTB Wiki's page.");
 		
