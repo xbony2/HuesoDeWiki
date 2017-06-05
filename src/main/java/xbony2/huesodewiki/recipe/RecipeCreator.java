@@ -13,6 +13,7 @@ public class RecipeCreator {
 	
 	static {
 		recipes.add(new CraftingRecipe());
+		recipes.add(new FurnaceRecipe());
 	}
 	
 	public static String createRecipes(ItemStack itemstack){
