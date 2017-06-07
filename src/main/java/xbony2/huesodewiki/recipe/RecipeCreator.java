@@ -17,15 +17,15 @@ public class RecipeCreator {
 	}
 	
 	public static String createRecipes(ItemStack itemstack){
-		String ret = "";
+		StringBuilder ret = new StringBuilder();
 		for(IWikiRecipe recipe : recipes){
 			String potentialRecipes = recipe.getRecipes(itemstack);
 			if(potentialRecipes != null && potentialRecipes != "")
-				ret += potentialRecipes;
+				ret.append(potentialRecipes);
 		}
 		
-		if(ret == "")
-			return ret;
-		return "\n" + (HuesoDeWiki.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret;
+		if(ret.toString() == "")
+			return "";
+		return "\n" + (HuesoDeWiki.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString();
 	}
 }

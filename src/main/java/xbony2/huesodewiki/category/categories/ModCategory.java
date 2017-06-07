@@ -15,5 +15,4 @@ public class ModCategory implements ICategory {
 	public String getCategoryName(ItemStack itemstack){
 		return Utils.getModName(itemstack);
 	}
-
 }

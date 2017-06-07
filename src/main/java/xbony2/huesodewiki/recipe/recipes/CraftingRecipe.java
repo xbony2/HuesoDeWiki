@@ -64,7 +64,7 @@ public class CraftingRecipe implements IWikiRecipe {
 
 	@Override
 	public String getRecipes(ItemStack itemstack){
-		String ret = "";
+		StringBuilder ret = new StringBuilder();
 		List<IRecipe> recipes = new ArrayList<IRecipe>();
 		
 		for(Iterator<IRecipe> iterator = CraftingManager.getInstance().getRecipeList().iterator(); iterator.hasNext();){
@@ -80,7 +80,7 @@ public class CraftingRecipe implements IWikiRecipe {
 				
 				if(recipe instanceof ShapedRecipes){
 					ShapedRecipes shapedrecipe = (ShapedRecipes)recipe;
-					ret += "{{Cg/Crafting Table" + "\n";
+					ret.append("{{Cg/Crafting Table" + "\n");
 					
 					int maxHeight = shapedrecipe.recipeHeight;
 					int maxWidth = shapedrecipe.recipeWidth;
@@ -104,18 +104,18 @@ public class CraftingRecipe implements IWikiRecipe {
 							if(component.isEmpty())
 								continue;
 							
-							ret += "|" + getShapedLocation(h, w) + "=" + outputItem(component) + "\n";
+							ret.append("|" + getShapedLocation(h, w) + "=" + outputItem(component) + "\n");
 						}
 					}
 					
-					ret += "|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
-					ret += "}}" + "\n";
+					ret.append("|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n");
+					ret.append("}}" + "\n");
 					
 					if(iterator.hasNext())
-						ret += "\n";
+						ret.append("\n");
 				}else if(recipe instanceof ShapedOreRecipe){
 					ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
-					ret += "{{Cg/Crafting Table" + "\n";
+					ret.append("{{Cg/Crafting Table" + "\n");
 					
 					int maxHeight = shapedrecipe.getHeight();
 					int maxWidth = shapedrecipe.getWidth();
@@ -140,24 +140,24 @@ public class CraftingRecipe implements IWikiRecipe {
 								continue;
 							
 							if(component instanceof ItemStack && !((ItemStack)component).isEmpty())
-								ret += "|" + getShapedLocation(h, w) + "=" + outputItem((ItemStack)component) + "\n";
+								ret.append("|" + getShapedLocation(h, w) + "=" + outputItem((ItemStack)component) + "\n");
 							else if(component instanceof List && !((List)component).isEmpty()){ //For recipes that contain ore dictionary entries that aren't registered, this won't work. But I don't care enough to fix it...
 								String entry = outputOreDictionaryEntry((List)component);
 								
 								if(entry != null)
-									ret += "|" + getShapedLocation(h, w) + "=" + entry + "\n";
+									ret.append("|" + getShapedLocation(h, w) + "=" + entry + "\n");
 							}
 						}
 					}
 					
-					ret += "|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n";
-					ret += "}}" + "\n";
+					ret.append("|O=" + outputItemOutput(shapedrecipe.getRecipeOutput()) + "\n");
+					ret.append("}}" + "\n");
 					
 					if(iterator.hasNext())
-						ret += "\n";
+						ret.append("\n");
 				}else if(recipe instanceof ShapelessRecipes){
 					ShapelessRecipes shapelessrecipe = (ShapelessRecipes)recipe;
-					ret += "{{Cg/Crafting Table" + "\n";
+					ret.append("{{Cg/Crafting Table" + "\n");
 					
 					List<ItemStack> recipeItems = shapelessrecipe.recipeItems;
 					
@@ -165,18 +165,18 @@ public class CraftingRecipe implements IWikiRecipe {
 						ItemStack component = recipeItems.get(i);
 						
 						if(!component.isEmpty())
-							ret += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem(component) + "\n";
+							ret.append("|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem(component) + "\n");
 					}
 					
-					ret += "|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
-					ret += "|shapeless=true" + "\n";
-					ret += "}}" + "\n";
+					ret.append("|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n");
+					ret.append("|shapeless=true" + "\n");
+					ret.append("}}" + "\n");
 					
 					if(iterator.hasNext())
-						ret += "\n";
+						ret.append("\n");
 				}else if(recipe instanceof ShapelessOreRecipe){
 					ShapelessOreRecipe shapelessrecipe = (ShapelessOreRecipe)recipe;
-					ret += "{{Cg/Crafting Table" + "\n";
+					ret.append("{{Cg/Crafting Table" + "\n");
 					
 					List<Object> recipeItems = shapelessrecipe.getInput();
 					
@@ -187,24 +187,24 @@ public class CraftingRecipe implements IWikiRecipe {
 							continue;
 						
 						if(object instanceof ItemStack && !((ItemStack)object).isEmpty())
-							ret += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem((ItemStack)object) + "\n";
+							ret.append("|" + getShapelessLocation(i, recipeItems.size()) + "=" + outputItem((ItemStack)object) + "\n");
 						else if(object instanceof List && !((List)object).isEmpty()){
 							String entry = outputOreDictionaryEntry((List)object);
 							
 							if(entry != null)
-								ret += "|" + getShapelessLocation(i, recipeItems.size()) + "=" + entry + "\n";
+								ret.append("|" + getShapelessLocation(i, recipeItems.size()) + "=" + entry + "\n");
 						}
 					}
 					
-					ret += "|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n";
-					ret += "|shapeless=true" + "\n";
-					ret += "}}" + "\n";
+					ret.append("|O=" + outputItemOutput(shapelessrecipe.getRecipeOutput()) + "\n");
+					ret.append("|shapeless=true" + "\n");
+					ret.append("}}" + "\n");
 					
 					if(iterator.hasNext())
-						ret += "\n";
+						ret.append("\n");
 				}
 			}
 		}
-		return ret;
+		return ret.toString();
 	}
 }

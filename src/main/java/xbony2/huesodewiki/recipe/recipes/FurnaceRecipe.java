@@ -24,15 +24,16 @@ public class FurnaceRecipe implements IWikiRecipe {
 		if(inputs.isEmpty())
 			return null;
 
-		String ret = "{{Cg/Furnace" + "\n" + "|I=";
+		StringBuilder ret = new StringBuilder("{{Cg/Furnace" + "\n");
+		ret.append("|I=");
 
 		for(ItemStack input : inputs)
-			ret += Utils.outputItem(input);
+			ret.append(Utils.outputItem(input));
 		
-		ret += "\n";
+		ret.append("\n");
 
-		ret += "|O=" + Utils.outputItemOutput(itemstack) + "\n";
-		ret += "}}\n";
-		return ret;
+		ret.append("|O=" + Utils.outputItemOutput(itemstack) + "\n");
+		ret.append( "}}" + "\n");
+		return ret.toString();
 	}
 }

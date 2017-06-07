@@ -17,23 +17,22 @@ public class PageCreator {
 		String modName = getModName(itemstack);
 		
 		String linkFix = HuesoDeWiki.linkCorrections.get(modName); //is null if there isn't a change required.
-		String type = itemstack.getItem() instanceof ItemBlock ? "block" : "item";
 		
 		//And now for the magic
-		String page = InfoboxCreator.createInfobox(itemstack);
+		StringBuilder page = new StringBuilder(InfoboxCreator.createInfobox(itemstack));
 		
-		page += "\n";
-		page += "The '''" + name + "''' is " + (type == "block" ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n";
-		page += RecipeCreator.createRecipes(itemstack);
-		page += "\n";
-		page += "\n";
-		page += "{{Navbox " + modName + "}}" + "\n";
-		page += "\n";
-		page += CategoryCreator.createCategories(itemstack) + "\n";
-		page += "\n";
-		page += "<languages />" + "\n";
-		page += "\n";
+		page.append("\n");
+		page.append("The '''" + name + "''' is " + (itemstack.getItem() instanceof ItemBlock ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n");
+		page.append(RecipeCreator.createRecipes(itemstack));
+		page.append("\n");
+		page.append("\n");
+		page.append("{{Navbox " + modName + "}}" + "\n");
+		page.append("\n");
+		page.append(CategoryCreator.createCategories(itemstack) + "\n");
+		page.append("\n");
+		page.append("<languages />" + "\n");
+		page.append("\n");
 		
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(page), null);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(page.toString()), null);
 	}
 }
