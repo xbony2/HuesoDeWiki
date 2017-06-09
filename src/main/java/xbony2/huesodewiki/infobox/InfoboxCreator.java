@@ -29,13 +29,13 @@ public class InfoboxCreator {
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
-		StringBuilder ret = new StringBuilder("{{Infobox" + "\n");
+		StringBuilder ret = new StringBuilder("{{Infobox").append('\n');
 		
 		for(IInfoboxParameter parameter : parameters)
 			if(parameter.canAdd(itemstack))
-				ret.append("|" + parameter.getParameterName() + "=" + parameter.getParameterText(itemstack) + "\n");
+				ret.append('|').append(parameter.getParameterName()).append('=').append(parameter.getParameterText(itemstack)).append('\n');
 		
-		ret.append("}}" + "\n");
+		ret.append("}}").append('\n');
 		return ret.toString();
 	}
 }

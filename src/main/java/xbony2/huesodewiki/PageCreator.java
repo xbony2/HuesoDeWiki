@@ -21,17 +21,17 @@ public class PageCreator {
 		//And now for the magic
 		StringBuilder page = new StringBuilder(InfoboxCreator.createInfobox(itemstack));
 		
-		page.append("\n");
-		page.append("The '''" + name + "''' is " + (itemstack.getItem() instanceof ItemBlock ? "a block" : "an item") + " added by [[" + (linkFix != null ? linkFix + "|" : "") + modName + "]]." + "\n");
+		page.append('\n');
+		page.append("The '''").append(name).append("''' is ").append((itemstack.getItem() instanceof ItemBlock ? "a block" : "an item")).append(" added by [[").append((linkFix != null ? linkFix + "|" : "")).append(modName).append("]].").append('\n');
 		page.append(RecipeCreator.createRecipes(itemstack));
-		page.append("\n");
-		page.append("\n");
-		page.append("{{Navbox " + modName + "}}" + "\n");
-		page.append("\n");
-		page.append(CategoryCreator.createCategories(itemstack) + "\n");
-		page.append("\n");
-		page.append("<languages />" + "\n");
-		page.append("\n");
+		page.append('\n');
+		page.append('\n');
+		page.append("{{Navbox ").append(modName).append("}}").append('\n');
+		page.append('\n');
+		page.append(CategoryCreator.createCategories(itemstack)).append('\n');
+		page.append('\n');
+		page.append("<languages />").append('\n');
+		page.append('\n');
 		
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(page.toString()), null);
 	}

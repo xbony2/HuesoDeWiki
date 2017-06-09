@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
-	public static final String VERSION = "1.0.1c";
+	public static final String VERSION = "1.2.0a";
 	
 	public static KeyBinding key;
 	private boolean isKeyDown = false;
@@ -37,7 +37,7 @@ public class HuesoDeWiki {
 	public static Map<String, String> linkCorrections = new HashMap<String, String>();
 	
 	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla"};
-	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Roots", "Roots (Mod)", "Esteemed Innovation", "Esteemed Innovation (Mod)"};
+	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (Mod)"};
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){

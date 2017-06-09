@@ -25,7 +25,6 @@ public class CategoryCreator {
 			if(category.canAdd(itemstack))
 				categoryStrings.add("[[Category:" + category.getCategoryName(itemstack) + "]]");
 
-
 		return Joiner.on(HuesoDeWiki.useStackedCategoryStyle ? "\n" : "").join(categoryStrings);
 	}
 }
