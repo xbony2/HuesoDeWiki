@@ -5,29 +5,44 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemRecord;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import xbony2.huesodewiki.HuesoDeWiki;
-import xbony2.huesodewiki.api.ICategory;
-import xbony2.huesodewiki.category.categories.*;
+import xbony2.huesodewiki.api.category.BasicInstanceOfCategory;
+import xbony2.huesodewiki.api.category.ICategory;
+import xbony2.huesodewiki.category.categories.ChestwearCategory;
+import xbony2.huesodewiki.category.categories.FootwearCategory;
+import xbony2.huesodewiki.category.categories.HeadwearCategory;
+import xbony2.huesodewiki.category.categories.LegwearCategory;
+import xbony2.huesodewiki.category.categories.ModCategory;
 
 public class CategoryCreator {
 	public static List<ICategory> categories = new ArrayList();
 	
 	static {
 		categories.add(new ModCategory());
-		categories.add(new FoodCategory());
-		categories.add(new MusicDiscsCategory());
-		categories.add(new FarmingCategory());
-		categories.add(new ShearingCategory());
+		categories.add(new BasicInstanceOfCategory("Food", ItemFood.class));
+		categories.add(new BasicInstanceOfCategory("Music Discs", ItemRecord.class));
+		categories.add(new BasicInstanceOfCategory("Farming", ItemHoe.class));
+		categories.add(new BasicInstanceOfCategory("Shearing", ItemShears.class));
 		categories.add(new FootwearCategory());
 		categories.add(new LegwearCategory());
 		categories.add(new ChestwearCategory());
 		categories.add(new HeadwearCategory());
-		categories.add(new FellingCategory());
-		categories.add(new FishingCategory());
-		categories.add(new MiningCategory());
-		categories.add(new MeleeWeaponsCategory());
-		categories.add(new RangedWeaponsCategory());
+		categories.add(new BasicInstanceOfCategory("Felling", ItemAxe.class));
+		categories.add(new BasicInstanceOfCategory("Fishing", ItemFishingRod.class));
+		categories.add(new BasicInstanceOfCategory("Mining", ItemPickaxe.class, ItemSpade.class));
+		categories.add(new BasicInstanceOfCategory("Melee weapons", ItemSword.class));
+		categories.add(new BasicInstanceOfCategory("Ranged weapons", ItemBow.class));
 	}
 	
 	public static String createCategories(ItemStack itemstack){
