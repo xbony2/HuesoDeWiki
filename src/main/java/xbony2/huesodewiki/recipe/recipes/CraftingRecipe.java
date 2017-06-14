@@ -80,7 +80,7 @@ public class CraftingRecipe implements IWikiRecipe {
 				
 				if(recipe instanceof ShapedRecipes){
 					ShapedRecipes shapedrecipe = (ShapedRecipes)recipe;
-					ret.append("{{Cg/Crafting Table").append('\n');
+					ret.append("{{Cg/Crafting Table\n");
 					
 					int maxHeight = shapedrecipe.recipeHeight;
 					int maxWidth = shapedrecipe.recipeWidth;
@@ -115,7 +115,7 @@ public class CraftingRecipe implements IWikiRecipe {
 						ret.append('\n');
 				}else if(recipe instanceof ShapedOreRecipe){
 					ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
-					ret.append("{{Cg/Crafting Table").append('\n');
+					ret.append("{{Cg/Crafting Table\n");
 					
 					int maxHeight = shapedrecipe.getHeight();
 					int maxWidth = shapedrecipe.getWidth();
@@ -151,13 +151,13 @@ public class CraftingRecipe implements IWikiRecipe {
 					}
 					
 					ret.append("|O=").append(outputItemOutput(shapedrecipe.getRecipeOutput())).append('\n');
-					ret.append("}}").append('\n');
+					ret.append("}}\n");
 					
 					if(iterator.hasNext())
 						ret.append('\n');
 				}else if(recipe instanceof ShapelessRecipes){
 					ShapelessRecipes shapelessrecipe = (ShapelessRecipes)recipe;
-					ret.append("{{Cg/Crafting Table").append('\n');
+					ret.append("{{Cg/Crafting Table\n");
 					
 					List<ItemStack> recipeItems = shapelessrecipe.recipeItems;
 					
@@ -169,14 +169,14 @@ public class CraftingRecipe implements IWikiRecipe {
 					}
 					
 					ret.append("|O=").append(outputItemOutput(shapelessrecipe.getRecipeOutput())).append('\n');
-					ret.append("|shapeless=true").append('\n');
-					ret.append("}}").append('\n');
+					ret.append("|shapeless=true\n");
+					ret.append("}}\n");
 					
 					if(iterator.hasNext())
 						ret.append('\n');
 				}else if(recipe instanceof ShapelessOreRecipe){
 					ShapelessOreRecipe shapelessrecipe = (ShapelessOreRecipe)recipe;
-					ret.append("{{Cg/Crafting Table").append('\n');
+					ret.append("{{Cg/Crafting Table\n");
 					
 					List<Object> recipeItems = shapelessrecipe.getInput();
 					
@@ -197,8 +197,8 @@ public class CraftingRecipe implements IWikiRecipe {
 					}
 					
 					ret.append("|O=").append(outputItemOutput(shapelessrecipe.getRecipeOutput())).append('\n');
-					ret.append("|shapeless=true").append('\n');
-					ret.append("}}").append('\n');
+					ret.append("|shapeless=true\n");
+					ret.append("}}\n");
 					
 					if(iterator.hasNext())
 						ret.append('\n');
