@@ -40,7 +40,8 @@ public class CategoryCreator {
 		categories.add(new HeadwearCategory());
 		categories.add(new BasicInstanceOfCategory("Felling", ItemAxe.class));
 		categories.add(new BasicInstanceOfCategory("Fishing", ItemFishingRod.class));
-		categories.add(new BasicInstanceOfCategory("Mining", ItemPickaxe.class, ItemSpade.class));
+		categories.add(new BasicInstanceOfCategory("Mining", ItemPickaxe.class));
+		categories.add(new BasicInstanceOfCategory("Digging", ItemSpade.class));
 		categories.add(new BasicInstanceOfCategory("Melee weapons", ItemSword.class));
 		categories.add(new BasicInstanceOfCategory("Ranged weapons", ItemBow.class));
 	}
