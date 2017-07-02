@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFishingRod;
@@ -17,13 +19,9 @@ import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import xbony2.huesodewiki.HuesoDeWiki;
+import xbony2.huesodewiki.api.category.BasicCategory;
 import xbony2.huesodewiki.api.category.BasicInstanceOfCategory;
 import xbony2.huesodewiki.api.category.ICategory;
-import xbony2.huesodewiki.category.categories.ChestwearCategory;
-import xbony2.huesodewiki.category.categories.FootwearCategory;
-import xbony2.huesodewiki.category.categories.HeadwearCategory;
-import xbony2.huesodewiki.category.categories.LegwearCategory;
-import xbony2.huesodewiki.category.categories.ModCategory;
 
 public class CategoryCreator {
 	public static List<ICategory> categories = new ArrayList();
@@ -34,10 +32,10 @@ public class CategoryCreator {
 		categories.add(new BasicInstanceOfCategory("Music Discs", ItemRecord.class));
 		categories.add(new BasicInstanceOfCategory("Farming", ItemHoe.class));
 		categories.add(new BasicInstanceOfCategory("Shearing", ItemShears.class));
-		categories.add(new FootwearCategory());
-		categories.add(new LegwearCategory());
-		categories.add(new ChestwearCategory());
-		categories.add(new HeadwearCategory());
+		categories.add(new BasicCategory("Footwear", (itemstack) -> itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).armorType == EntityEquipmentSlot.FEET));
+		categories.add(new BasicCategory("Legwear", (itemstack) -> itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).armorType == EntityEquipmentSlot.LEGS));
+		categories.add(new BasicCategory("Chestwear", (itemstack) -> itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).armorType == EntityEquipmentSlot.CHEST));
+		categories.add(new BasicCategory("Headwear", (itemstack) -> itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).armorType == EntityEquipmentSlot.HEAD));
 		categories.add(new BasicInstanceOfCategory("Felling", ItemAxe.class));
 		categories.add(new BasicInstanceOfCategory("Fishing", ItemFishingRod.class));
 		categories.add(new BasicInstanceOfCategory("Mining", ItemPickaxe.class));
@@ -47,11 +45,9 @@ public class CategoryCreator {
 	}
 	
 	public static String createCategories(ItemStack itemstack){
-		List<String> categoryStrings = new ArrayList<String>();
+		List<String> categoryStrings = new ArrayList<>();
 		
-		for(ICategory category : categories)
-			if(category.canAdd(itemstack))
-				categoryStrings.add("[[Category:" + category.getCategoryName(itemstack) + "]]");
+		categories.stream().filter((category) -> category.canAdd(itemstack)).forEach((category) -> categoryStrings.add("[[Category:" + category.getCategoryName(itemstack) + "]]"));
 
 		return Joiner.on(HuesoDeWiki.useStackedCategoryStyle ? "\n" : "").join(categoryStrings);
 	}

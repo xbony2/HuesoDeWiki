@@ -1,4 +1,4 @@
-package xbony2.huesodewiki.api.infobox;
+package xbony2.huesodewiki.api.infobox.type;
 
 import net.minecraft.item.ItemStack;
 

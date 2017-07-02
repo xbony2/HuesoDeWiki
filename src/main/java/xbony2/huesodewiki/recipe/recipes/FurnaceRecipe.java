@@ -12,14 +12,14 @@ import java.util.Map;
 public class FurnaceRecipe implements IWikiRecipe {
 	@Override
 	public String getRecipes(ItemStack itemstack){
-		List<ItemStack> inputs = new ArrayList<ItemStack>();
+		List<ItemStack> inputs = new ArrayList<>();
 		
-		for(Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.instance().getSmeltingList().entrySet()){
+		FurnaceRecipes.instance().getSmeltingList().entrySet().forEach((entry) -> {
 			ItemStack output = entry.getValue();
 			
 			if(output.isItemEqual(itemstack))
 				inputs.add(entry.getKey());
-		}
+		});
 		
 		if(inputs.isEmpty())
 			return null;
@@ -27,8 +27,7 @@ public class FurnaceRecipe implements IWikiRecipe {
 		StringBuilder ret = new StringBuilder("{{Cg/Furnace\n");
 		ret.append("|I=");
 
-		for(ItemStack input : inputs)
-			ret.append(Utils.outputItem(input));
+		inputs.forEach((input) -> ret.append(Utils.outputItem(input)));
 		
 		ret.append('\n');
 

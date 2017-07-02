@@ -1,4 +1,4 @@
-package xbony2.huesodewiki.category.categories;
+package xbony2.huesodewiki.category;
 
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.Utils;

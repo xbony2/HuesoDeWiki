@@ -18,11 +18,13 @@ public class RecipeCreator {
 	
 	public static String createRecipes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
-		for(IWikiRecipe recipe : recipes){
+		
+		recipes.forEach((recipe) -> {
 			String potentialRecipes = recipe.getRecipes(itemstack);
+			
 			if(potentialRecipes != null && potentialRecipes != "")
 				ret.append(potentialRecipes);
-		}
+		});
 		
 		if(ret.toString().length() < 1) //Sometimes there's a new line. I dunno, it's weird
 			return "";

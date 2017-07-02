@@ -37,8 +37,8 @@ public class HuesoDeWiki {
 	public static boolean use2SpaceStyle;
 	public static boolean useStackedCategoryStyle;
 	
-	public static Map<String, String> nameCorrections = new HashMap<String, String>();
-	public static Map<String, String> linkCorrections = new HashMap<String, String>();
+	public static Map<String, String> nameCorrections = new HashMap<>();
+	public static Map<String, String> linkCorrections = new HashMap<>();
 	
 	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla"};
 	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (Mod)"};

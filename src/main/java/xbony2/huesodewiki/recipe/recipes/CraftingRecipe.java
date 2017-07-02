@@ -68,17 +68,14 @@ public class CraftingRecipe implements IWikiRecipe {
 	@Override
 	public String getRecipes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
-		List<IRecipe> recipes = new ArrayList<IRecipe>();
+		List<IRecipe> recipes = new ArrayList<>();
 		
-		for(Iterator<IRecipe> iterator = CraftingManager.REGISTRY.iterator(); iterator.hasNext();){
-			
-			IRecipe recipe = iterator.next();
-			
+		CraftingManager.REGISTRY.forEach((recipe) -> {
 			if(recipe.getRecipeOutput().isItemEqual(itemstack))
 				recipes.add(recipe);
-		}
+		});
 		
-		if(!recipes.isEmpty()){
+		if(!recipes.isEmpty())
 			for(Iterator<IRecipe> iterator = recipes.iterator(); iterator.hasNext();){
 				IRecipe recipe = iterator.next();
 				
@@ -217,7 +214,6 @@ public class CraftingRecipe implements IWikiRecipe {
 						ret.append('\n');
 				}
 			}
-		}
 		return ret.toString();
 	}
 }
