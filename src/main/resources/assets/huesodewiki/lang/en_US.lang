@@ -1,2 +1,4 @@
 key.copybasepage=Copy base page
 key.categories.huesodewiki=HuesosDeWiki
+
+msg.copiedpage=Copied base page "%s" to the clipboard.

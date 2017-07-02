@@ -1,5 +1,7 @@
 package xbony2.huesodewiki;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -21,11 +24,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
-	public static final String VERSION = "1.2.0a";
+	public static final String VERSION = "1.2.2a";
 	
 	public static KeyBinding key;
 	private boolean isKeyDown = false;
@@ -79,12 +83,18 @@ public class HuesoDeWiki {
 							
 							ItemStack itemstack = hovered.getStack();
 							
-							if(!itemstack.isEmpty())
-								PageCreator.createPage(itemstack);
+							if(!itemstack.isEmpty()){
+								copyText(!GuiScreen.isCtrlKeyDown() ? PageCreator.createPage(itemstack) : RecipeCreator.createRecipes(itemstack));
+								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
+							}
 						}
 					}
 				}else
 					isKeyDown = false;
 		}
+	}
+	
+	public static void copyText(String text){
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(text), null);
 	}
 }

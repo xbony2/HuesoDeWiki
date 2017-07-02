@@ -12,12 +12,13 @@ import xbony2.huesodewiki.infobox.InfoboxCreator;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
 public class PageCreator {
-	public static void createPage(ItemStack itemstack){
+	public static String createPage(ItemStack itemstack){
 		//And now for the magic
 		StringBuilder page = new StringBuilder(InfoboxCreator.createInfobox(itemstack));
 		
 		page.append('\n');
 		page.append(FirstSentenceCreator.createFirstSentence(itemstack));
+		page.append('\n');
 		page.append(RecipeCreator.createRecipes(itemstack));
 		page.append('\n');
 		page.append('\n');
@@ -28,6 +29,6 @@ public class PageCreator {
 		page.append("<languages />").append('\n');
 		page.append('\n');
 		
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(page.toString()), null);
+		return page.toString();
 	}
 }
