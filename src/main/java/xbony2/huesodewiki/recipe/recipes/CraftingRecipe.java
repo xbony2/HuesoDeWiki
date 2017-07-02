@@ -67,7 +67,8 @@ public class CraftingRecipe implements IWikiRecipe {
 		StringBuilder ret = new StringBuilder();
 		List<IRecipe> recipes = new ArrayList<IRecipe>();
 		
-		for(Iterator<IRecipe> iterator = CraftingManager.getInstance().getRecipeList().iterator(); iterator.hasNext();){
+		for(Iterator<IRecipe> iterator = CraftingManager.REGISTRY.iterator(); iterator.hasNext();){
+			
 			IRecipe recipe = iterator.next();
 			
 			if(recipe.getRecipeOutput().isItemEqual(itemstack))
@@ -91,13 +92,13 @@ public class CraftingRecipe implements IWikiRecipe {
 							
 							switch(h){
 							case 1:
-								component = shapedrecipe.recipeItems[w - 1];
+								component = shapedrecipe.recipeItems.get(w - 1).getMatchingStacks()[0];
 								break;
 							case 2:
-								component = shapedrecipe.recipeItems[maxWidth + (w - 1)];
+								component = shapedrecipe.recipeItems.get(maxWidth + (w - 1)).getMatchingStacks()[0];
 								break;
 							case 3:
-								component = shapedrecipe.recipeItems[(maxWidth * 2) + (w - 1)];
+								component = shapedrecipe.recipeItems.get((maxWidth * 2) + (w - 1)).getMatchingStacks()[0];
 								break;
 							}
 							
@@ -126,13 +127,14 @@ public class CraftingRecipe implements IWikiRecipe {
 							
 							switch(h){
 							case 1:
-								component = shapedrecipe.getInput()[w - 1];
+								component = shapedrecipe.getIngredients().get(w - 1).getMatchingStacks()[0];
+								
 								break;
 							case 2:
-								component = shapedrecipe.getInput()[maxWidth + (w - 1)];
+								component = shapedrecipe.getIngredients().get(maxWidth + (w - 1)).getMatchingStacks()[0];
 								break;
 							case 3:
-								component = shapedrecipe.getInput()[(maxWidth * 2) + (w - 1)];
+								component = shapedrecipe.getIngredients().get((maxWidth * 2) + (w - 1)).getMatchingStacks()[0];
 								break;
 							}
 							
