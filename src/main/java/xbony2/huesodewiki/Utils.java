@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
@@ -32,6 +33,16 @@ public class Utils {
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName() + "}}";
 	}
 	
+	public static String outputIngredient(Ingredient ingredient){
+		StringBuilder ret = new StringBuilder();
+		
+		for(ItemStack itemstack : ingredient.getMatchingStacks()){
+			ret.append(outputItem(itemstack));
+		}
+		
+		return ret.toString();
+	}
+	
 	public static String outputItemOutput(ItemStack itemstack){
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
 	}
@@ -39,32 +50,31 @@ public class Utils {
 	/**
 	 * @return null if nothing can be found.
 	 */
-	public static String outputOreDictionaryEntry(List<ItemStack> list){
-		String ret = null;
-		ItemStack stack = list.iterator().next();
+	public static String outputOreDictionaryEntry(ItemStack[] list){
+		try{
+			ItemStack stack = list[0];
 		
-		if(stack != null){
 			int[] ids = OreDictionary.getOreIDs(stack);
 			
 			for(int i = 0; i < ids.length; i++){
 				String potentialEntry = OreDictionary.getOreName(ids[i]);
 				List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
 				
-				boolean isEqual = potentialCognate.size() == list.size();
+				boolean isEqual = potentialCognate.size() == list.length;
 				
 				if(isEqual) //so far, that is
-					for(int j = 0; j < list.size(); j++)
-						if(potentialCognate.get(j).getItem() != list.get(j).getItem() && potentialCognate.get(j).getItemDamage() != list.get(j).getItemDamage())
+					for(int j = 0; j < list.length; j++)
+						if(potentialCognate.get(j).getItem() != list[j].getItem() && potentialCognate.get(j).getItemDamage() != list[j].getItemDamage())
 							isEqual = false;
 				
-				if(isEqual){
-					ret = "{{O|" + potentialEntry + "}}";
-					break;
-				}
+				if(isEqual)
+					return "{{O|" + potentialEntry + "}}";
 			}
+		}catch(ArrayIndexOutOfBoundsException e){
+			return null;
 		}
 		
-		return ret;
+		return null;
 	}
 	
 	public static String floatToString(float f){
