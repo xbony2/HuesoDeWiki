@@ -29,6 +29,7 @@ minecraft {
 }
 
 dependencies {
+	compile files("libs/Tesla-1.12-1.0.61-deobf.jar")
 }
 
 processResources {
