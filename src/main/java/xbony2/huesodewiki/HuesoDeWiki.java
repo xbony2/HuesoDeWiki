@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
-import xbony2.huesodewiki.compact.Compact;
+import xbony2.huesodewiki.compat.Compat;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
@@ -65,7 +65,7 @@ public class HuesoDeWiki {
 		
 		config.save();
 		
-		Compact.preInit();
+		Compat.preInit();
 	}
 	
 	private class RenderTickEventEventHanlder {
