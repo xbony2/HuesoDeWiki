@@ -65,7 +65,7 @@ public class HuesoDeWiki {
 		
 		config.save();
 		
-		//Compat.preInit();
+		Compat.preInit();
 	}
 	
 	private class RenderTickEventEventHanlder {

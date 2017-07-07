@@ -30,6 +30,7 @@ minecraft {
 
 dependencies {
 	compile files("libs/Tesla-1.12-1.0.61-deobf.jar")
+	compile files("libs/industrialcraft-2-2.8.7-ex112-dev.jar")
 }
 
 processResources {
