@@ -47,7 +47,7 @@ public class InfoboxCreator {
 		}, ItemBlock.class));
 		
 		parameters.add(new BasicInstanceOfParameter("foodpoints", (itemstack) -> Integer.toString(((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
-		parameters.add(new BasicInstanceOfParameter("saturation", (itemstack) -> Utils.floatToString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack)), ItemFood.class));
+		parameters.add(new BasicInstanceOfParameter("saturation", (itemstack) -> Utils.floatToString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack) * ((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
 		parameters.add(new BasicInstanceOfParameter("hunger", (itemstack) -> {
 			ItemFood food = (ItemFood)itemstack.getItem();
 			return "{{Shanks|" + Integer.toString(food.getHealAmount(itemstack)) + "|" + Utils.floatToString(food.getSaturationModifier(itemstack)) + "}}";
