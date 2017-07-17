@@ -30,7 +30,7 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
-	public static final String VERSION = "1.3.0a";
+	public static final String VERSION = "1.3.1a";
 	
 	public static KeyBinding key;
 	private boolean isKeyDown = false;
