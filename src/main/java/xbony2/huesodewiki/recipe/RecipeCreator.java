@@ -26,8 +26,8 @@ public class RecipeCreator {
 				ret.append(potentialRecipes);
 		});
 		
-		if(ret.toString().length() < 1) //Sometimes there's a new line. I dunno, it's weird
+		if(ret.toString().length() < 1)
 			return "";
-		return (HuesoDeWiki.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString();
+		return (HuesoDeWiki.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString() + "\n";
 	}
 }

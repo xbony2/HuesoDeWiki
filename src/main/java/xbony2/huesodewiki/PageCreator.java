@@ -13,14 +13,12 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 
 public class PageCreator {
 	public static String createPage(ItemStack itemstack){
-		//And now for the magic
 		StringBuilder page = new StringBuilder(InfoboxCreator.createInfobox(itemstack));
 		
 		page.append('\n');
 		page.append(FirstSentenceCreator.createFirstSentence(itemstack));
 		page.append('\n');
 		page.append(RecipeCreator.createRecipes(itemstack));
-		page.append('\n');
 		page.append('\n');
 		page.append("{{Navbox ").append(getModName(itemstack)).append("}}").append('\n');
 		page.append('\n');
