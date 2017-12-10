@@ -1,4 +1,6 @@
 key.copybasepage=Copy base page
+key.copyname=Copy item name
 key.categories.huesodewiki=HuesosDeWiki
 
 msg.copiedpage=Copied base page "%s" to the clipboard.
+msg.copiedrecipe=Copied the recipe of "%s" to the clipboard.

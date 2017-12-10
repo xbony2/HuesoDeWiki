@@ -1,4 +1,4 @@
-package xbony2.huesodewiki.compat.ic2;
+/*package xbony2.huesodewiki.compat.ic2;
 
 import ic2.api.item.IElectricItem;
 import xbony2.huesodewiki.Utils;
@@ -16,3 +16,4 @@ public class IC2Compat {
 		InfoboxCreator.parameters.add(new EUStorageParameter());
 	}
 }
+*/

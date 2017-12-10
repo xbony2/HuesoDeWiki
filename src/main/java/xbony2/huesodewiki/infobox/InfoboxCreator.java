@@ -55,7 +55,7 @@ public class InfoboxCreator {
 		
 		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).damageReduceAmount), ItemArmor.class));
 		parameters.add(new ToughnessParameter());
-		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> Utils.floatToString(((ItemSword)itemstack.getItem()).getDamageVsEntity() + 4.0F), ItemSword.class));
+		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> Utils.floatToString(((ItemSword)itemstack.getItem()).getAttackDamage() + 4.0F), ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
 		parameters.add(new StackableParameter());
 		parameters.add(new FlammableParameter());

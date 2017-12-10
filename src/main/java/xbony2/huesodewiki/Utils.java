@@ -11,7 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class Utils {
 	public static String getModName(ItemStack itemstack){
-		ModContainer container = Loader.instance().getIndexedModList().get(Item.REGISTRY.getNameForObject(itemstack.getItem()).getResourceDomain());
+		ModContainer container = Loader.instance().getIndexedModList().get(itemstack.getItem().getCreatorModId(itemstack));
 		
 		if(container == null)
 			return "Vanilla";

@@ -27,13 +27,16 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import xbony2.huesodewiki.compat.Compat;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
-@Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION)
+@Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION, clientSideOnly = true)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
 	public static final String VERSION = "1.3.1a";
 	
-	public static KeyBinding key;
-	private boolean isKeyDown = false;
+	public static KeyBinding copyPageKey;
+	private boolean isCopyPageKeyDown = false;
+	
+	public static KeyBinding copyNameKey;
+	private boolean isCopyNameKeyDown = false;
 	
 	public static boolean use2SpaceStyle;
 	public static boolean useStackedCategoryStyle;
@@ -41,13 +44,15 @@ public class HuesoDeWiki {
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();
 	
-	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla"};
-	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (Mod)"};
+	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla", "Thermal Expansion", "Thermal Expansion 5"};
+	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (mod)"};
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		key = new KeyBinding("key.copybasepage", Keyboard.KEY_SEMICOLON, "key.categories.huesodewiki");
-		ClientRegistry.registerKeyBinding(key);
+		copyPageKey = new KeyBinding("key.copybasepage", Keyboard.KEY_SEMICOLON, "key.categories.huesodewiki");
+		ClientRegistry.registerKeyBinding(copyPageKey);
+		copyNameKey = new KeyBinding("key.copyname", Keyboard.KEY_APOSTROPHE, "key.categories.huesodewiki");
+		ClientRegistry.registerKeyBinding(copyNameKey);
 		MinecraftForge.EVENT_BUS.register(new RenderTickEventEventHanlder());
 		
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "HuesoDeWiki.cfg"));
@@ -71,10 +76,10 @@ public class HuesoDeWiki {
 	private class RenderTickEventEventHanlder {
 		@SubscribeEvent
 		public void renderTickEvent(RenderTickEvent event){
-			if(event.phase == Phase.START)
-				if(Keyboard.isKeyDown(key.getKeyCode())){
-					if(!isKeyDown){
-						isKeyDown = true;
+			if(event.phase == Phase.START){
+				if(Keyboard.isKeyDown(copyPageKey.getKeyCode())){
+					if(!isCopyPageKeyDown){
+						isCopyPageKeyDown = true;
 						Minecraft mc = Minecraft.getMinecraft();
 						GuiScreen currentScreen = mc.currentScreen;
 						
@@ -87,13 +92,45 @@ public class HuesoDeWiki {
 							ItemStack itemstack = hovered.getStack();
 							
 							if(!itemstack.isEmpty()){
-								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(!GuiScreen.isCtrlKeyDown() ? PageCreator.createPage(itemstack) : RecipeCreator.createRecipes(itemstack)), null);
-								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
+								String copiedString;
+								
+								if(!GuiScreen.isCtrlKeyDown()){
+									copiedString = PageCreator.createPage(itemstack);
+									Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
+								}else{
+									copiedString = RecipeCreator.createRecipes(itemstack);
+									Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedrecipe", itemstack.getDisplayName()));
+								}
+								
+								
+								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(copiedString), null);
 							}
 						}
 					}
 				}else
-					isKeyDown = false;
+					isCopyPageKeyDown = false;
+				
+				if(Keyboard.isKeyDown(copyNameKey.getKeyCode())){
+					if(!isCopyNameKeyDown){
+						isCopyNameKeyDown = true;
+						Minecraft mc = Minecraft.getMinecraft();
+						GuiScreen currentScreen = mc.currentScreen;
+						
+						if(currentScreen instanceof GuiContainer){
+							Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
+							
+							if(hovered == null)
+								return;
+							
+							ItemStack itemstack = hovered.getStack();
+							
+							if(!itemstack.isEmpty())
+								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(itemstack.getDisplayName()), null);
+						}
+					}
+				}else
+					isCopyNameKeyDown = false;
+			}
 		}
 	}
 }
