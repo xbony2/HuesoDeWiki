@@ -43,6 +43,9 @@ public class TypeParameter implements IInfoboxParameter {
 	public String getParameterText(ItemStack itemstack){
 		types.stream().filter((type) -> type.isApplicable(itemstack) && type.getPriority() > possibleType.getPriority()).forEach((type) -> possibleType = type);
 		
-		return possibleType.getName();
+		IType type = possibleType;
+		IType possibleType = new ItemType(); //Clearing "local" variable.
+		
+		return type.getName();
 	}
 }
