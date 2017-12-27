@@ -64,49 +64,46 @@ public class InfoboxCreator {
 		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).damageReduceAmount), ItemArmor.class));
 		parameters.add(new ToughnessParameter());
 		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> {
-			try{
-				Item item = itemstack.getItem();
-				if(item instanceof ItemTool){
+			Item item = itemstack.getItem();
+			if(item instanceof ItemTool){
+				try{
 					Field field = ItemTool.class.getDeclaredField("attackDamage");
 					field.setAccessible(true);
 					return Utils.floatToString(field.getFloat((ItemTool)item) + 1.0f);
-				}else if(item instanceof ItemSword){
-					Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-					float damage = 1.0f; //default
-					for(String name : multimap.keySet())
-						if(name == SharedMonsterAttributes.ATTACK_DAMAGE.getName())
-							for(AttributeModifier modifier : multimap.get(name))
-								damage += modifier.getAmount();
-					
-					return Utils.floatToString(damage);
+				}catch(NoSuchFieldException | IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
+					e.printStackTrace();
 				}
-			}catch(Exception e){//Do not complain or you will be smote.
-				e.printStackTrace();
+			}else if(item instanceof ItemSword){
+				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+				float damage = 1.0f; //default
+				for(String name : multimap.keySet())
+					if(name == SharedMonsterAttributes.ATTACK_DAMAGE.getName())
+						for(AttributeModifier modifier : multimap.get(name))
+							damage += modifier.getAmount();
+				return Utils.floatToString(damage);
 			}
-			
 			return "?";
 		}, ItemTool.class, ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
-			try{
-				Item item = itemstack.getItem();
-				if(item instanceof ItemTool){
+			Item item = itemstack.getItem();
+			if(item instanceof ItemTool){
+				try{
 					Field field = ItemTool.class.getDeclaredField("attackSpeed");
 					field.setAccessible(true);
 					return String.format("%.2g", field.getFloat((ItemTool)item) + 4.0f);
-				}else if(item instanceof ItemSword){
-					Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
-					float speed = 4.0f; //default
-					for(String name : multimap.keySet())
-						if(name == SharedMonsterAttributes.ATTACK_SPEED.getName())
-							for(AttributeModifier modifier : multimap.get(name))
-								speed += modifier.getAmount();
-					
-					return String.format("%.2g", speed);
+				}catch(NoSuchFieldException | IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
+					e.printStackTrace();
 				}
-			}catch(Exception e){//Do not complain or you will be smote.
-				e.printStackTrace();
+			}else if(item instanceof ItemSword){
+				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+				float speed = 4.0f; //default
+				for(String name : multimap.keySet())
+					if(name == SharedMonsterAttributes.ATTACK_SPEED.getName())
+						for(AttributeModifier modifier : multimap.get(name))
+							speed += modifier.getAmount();
+				
+				return String.format("%.2g", speed);
 			}
-			
 			return "?";
 		}, ItemTool.class, ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
