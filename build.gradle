@@ -13,7 +13,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = newHuesoDeWiki
-group= "xbony2.huesodewiki"
+group = "xbony2.huesodewiki"
 archivesBaseName = "huesodewiki"
 
 sourceCompatibility = targetCompatibility = "1.8"
