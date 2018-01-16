@@ -110,6 +110,7 @@ public class InfoboxCreator {
 		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
 		parameters.add(new StackableParameter());
 		parameters.add(new FlammableParameter());
+		parameters.add(new LuminanceParameter());
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
