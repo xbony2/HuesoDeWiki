@@ -25,6 +25,6 @@ public class LuminanceParameter implements IInfoboxParameter {
 	@Override
 	public String getParameterText(ItemStack itemstack){
 		Block block = ((ItemBlock) itemstack.getItem()).getBlock();
-		return String.valueOf(block.getLightValue(block.getDefaultState(), null, null));
+		return Integer.toString(block.getLightValue(block.getDefaultState(), null, null));
 	}
 }
