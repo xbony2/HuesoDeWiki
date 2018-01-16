@@ -30,6 +30,7 @@ public class InfoboxCreator {
 		parameters.add(new ImageIconParameter());
 		parameters.add(new ModParameter());
 		parameters.add(new TypeParameter());
+		parameters.add(new RegistryNameParameter());
 		parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
 			String ret;
 			
