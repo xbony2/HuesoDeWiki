@@ -70,10 +70,12 @@ public class InfoboxCreator {
 			Item item = itemstack.getItem();
 			if(item instanceof ItemTool){
 				try{
-					Field field = ItemTool.class.getDeclaredField("attackDamage");
-					field.setAccessible(true);
-					return Utils.floatToString(field.getFloat((ItemTool)item) + 1.0f);
-				}catch(NoSuchFieldException | IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
+					Field field = Utils.getField(ItemTool.class, "attackDamage", "field_77865_bY");
+					if(field != null){
+						field.setAccessible(true);
+						return Utils.floatToString(field.getFloat((ItemTool)item) + 1.0f);
+					}
+				}catch(IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
 					e.printStackTrace();
 				}
 			}else if(item instanceof ItemSword){
@@ -91,10 +93,12 @@ public class InfoboxCreator {
 			Item item = itemstack.getItem();
 			if(item instanceof ItemTool){
 				try{
-					Field field = ItemTool.class.getDeclaredField("attackSpeed");
-					field.setAccessible(true);
-					return String.format("%.2g", field.getFloat((ItemTool)item) + 4.0f);
-				}catch(NoSuchFieldException | IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
+					Field field = Utils.getField(ItemTool.class, "attackSpeed", "field_185065_c");
+					if(field != null){
+						field.setAccessible(true);
+						return String.format("%.2g", field.getFloat((ItemTool)item) + 4.0f);
+					}
+				}catch(IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
 					e.printStackTrace();
 				}
 			}else if(item instanceof ItemSword){
