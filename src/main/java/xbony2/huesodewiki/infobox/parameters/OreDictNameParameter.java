@@ -21,11 +21,11 @@ public class OreDictNameParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		int[] ids = OreDictionary.getOreIDs(itemstack);
 		List<String> oreDictNames = new ArrayList<>();
-		for (int id : ids) {
+		
+		for(int id : OreDictionary.getOreIDs(itemstack))
 			oreDictNames.add(OreDictionary.getOreName(id));
-		}
+		
 		return Utils.formatInfoboxList(oreDictNames);
 	}
 }
