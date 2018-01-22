@@ -92,12 +92,11 @@ public class Utils {
 	}
 
 	/**
-	 * Helper method for formatting lists in infobox parameters. This is here in case the way lists are formatted
-	 * changes at any point (as this is currently being discussed at the time of writing these docs).
+	 * Formats lists in infobox parameters.
 	 * @param strings The list of strings to format.
 	 * @return A formatted string containing the entries in the strings parameter.
 	 */
-	public static String formatInfoboxList(Iterable<String> strings) {
+	public static String formatInfoboxList(Iterable<String> strings){
 		return String.join("<br />", strings);
 	}
 }
