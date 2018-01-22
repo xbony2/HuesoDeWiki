@@ -90,4 +90,13 @@ public class Utils {
 				ret = ret.replaceAll(".0$", "");
 		return ret;
 	}
+
+	/**
+	 * Formats lists in infobox parameters.
+	 * @param strings The list of strings to format.
+	 * @return A formatted string containing the entries in the strings parameter.
+	 */
+	public static String formatInfoboxList(Iterable<String> strings){
+		return String.join("<br />", strings);
+	}
 }
