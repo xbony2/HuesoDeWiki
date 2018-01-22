@@ -25,6 +25,7 @@ public class TypeParameter implements IInfoboxParameter {
 		types.add(new BasicInstanceOfType(10, "armor", ItemArmor.class));
 		types.add(new BasicInstanceOfType(10, "tool", ItemTool.class));
 		types.add(new BasicInstanceOfType(10, "weapon", ItemSword.class, ItemBow.class)); //Not really comprehensive but hey
+		types.add(new TEntityType());
 	}
 
 	@Override
