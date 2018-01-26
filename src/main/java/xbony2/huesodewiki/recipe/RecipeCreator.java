@@ -9,7 +9,7 @@ import xbony2.huesodewiki.api.IWikiRecipe;
 import xbony2.huesodewiki.recipe.recipes.*;
 
 public class RecipeCreator {
-	public static List<IWikiRecipe> recipes = new ArrayList();
+	public static List<IWikiRecipe> recipes = new ArrayList<>();
 	
 	static {
 		recipes.add(new CraftingRecipe());

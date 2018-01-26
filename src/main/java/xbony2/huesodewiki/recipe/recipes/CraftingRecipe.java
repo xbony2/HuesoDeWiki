@@ -123,8 +123,8 @@ public class CraftingRecipe implements IWikiRecipe {
 					ShapedOreRecipe shapedrecipe = (ShapedOreRecipe)recipe;
 					ret.append("{{Cg/Crafting Table\n");
 					
-					int maxHeight = shapedrecipe.getHeight();
-					int maxWidth = shapedrecipe.getWidth();
+					int maxHeight = shapedrecipe.getRecipeHeight();
+					int maxWidth = shapedrecipe.getRecipeWidth();
 					
 					for(int h = 1; h <= maxHeight; h++){
 						for(int w = 1; w <= maxWidth; w++){

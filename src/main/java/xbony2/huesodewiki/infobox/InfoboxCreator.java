@@ -23,7 +23,7 @@ import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.infobox.parameters.*;
 
 public class InfoboxCreator {
-	public static List<IInfoboxParameter> parameters = new ArrayList();
+	public static List<IInfoboxParameter> parameters = new ArrayList<>();
 	
 	static {
 		parameters.add(new NameParameter());
@@ -114,6 +114,7 @@ public class InfoboxCreator {
 			return "?";
 		}, ItemTool.class, ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
+		parameters.add(new EnchantabilityParameter());
 		parameters.add(new StackableParameter());
 		parameters.add(new FlammableParameter());
 		parameters.add(new LuminanceParameter());
