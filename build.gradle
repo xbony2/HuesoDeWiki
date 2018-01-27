@@ -28,10 +28,6 @@ minecraft {
     mappings = project.mappingsVersion
 }
 
-dependencies {
-	compile files("libs/Tesla-" + project.teslaVersion + "-deobf.jar")
-	//compile files("libs/industrialcraft-2-" + project.ic2Version + "-dev.jar")
-}
 
 processResources {
     inputs.property "version", project.version
