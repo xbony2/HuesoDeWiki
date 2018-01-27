@@ -24,7 +24,7 @@ import xbony2.huesodewiki.api.category.BasicInstanceOfCategory;
 import xbony2.huesodewiki.api.category.ICategory;
 
 public class CategoryCreator {
-	public static List<ICategory> categories = new ArrayList();
+	public static List<ICategory> categories = new ArrayList<>();
 	
 	static {
 		categories.add(new ModCategory());
