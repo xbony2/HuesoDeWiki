@@ -16,7 +16,7 @@ import xbony2.huesodewiki.api.infobox.type.IType;
 import xbony2.huesodewiki.infobox.parameters.types.*;
 
 public class TypeParameter implements IInfoboxParameter {
-	public static List<IType> types = new ArrayList();
+	public static List<IType> types = new ArrayList<>();
 	
 	static {
 		types.add(new BasicInstanceOfType(5, "block", ItemBlock.class));
