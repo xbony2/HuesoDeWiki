@@ -2,7 +2,6 @@ package xbony2.huesodewiki.infobox;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Multimap;
@@ -115,6 +114,8 @@ public class InfoboxCreator {
 		}, ItemTool.class, ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
 		parameters.add(new EnchantabilityParameter());
+		parameters.add(new MiningLevelParameter());
+		parameters.add(new MiningSpeedParameter());
 		parameters.add(new StackableParameter());
 		parameters.add(new FlammableParameter());
 		parameters.add(new LuminanceParameter());
