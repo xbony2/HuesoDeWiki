@@ -62,8 +62,8 @@ public class InfoboxCreator {
 			ItemFood food = (ItemFood)itemstack.getItem();
 			return "{{Shanks|" + Integer.toString(food.getHealAmount(itemstack)) + "|" + Utils.floatToString(food.getSaturationModifier(itemstack)) + "}}";
 		}, ItemFood.class));
-		parameters.add(new EffectsParameter());
 		
+		parameters.add(new EffectsParameter());
 		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).damageReduceAmount), ItemArmor.class));
 		parameters.add(new ToughnessParameter());
 		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> {
