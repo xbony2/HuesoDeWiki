@@ -44,9 +44,7 @@ public class EffectsParameter implements IInfoboxParameter {
 		}else{
 			List<PotionEffect> effects = PotionUtils.getEffectsFromStack(itemstack);
 			StringBuilder str = new StringBuilder();
-			for(PotionEffect effect : effects){
-				str.append(formatEffect(effect, 1f));
-			}
+			effects.forEach(effect -> str.append(formatEffect(effect, 1f)));
 			return str.toString();
 		}
 	}
