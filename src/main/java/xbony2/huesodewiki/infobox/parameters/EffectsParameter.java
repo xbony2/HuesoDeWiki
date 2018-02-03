@@ -49,7 +49,7 @@ public class EffectsParameter implements IInfoboxParameter {
 		}
 	}
 
-	private PotionEffect getEffect(ItemStack itemstack){
+	private static PotionEffect getEffect(ItemStack itemstack){
 		try {
 			Field field = Utils.getField(ItemFood.class, "potionId", "field_77851_ca");
 
@@ -63,7 +63,7 @@ public class EffectsParameter implements IInfoboxParameter {
 		return null;
 	}
 
-	private String formatEffect(PotionEffect effect, float chance){
+	private static String formatEffect(PotionEffect effect, float chance){
 		String s = "{{Effect|" + I18n.format(effect.getEffectName()) + "|" + Integer.toString(effect.getDuration()) + "|" + Integer.toString(effect.getAmplifier());
 		if(chance != 1f)
 			s += "|" + Utils.floatToString((1000.0f * chance) / 10f); //round to one decimal
