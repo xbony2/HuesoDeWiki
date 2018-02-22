@@ -44,7 +44,7 @@ public class HuesoDeWiki {
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();
 	
-	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla", "Thermal Expansion", "Thermal Expansion 5"};
+	public static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla", "Thermal Expansion", "Thermal Expansion 5", "Pressurized Defense", "Pressurized Defence"};
 	public static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (mod)"};
 
 	@EventHandler
