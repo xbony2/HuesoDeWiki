@@ -16,9 +16,7 @@ public class PrefixCreator {
 	public static String createPrefixes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
 
-		prefixes.stream()
-				.filter((prefix) -> prefix.canAdd(itemstack))
-				.forEach((prefix) -> ret.append(prefix.getText(itemstack)).append('\n'));
+		prefixes.stream().filter((prefix) -> prefix.canAdd(itemstack)).forEach((prefix) -> ret.append(prefix.getText(itemstack)).append('\n'));
 
 		return ret.toString();
 	}
