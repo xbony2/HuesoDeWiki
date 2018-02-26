@@ -6,8 +6,7 @@ import xbony2.huesodewiki.api.IPagePrefix;
 public class LowercaseTitlePrefix implements IPagePrefix {
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		String firstLetter = itemstack.getDisplayName().substring(0, 1);
-		return firstLetter.equals(firstLetter.toLowerCase());
+		return Character.isLowerCase(itemstack.getDisplayName().charAt(0));
 	}
 
 	@Override
