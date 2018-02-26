@@ -9,12 +9,16 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.infobox.InfoboxCreator;
+import xbony2.huesodewiki.prefix.PrefixCreator;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
 public class PageCreator {
 	public static String createPage(ItemStack itemstack){
-		StringBuilder page = new StringBuilder(InfoboxCreator.createInfobox(itemstack));
-		
+		StringBuilder page = new StringBuilder();
+
+		page.append(PrefixCreator.createPrefixes(itemstack));
+		page.append(InfoboxCreator.createInfobox(itemstack));
+
 		page.append('\n');
 		page.append(FirstSentenceCreator.createFirstSentence(itemstack));
 		page.append('\n');
