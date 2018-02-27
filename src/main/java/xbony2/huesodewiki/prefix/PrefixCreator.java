@@ -10,6 +10,7 @@ public class PrefixCreator {
 	private static List<IPagePrefix> prefixes = new ArrayList<>();
 
 	static {
+		prefixes.add(new CorrectTitlePrefix());
 		prefixes.add(new LowercaseTitlePrefix());
 	}
 
