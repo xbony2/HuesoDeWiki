@@ -13,6 +13,6 @@ public class CorrectTitlePrefix implements IPagePrefix {
 
 	@Override
 	public String getText(ItemStack itemstack){
-		return "{{Correct title|" + itemstack.getDisplayName() + "}}");
+		return "{{Correct title|" + itemstack.getDisplayName() + "}}";
 	}
 }
