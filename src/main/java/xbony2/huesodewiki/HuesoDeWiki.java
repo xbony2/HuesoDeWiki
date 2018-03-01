@@ -84,13 +84,11 @@ public class HuesoDeWiki {
 		 */
 		@Nonnull
 		private ItemStack getHoveredItemStack(){
-			Minecraft mc = Minecraft.getMinecraft();
-			GuiScreen currentScreen = mc.currentScreen;
+			GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
 			if(currentScreen instanceof GuiContainer){
 				Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
-				if(hovered != null){
+				if(hovered != null)
 					return hovered.getStack();
-				}
 			}
 			return ItemStack.EMPTY;
 		}
