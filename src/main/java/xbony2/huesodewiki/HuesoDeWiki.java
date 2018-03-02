@@ -1,19 +1,14 @@
 package xbony2.huesodewiki;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,8 +22,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import xbony2.huesodewiki.compat.Compat;
 import xbony2.huesodewiki.recipe.RecipeCreator;
-
-import javax.annotation.Nonnull;
 
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION, clientSideOnly = true)
 public class HuesoDeWiki {
@@ -77,43 +70,19 @@ public class HuesoDeWiki {
 	}
 	
 	private class RenderTickEventEventHanlder {
-		/**
-		 * @return The ItemStack that the player is currently hovering over. If they are hovering over an empty slot,
-		 * 		   are not hovering over a slot or they are hovering over a slot in a non-supported Gui, returns an
-		 * 		   empty ItemStack.
-		 */
-		@Nonnull
-		private ItemStack getHoveredItemStack(){
-			GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
-			if(currentScreen instanceof GuiContainer){
-				Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
-				if(hovered != null)
-					return hovered.getStack();
-			}
-			return ItemStack.EMPTY;
-		}
-
-		/**
-		 * Adds the provided string to the system clipboard
-		 * @param toCopy The string to add to the clipboard
-		 */
-		private void copyString(String toCopy){
-			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
-		}
-
 		@SubscribeEvent
 		public void renderTickEvent(RenderTickEvent event){
 			if(event.phase == Phase.START){
 				if(Keyboard.isKeyDown(copyPageKey.getKeyCode())){
 					if(!isCopyPageKeyDown){
 						isCopyPageKeyDown = true;
-						ItemStack itemstack = getHoveredItemStack();
+						ItemStack itemstack = Utils.getHoveredItemStack();
 						if(!itemstack.isEmpty()){
 							if(GuiScreen.isCtrlKeyDown()){
-								copyString(RecipeCreator.createRecipes(itemstack));
+								Utils.copyString(RecipeCreator.createRecipes(itemstack));
 								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedrecipe", itemstack.getDisplayName()));
 							}else{
-								copyString(PageCreator.createPage(itemstack));
+								Utils.copyString(PageCreator.createPage(itemstack));
 								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
 							}
 						}else
@@ -125,9 +94,9 @@ public class HuesoDeWiki {
 				if(Keyboard.isKeyDown(copyNameKey.getKeyCode())){
 					if(!isCopyNameKeyDown){
 						isCopyNameKeyDown = true;
-						ItemStack itemstack = getHoveredItemStack();
+						ItemStack itemstack = Utils.getHoveredItemStack();
 						if(!itemstack.isEmpty())
-							copyString(itemstack.getDisplayName());
+							Utils.copyString(itemstack.getDisplayName());
 					}
 				}else
 					isCopyNameKeyDown = false;
