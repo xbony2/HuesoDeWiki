@@ -1,8 +1,14 @@
 package xbony2.huesodewiki;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -10,6 +16,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class Utils {
@@ -122,5 +129,29 @@ public class Utils {
 			}
 		}
 		return field;
+	}
+
+	/**
+	 * @return The ItemStack that the player is currently hovering over. If they are hovering over an empty slot,
+	 * 		   are not hovering over a slot or they are hovering over a slot in a non-supported Gui, returns an
+	 * 		   empty ItemStack.
+	 */
+	@Nonnull
+	public static ItemStack getHoveredItemStack(){
+		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
+		if(currentScreen instanceof GuiContainer){
+			Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
+			if(hovered != null)
+				return hovered.getStack();
+		}
+		return ItemStack.EMPTY;
+	}
+
+	/**
+	 * Adds the provided string to the system clipboard
+	 * @param toCopy The string to add to the clipboard
+	 */
+	public static void copyString(String toCopy){
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
 	}
 }

@@ -1,7 +1,5 @@
 package xbony2.huesodewiki;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
@@ -80,32 +76,17 @@ public class HuesoDeWiki {
 				if(Keyboard.isKeyDown(copyPageKey.getKeyCode())){
 					if(!isCopyPageKeyDown){
 						isCopyPageKeyDown = true;
-						Minecraft mc = Minecraft.getMinecraft();
-						GuiScreen currentScreen = mc.currentScreen;
-						
-						if(currentScreen instanceof GuiContainer){
-							Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
-							
-							if(hovered == null)
-								return;
-							
-							ItemStack itemstack = hovered.getStack();
-							
-							if(!itemstack.isEmpty()){
-								String copiedString;
-								
-								if(!GuiScreen.isCtrlKeyDown()){
-									copiedString = PageCreator.createPage(itemstack);
-									Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
-								}else{
-									copiedString = RecipeCreator.createRecipes(itemstack);
-									Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedrecipe", itemstack.getDisplayName()));
-								}
-								
-								
-								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(copiedString), null);
+						ItemStack itemstack = Utils.getHoveredItemStack();
+						if(!itemstack.isEmpty()){
+							if(GuiScreen.isCtrlKeyDown()){
+								Utils.copyString(RecipeCreator.createRecipes(itemstack));
+								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedrecipe", itemstack.getDisplayName()));
+							}else{
+								Utils.copyString(PageCreator.createPage(itemstack));
+								Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", itemstack.getDisplayName()));
 							}
-						}
+						}else
+							return;
 					}
 				}else
 					isCopyPageKeyDown = false;
@@ -113,20 +94,9 @@ public class HuesoDeWiki {
 				if(Keyboard.isKeyDown(copyNameKey.getKeyCode())){
 					if(!isCopyNameKeyDown){
 						isCopyNameKeyDown = true;
-						Minecraft mc = Minecraft.getMinecraft();
-						GuiScreen currentScreen = mc.currentScreen;
-						
-						if(currentScreen instanceof GuiContainer){
-							Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
-							
-							if(hovered == null)
-								return;
-							
-							ItemStack itemstack = hovered.getStack();
-							
-							if(!itemstack.isEmpty())
-								Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(itemstack.getDisplayName()), null);
-						}
+						ItemStack itemstack = Utils.getHoveredItemStack();
+						if(!itemstack.isEmpty())
+							Utils.copyString(itemstack.getDisplayName());
 					}
 				}else
 					isCopyNameKeyDown = false;
