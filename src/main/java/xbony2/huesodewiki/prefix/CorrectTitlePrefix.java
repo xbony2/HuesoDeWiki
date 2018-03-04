@@ -8,7 +8,7 @@ public class CorrectTitlePrefix implements IPagePrefix {
 	
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return StringUtils.containsAny(itemstack.getDisplayName(), {'#', '<', '>', '[', ']', '|', '{', '}'}); // see: https://en.wikipedia.org/wiki/Wikipedia:NCHASHTAG
+		return StringUtils.containsAny(itemstack.getDisplayName(), '#', '<', '>', '[', ']', '|', '{', '}'); // see: https://en.wikipedia.org/wiki/Wikipedia:NCHASHTAG
 	}
 
 	@Override
