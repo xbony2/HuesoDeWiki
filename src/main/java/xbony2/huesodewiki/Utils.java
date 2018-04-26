@@ -29,6 +29,7 @@ public class Utils {
 			return HuesoDeWiki.nameCorrections.get(modName) != null ? HuesoDeWiki.nameCorrections.get(modName) : modName;
 		}
 	}
+	
 	public static String getModName(ItemStack itemstack){
 		return getModName(itemstack.getItem().getCreatorModId(itemstack));
 	}
