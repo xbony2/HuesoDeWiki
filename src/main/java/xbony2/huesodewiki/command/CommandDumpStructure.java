@@ -45,18 +45,20 @@ public class CommandDumpStructure extends CommandBase {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException{
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length < 6)
 			throw new WrongUsageException("commands.dumpstructure.usage");
 
 		BlockPos start = parseBlockPos(sender, args, 0, false);
 		BlockPos end = parseBlockPos(sender, args, 3, false);
 		World world = sender.getEntityWorld();
+		
 		if(!world.isAreaLoaded(start, end, false))
 			throw new CommandException("commands.dumpstructure.outOfWorld");
 
 		int sizeX = Math.abs(start.getX() - end.getX());
 		int sizeZ = Math.abs(start.getZ() - end.getZ());
+		
 		if(sizeX >= 26 || sizeZ >= 26) //template supports up to 26x26 layers
 			throw new CommandException("commands.dumpstructure.tooLarge");
 
@@ -74,12 +76,14 @@ public class CommandDumpStructure extends CommandBase {
 		int paddingSizeStart = 0;
 
 		BlockPos startPadded = start, endPadded = end;
+		
 		if(args.length > 6){
 			String paddingMode = args[6];
-			if("back".equals(paddingMode)){
+			
+			if(paddingMode.equals("back")){
 				paddingSizeStart = paddingSizeEnd;
 				paddingSizeEnd = 0;
-			}else if("center".equals(paddingMode)){
+			}else if(paddingMode.equals("center")){
 				paddingSizeStart = paddingSizeEnd / 2 + paddingSizeEnd % 2;
 				paddingSizeEnd = paddingSizeEnd / 2;
 			}
@@ -102,26 +106,34 @@ public class CommandDumpStructure extends CommandBase {
 			int x = startPadded.getX() - pos.getX();
 			int y = startPadded.getY() - pos.getY();
 			int z = startPadded.getZ() - pos.getZ();
+			
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
 				IBlockState state = world.getBlockState(pos);
+				
 				if(state.getBlock() instanceof BlockLiquid || state.getBlock() instanceof IFluidBlock){
 					Fluid fluid = FluidRegistry.lookupFluidForBlock(state.getBlock());
+					
 					if(fluid != null){
 						structure.add(new MultiblockPiece(x, y, z, new FluidStack(fluid, 1000), reverse));
 						continue;
 					}
 				}
+				
 				RayTraceResult ray = new RayTraceResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), EnumFacing.UP, pos);
 				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, (EntityPlayer) sender);
+				
 				if(!stack.isEmpty())
 					amount++;
+				
 				structure.add(new MultiblockPiece(x, y, z, stack, reverse));
 			}else
 				structure.add(new MultiblockPiece(x, y, z, reverse));
 		}
+		
 		structure.sort(reverse ? MultiblockPiece.ZX_COMPARE : MultiblockPiece.XZ_COMPARE);
 
 		StringBuilder builder = new StringBuilder("{{Cg/Multiblock/Alt\n");
+		
 		if(sizeX >= 5 || sizeZ >= 5)
 			builder.append("|oversize=").append(Math.max(sizeX, sizeZ) + 1).append('\n');
 
@@ -131,15 +143,20 @@ public class CommandDumpStructure extends CommandBase {
 			if(shouldCompact){
 				if(previousEmpty && !piece.isEmpty())
 					builder.append('\n');
+				
 				previousEmpty = piece.isEmpty();
 			}
+			
 			builder.append(piece.toString());
-			if(!shouldCompact || !piece.isEmpty()){
+			
+			if(!shouldCompact || !piece.isEmpty())
 				builder.append('\n');
-			}
+			
 		}
+		
 		if(shouldCompact && previousEmpty)
 			builder.append('\n');
+		
 		builder.append("}}");
 
 		Utils.copyString(builder.toString());
@@ -182,10 +199,12 @@ public class CommandDumpStructure extends CommandBase {
 		@Override
 		public String toString(){
 			StringBuilder builder = new StringBuilder("|").append(getAlphabetLetter(y));
+			
 			if(reverse)
 				builder.append(getAlphabetLetter(z)).append(x);
 			else
 				builder.append(getAlphabetLetter(x)).append(z);
+			
 			builder.append('=');
 
 			if(!stack.isEmpty())
@@ -207,23 +226,24 @@ public class CommandDumpStructure extends CommandBase {
 		//Clientside commands get the player's position in targetPos, not the pointed block
 		RayTraceResult raytrace = Minecraft.getMinecraft().objectMouseOver;
 		BlockPos pos = null;
+		
 		if(raytrace.typeOfHit == RayTraceResult.Type.BLOCK)
 			pos = raytrace.getBlockPos();
 
-		if(args.length > 0 && args.length <= 3){
+		if(args.length > 0 && args.length <= 3)
 			return getTabCompletionCoordinate(args, 0, pos);
-		}else if(args.length > 3 && args.length <= 6){
+		else if(args.length > 3 && args.length <= 6)
 			return getTabCompletionCoordinate(args, 3, pos);
-		}else if(args.length == 7){
+		else if(args.length == 7)
 			return getListOfStringsMatchingLastWord(args, "center", "back", "front");
-		}else if(args.length == 8){
+		else if(args.length == 8)
 			return getListOfStringsMatchingLastWord(args, "true", "false");
-		}
+		
 		return Collections.emptyList();
 	}
 
 	private static char getAlphabetLetter(int index){
-		return (char) (index + 'A' - 1);
+		return (char)(index + 'A' - 1);
 	}
 
 	private static String outputFluid(FluidStack fluidstack){
