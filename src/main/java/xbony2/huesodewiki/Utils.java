@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.Loader;
@@ -20,8 +19,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class Utils {
-	public static String getModName(ItemStack itemstack){
-		ModContainer container = Loader.instance().getIndexedModList().get(itemstack.getItem().getCreatorModId(itemstack));
+	public static String getModName(String modid){
+		ModContainer container = Loader.instance().getIndexedModList().get(modid);
 		
 		if(container == null)
 			return "Vanilla";
@@ -29,6 +28,10 @@ public class Utils {
 			String modName = container.getName();
 			return HuesoDeWiki.nameCorrections.get(modName) != null ? HuesoDeWiki.nameCorrections.get(modName) : modName;
 		}
+	}
+	
+	public static String getModName(ItemStack itemstack){
+		return getModName(itemstack.getItem().getCreatorModId(itemstack));
 	}
 	
 	public static String getModAbbrevation(String modName){
