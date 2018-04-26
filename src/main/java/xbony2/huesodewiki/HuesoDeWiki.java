@@ -11,16 +11,19 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
 import xbony2.huesodewiki.compat.Compat;
+import xbony2.huesodewiki.command.CommandDumpStructure;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION, clientSideOnly = true)
@@ -67,6 +70,11 @@ public class HuesoDeWiki {
 		config.save();
 		
 		Compat.preInit();
+	}
+	
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event){
+		ClientCommandHandler.instance.registerCommand(new CommandDumpStructure());
 	}
 	
 	private class RenderTickEventEventHanlder {
