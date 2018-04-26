@@ -44,6 +44,8 @@ public class CommandDumpStructure extends CommandBase {
 		return Collections.emptyList();
 	}
 
+	private int amount;
+	
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length < 6)
@@ -71,7 +73,6 @@ public class CommandDumpStructure extends CommandBase {
 		List<MultiblockPiece> structure = new ArrayList<>();
 
 		boolean reverse = Integer.signum(start.getX() - end.getX()) * Integer.signum(start.getZ() - end.getZ()) == 1;
-		int amount = 0;
 		int paddingSizeEnd = Math.abs(sizeX - sizeZ);
 		int paddingSizeStart = 0;
 
@@ -102,10 +103,12 @@ public class CommandDumpStructure extends CommandBase {
 		int maxX = Math.max(start.getX(), end.getX());
 		int maxZ = Math.max(start.getZ(), end.getZ());
 
-		for(BlockPos pos : BlockPos.getAllInBoxMutable(startPadded, endPadded)){
-			int x = startPadded.getX() - pos.getX();
-			int y = startPadded.getY() - pos.getY();
-			int z = startPadded.getZ() - pos.getZ();
+		BlockPos startPoint = startPadded;
+		amount = 0;
+		BlockPos.getAllInBoxMutable(startPadded, endPadded).forEach(pos -> {
+			int x = startPoint.getX() - pos.getX();
+			int y = startPoint.getY() - pos.getY();
+			int z = startPoint.getZ() - pos.getZ();
 			
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
 				IBlockState state = world.getBlockState(pos);
@@ -115,7 +118,7 @@ public class CommandDumpStructure extends CommandBase {
 					
 					if(fluid != null){
 						structure.add(new MultiblockPiece(x, y, z, new FluidStack(fluid, 1000), reverse));
-						continue;
+						return;
 					}
 				}
 				
@@ -128,7 +131,7 @@ public class CommandDumpStructure extends CommandBase {
 				structure.add(new MultiblockPiece(x, y, z, stack, reverse));
 			}else
 				structure.add(new MultiblockPiece(x, y, z, reverse));
-		}
+		});
 		
 		structure.sort(reverse ? MultiblockPiece.ZX_COMPARE : MultiblockPiece.XZ_COMPARE);
 
