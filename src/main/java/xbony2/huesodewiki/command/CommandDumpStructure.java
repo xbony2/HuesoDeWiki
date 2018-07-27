@@ -134,8 +134,15 @@ public class CommandDumpStructure extends CommandBase {
 		});
 		
 		structure.sort(reverse ? MultiblockPiece.ZX_COMPARE : MultiblockPiece.XZ_COMPARE);
+		
+		boolean shouldWrapInTable = args.length > 8 && "true".equals(args[8]);
+		
+		StringBuilder builder = new StringBuilder();
+				
+		if(shouldWrapInTable)
+			builder.append("{| class=\"wikitable mw-collapsible mw-collapsed\"\n|-\n! Structure\n|-\n| ");
 
-		StringBuilder builder = new StringBuilder("{{Cg/Multiblock/Alt\n");
+		builder.append("{{Cg/Multiblock/Alt\n");
 		
 		if(sizeX >= 5 || sizeZ >= 5)
 			builder.append("|oversize=").append(Math.max(sizeX, sizeZ) + 1).append('\n');
@@ -161,6 +168,9 @@ public class CommandDumpStructure extends CommandBase {
 			builder.append('\n');
 		
 		builder.append("}}");
+		
+		if(shouldWrapInTable)
+			builder.append("\n|}");
 
 		Utils.copyString(builder.toString());
 		sender.sendMessage(new TextComponentTranslation("commands.dumpstructure.success", amount));
@@ -239,7 +249,7 @@ public class CommandDumpStructure extends CommandBase {
 			return getTabCompletionCoordinate(args, 3, pos);
 		else if(args.length == 7)
 			return getListOfStringsMatchingLastWord(args, "center", "back", "front");
-		else if(args.length == 8)
+		else if(args.length == 8 || args.length == 9)
 			return getListOfStringsMatchingLastWord(args, "true", "false");
 		
 		return Collections.emptyList();
