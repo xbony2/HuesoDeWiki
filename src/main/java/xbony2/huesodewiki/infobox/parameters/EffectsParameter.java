@@ -6,10 +6,10 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionUtils;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class EffectsParameter implements IInfoboxParameter {
@@ -28,18 +28,7 @@ public class EffectsParameter implements IInfoboxParameter {
 	public String getParameterText(ItemStack itemstack){
 		if(itemstack.getItem() instanceof ItemFood){
 			PotionEffect effect = getEffect(itemstack);
-
-			float chance = 1f;
-			try {
-				Field field = Utils.getField(ItemFood.class, "potionEffectProbability", "field_77858_cd");
-
-				if(field != null){
-					field.setAccessible(true);
-					chance = field.getFloat(itemstack.getItem());
-				}
-			}catch(IllegalArgumentException | IllegalAccessException e){
-				e.printStackTrace();
-			}
+			float chance = ObfuscationReflectionHelper.getPrivateValue(ItemFood.class, (ItemFood) itemstack.getItem(), "field_77858_cd"); //potionEffectProbability
 			return formatEffect(effect, chance);
 		}else{
 			List<PotionEffect> effects = PotionUtils.getEffectsFromStack(itemstack);
@@ -50,17 +39,7 @@ public class EffectsParameter implements IInfoboxParameter {
 	}
 
 	private static PotionEffect getEffect(ItemStack itemstack){
-		try {
-			Field field = Utils.getField(ItemFood.class, "potionId", "field_77851_ca");
-
-			if(field != null){
-				field.setAccessible(true);
-				return (PotionEffect) field.get(itemstack.getItem());
-			}
-		}catch(IllegalArgumentException | IllegalAccessException e){
-			e.printStackTrace();
-		}
-		return null;
+		return ObfuscationReflectionHelper.getPrivateValue(ItemFood.class, (ItemFood) itemstack.getItem(), "field_77851_ca"); //potionId
 	}
 
 	private static String formatEffect(PotionEffect effect, float chance){

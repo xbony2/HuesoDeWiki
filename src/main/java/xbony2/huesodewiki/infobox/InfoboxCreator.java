@@ -1,6 +1,5 @@
 package xbony2.huesodewiki.infobox;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.BasicInstanceOfParameter;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
@@ -68,17 +68,9 @@ public class InfoboxCreator {
 		parameters.add(new ToughnessParameter());
 		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> {
 			Item item = itemstack.getItem();
-			if(item instanceof ItemTool){
-				try{
-					Field field = Utils.getField(ItemTool.class, "attackDamage", "field_77865_bY");
-					if(field != null){
-						field.setAccessible(true);
-						return Utils.floatToString(field.getFloat((ItemTool)item) + 1.0f);
-					}
-				}catch(IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
-					e.printStackTrace();
-				}
-			}else if(item instanceof ItemSword){
+			if(item instanceof ItemTool)
+				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_77865_bY")); //attackDamage
+			else if(item instanceof ItemSword){
 				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float damage = 1.0f; //default
 				for(String name : multimap.keySet())
@@ -91,17 +83,9 @@ public class InfoboxCreator {
 		}, ItemTool.class, ItemSword.class));
 		parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
 			Item item = itemstack.getItem();
-			if(item instanceof ItemTool){
-				try{
-					Field field = Utils.getField(ItemTool.class, "attackSpeed", "field_185065_c");
-					if(field != null){
-						field.setAccessible(true);
-						return String.format("%.2g", field.getFloat((ItemTool)item) + 4.0f);
-					}
-				}catch(IllegalArgumentException | IllegalAccessException e){//Do not complain or you will be smote.
-					e.printStackTrace();
-				}
-			}else if(item instanceof ItemSword){
+			if(item instanceof ItemTool)
+				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_185065_c")); //attackSpeed
+			else if(item instanceof ItemSword){
 				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float speed = 4.0f; //default
 				for(String name : multimap.keySet())
@@ -113,7 +97,7 @@ public class InfoboxCreator {
 			}
 			return "?";
 		}, ItemTool.class, ItemSword.class));
-		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(((ItemTool)itemstack.getItem()).getMaxDamage(itemstack) + 1), ItemTool.class));
+		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemTool.class));
 		parameters.add(new EnchantabilityParameter());
 		parameters.add(new MiningLevelParameter());
 		parameters.add(new MiningSpeedParameter());

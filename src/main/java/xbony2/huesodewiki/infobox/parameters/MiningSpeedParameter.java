@@ -3,10 +3,9 @@ package xbony2.huesodewiki.infobox.parameters;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
-
-import java.lang.reflect.Field;
 
 public class MiningSpeedParameter implements IInfoboxParameter {
 	
@@ -22,17 +21,7 @@ public class MiningSpeedParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack) {
-		try {
-			Field field = Utils.getField(ItemTool.class, "toolMaterial", "field_77862_b");
-			
-			if(field != null){
-				field.setAccessible(true);
-				return Utils.floatToString(((Item.ToolMaterial) field.get(itemstack.getItem())).getEfficiency());
-			}
-		}catch(IllegalArgumentException | IllegalAccessException e){
-			e.printStackTrace();
-		}
-		
-		return "?";
+		Item.ToolMaterial material = ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) itemstack.getItem(), "field_77862_b"); //toolMaterial
+		return Utils.floatToString(material.getEfficiency()); //toolMaterial
 	}
 }
