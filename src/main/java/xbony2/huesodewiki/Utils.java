@@ -2,7 +2,6 @@ package xbony2.huesodewiki;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class Utils {
 	public static String getModName(String modid){
@@ -111,27 +109,6 @@ public class Utils {
 	 */
 	public static String formatInfoboxList(Iterable<String> strings){
 		return String.join("<br />", strings);
-	}
-
-	/**
-	 * @param clazz The class in which the Field is stored
-	 * @param mappedName The name of the field with MCP mappings
-	 * @param obfuscatedName The name of the field when obfuscated
-	 * @return The Field, or null if it couldn't find it. It will print the stacktrace if it is unable to find either.
-	 */
-	@Nullable
-	public static Field getField(Class clazz, String mappedName, String obfuscatedName){
-		Field field = null;
-		try{
-			field = clazz.getDeclaredField(obfuscatedName);
-		}catch(NoSuchFieldException obfException){
-			try{
-				field = clazz.getDeclaredField(mappedName);
-			}catch(NoSuchFieldException mappedNameException){
-				mappedNameException.printStackTrace();
-			}
-		}
-		return field;
 	}
 
 	/**
