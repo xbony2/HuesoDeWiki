@@ -22,6 +22,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import xbony2.huesodewiki.compat.Compat;
 import xbony2.huesodewiki.command.CommandDumpStructure;
 import xbony2.huesodewiki.recipe.RecipeCreator;
@@ -31,6 +33,8 @@ public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
 	public static final String VERSION = "1.3.4a";
 	
+	public static final Logger LOGGER = LogManager.getLogger(MODID);
+	
 	public static KeyBinding copyPageKey;
 	private boolean isCopyPageKeyDown = false;
 	
@@ -39,6 +43,7 @@ public class HuesoDeWiki {
 	
 	public static boolean use2SpaceStyle;
 	public static boolean useStackedCategoryStyle;
+	public static boolean printOutputToLog;
 	
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();
@@ -60,6 +65,7 @@ public class HuesoDeWiki {
 		useStackedCategoryStyle = config.getBoolean("UseStackedCategoryStyle", "Main", false, "Use \"stacked\" category style– put each category on its own line.");
 		String[] nameCorrections = config.getStringList("NameCorrections", "Main", DEFAULT_NAME_CORRECTIONS, "Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.");
 		String[] linkCorrections = config.getStringList("LinkCorrections", "Main", DEFAULT_LINK_CORRECTIONS, "Link fixes. Is a map- first entry is the mod's name, second is the FTB Wiki's page.");
+		printOutputToLog = config.getBoolean("PrintOutputToLog", "Main", false, "Enable to print the generated output to the console log- for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux");
 		
 		for(int i = 0; i < nameCorrections.length - 1; i += 2)
 			this.nameCorrections.put(nameCorrections[i], nameCorrections[i + 1]);
