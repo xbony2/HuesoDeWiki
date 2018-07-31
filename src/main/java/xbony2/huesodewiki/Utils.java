@@ -128,10 +128,12 @@ public class Utils {
 	}
 
 	/**
-	 * Adds the provided string to the system clipboard
+	 * Adds the provided string to the system clipboard, and logs it if logging of copied strings is enabled 
 	 * @param toCopy The string to add to the clipboard
 	 */
 	public static void copyString(String toCopy){
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
+		if(HuesoDeWiki.printOutputToLog) 
+			HuesoDeWiki.LOGGER.info("Generated text:\n" + toCopy);
 	}
 }
