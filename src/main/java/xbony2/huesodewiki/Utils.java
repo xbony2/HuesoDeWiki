@@ -7,9 +7,11 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
@@ -71,11 +73,18 @@ public class Utils {
 				String potentialEntry = OreDictionary.getOreName(ids[i]);
 				List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
 				
-				boolean isEqual = potentialCognate.size() == list.length;
+				NonNullList<ItemStack> potentialCognateExploded = NonNullList.create();
+				for(ItemStack itemStack : potentialCognate)
+					if(itemStack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+						itemStack.getItem().getSubItems(CreativeTabs.SEARCH, potentialCognateExploded);
+					else
+						potentialCognateExploded.add(itemStack);
+					
+				boolean isEqual = potentialCognateExploded.size() == list.length;
 				
 				if(isEqual) //so far, that is
 					for(int j = 0; j < list.length; j++)
-						if(potentialCognate.get(j).getItem() != list[j].getItem() && potentialCognate.get(j).getItemDamage() != list[j].getItemDamage())
+						if(potentialCognateExploded.get(j).getItem() != list[j].getItem() && potentialCognateExploded.get(j).getItemDamage() != list[j].getItemDamage())
 							isEqual = false;
 				
 				if(isEqual)
