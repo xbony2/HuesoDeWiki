@@ -133,6 +133,7 @@ public class Utils {
 	 */
 	public static void copyString(String toCopy){
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
+		
 		if(HuesoDeWiki.printOutputToLog) 
 			HuesoDeWiki.LOGGER.info("Generated text:\n" + toCopy);
 	}
