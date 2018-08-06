@@ -3,7 +3,10 @@ package xbony2.huesodewiki;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.util.List;
+import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -15,8 +18,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
-
-import javax.annotation.Nonnull;
 
 public class Utils {
 	public static String getModName(String modid){
@@ -109,6 +110,15 @@ public class Utils {
 		if(ret.endsWith(".0"))
 				ret = ret.replaceAll(".0$", "");
 		return ret;
+	}
+
+	public static IBlockState stackToBlockState(ItemStack itemstack){
+		Block b = Block.getBlockFromItem(itemstack.getItem());
+		try {
+			return b.getStateFromMeta(itemstack.getMetadata());
+		}catch(Exception e){
+			return b.getDefaultState();
+		}
 	}
 
 	/**
