@@ -156,4 +156,11 @@ public class Utils {
 		if(HuesoDeWiki.printOutputToLog) 
 			HuesoDeWiki.LOGGER.info("Generated text:\n" + toCopy);
 	}
+
+	/**
+	 * Returns a letter corresponding to the specified number. (eg. 1 will return 'A')
+	 */
+	public static char getAlphabetLetter(int index){
+		return (char)(index + 'A' - 1);
+	}
 }

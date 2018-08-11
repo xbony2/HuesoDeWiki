@@ -211,12 +211,12 @@ public class CommandDumpStructure extends CommandBase {
 
 		@Override
 		public String toString(){
-			StringBuilder builder = new StringBuilder("|").append(getAlphabetLetter(y));
+			StringBuilder builder = new StringBuilder("|").append(Utils.getAlphabetLetter(y));
 			
 			if(reverse)
-				builder.append(getAlphabetLetter(z)).append(x);
+				builder.append(Utils.getAlphabetLetter(z)).append(x);
 			else
-				builder.append(getAlphabetLetter(x)).append(z);
+				builder.append(Utils.getAlphabetLetter(x)).append(z);
 			
 			builder.append('=');
 
@@ -253,10 +253,6 @@ public class CommandDumpStructure extends CommandBase {
 			return getListOfStringsMatchingLastWord(args, "true", "false");
 		
 		return Collections.emptyList();
-	}
-
-	private static char getAlphabetLetter(int index){
-		return (char)(index + 'A' - 1);
 	}
 
 	private static String outputFluid(FluidStack fluidstack){

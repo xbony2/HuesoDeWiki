@@ -74,7 +74,7 @@ public class InfoboxCreator {
 				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float damage = 1.0f; //default
 				for(String name : multimap.keySet())
-					if(name == SharedMonsterAttributes.ATTACK_DAMAGE.getName())
+					if(name.equals(SharedMonsterAttributes.ATTACK_DAMAGE.getName()))
 						for(AttributeModifier modifier : multimap.get(name))
 							damage += modifier.getAmount();
 				return Utils.floatToString(damage);
@@ -89,7 +89,7 @@ public class InfoboxCreator {
 				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float speed = 4.0f; //default
 				for(String name : multimap.keySet())
-					if(name == SharedMonsterAttributes.ATTACK_SPEED.getName())
+					if(name.equals(SharedMonsterAttributes.ATTACK_SPEED.getName()))
 						for(AttributeModifier modifier : multimap.get(name))
 							speed += modifier.getAmount();
 				

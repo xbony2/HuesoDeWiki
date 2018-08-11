@@ -22,7 +22,7 @@ public class RecipeCreator {
 		recipes.forEach((recipe) -> {
 			String potentialRecipes = recipe.getRecipes(itemstack);
 			
-			if(potentialRecipes != null && potentialRecipes != "")
+			if(potentialRecipes != null && !potentialRecipes.equals(""))
 				ret.append(potentialRecipes);
 		});
 		
