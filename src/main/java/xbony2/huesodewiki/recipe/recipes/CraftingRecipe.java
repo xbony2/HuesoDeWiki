@@ -71,9 +71,8 @@ public class CraftingRecipe implements IWikiRecipe {
 
 		ret.append("|O=").append(Utils.outputItemOutput(recipe.getRecipeOutput())).append('\n');
 
-		if(shapeless){
+		if(shapeless)
 			ret.append("|shapeless=true\n");
-		}
 
 		return ret.append("}}\n").toString();
 	}
