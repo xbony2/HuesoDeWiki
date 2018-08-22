@@ -31,7 +31,7 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 @Mod(modid = HuesoDeWiki.MODID, version = HuesoDeWiki.VERSION, clientSideOnly = true)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
-	public static final String VERSION = "1.3.4a";
+	public static final String VERSION = "@VERSION@";
 	
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 	

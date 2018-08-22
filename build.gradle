@@ -24,6 +24,9 @@ compileJava {
 minecraft {
     version = project.forgeVersion
     runDir = "run"
+    
+    replace '@VERSION@', project.version
+    replaceIn 'HuesoDeWiki.java'
 
     mappings = project.mappingsVersion
 }
