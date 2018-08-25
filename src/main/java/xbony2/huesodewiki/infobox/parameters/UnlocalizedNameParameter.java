@@ -17,6 +17,6 @@ public class UnlocalizedNameParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return itemstack.getItem().getUnlocalizedName(itemstack);
+		return itemstack.getItem().getTranslationKey(itemstack);
 	}
 }
