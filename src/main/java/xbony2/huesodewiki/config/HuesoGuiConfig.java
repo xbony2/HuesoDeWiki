@@ -10,17 +10,18 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import xbony2.huesodewiki.HuesoDeWiki;
 
-//Adapted from Quat's mods, who adapted it from Choonster's TestMod3, who adapted it from Ender IO.
+/**
+ * Adapted from Quat's mods, who adapted it from Choonster's TestMod3, who adapted it from Ender IO.
+ */
 public class HuesoGuiConfig extends GuiConfig {
 
-	public HuesoGuiConfig(GuiScreen parent) {
+	public HuesoGuiConfig(GuiScreen parent){
 		super(parent, getConfigElements(), HuesoDeWiki.MODID, false, false, "HuesoDeWiki Config");
 	}
 
-	private static List<IConfigElement> getConfigElements() {
+	private static List<IConfigElement> getConfigElements(){
 		Configuration c = Config.config;
 
 		return c.getCategoryNames().stream().filter(name -> !c.getCategory(name).isChild()).map(name -> new ConfigElement(c.getCategory(name).setLanguageKey(HuesoDeWiki.MODID + ".config." + name))).collect(Collectors.toList());
 	}
-
 }
