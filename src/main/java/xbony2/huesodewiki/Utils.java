@@ -18,6 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.oredict.OreDictionary;
+import xbony2.huesodewiki.config.Config;
 
 public class Utils {
 	public static String getModName(String modid){
@@ -27,7 +28,7 @@ public class Utils {
 			return "Vanilla";
 		else{
 			String modName = container.getName();
-			return HuesoDeWiki.nameCorrections.get(modName) != null ? HuesoDeWiki.nameCorrections.get(modName) : modName;
+			return Config.nameCorrections.get(modName) != null ? Config.nameCorrections.get(modName) : modName;
 		}
 	}
 	
@@ -153,7 +154,7 @@ public class Utils {
 	public static void copyString(String toCopy){
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(toCopy), null);
 		
-		if(HuesoDeWiki.printOutputToLog) 
+		if(Config.printOutputToLog) 
 			HuesoDeWiki.LOGGER.info("Generated text:\n" + toCopy);
 	}
 

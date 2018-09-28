@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import xbony2.huesodewiki.HuesoDeWiki;
+import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.api.IWikiRecipe;
 import xbony2.huesodewiki.recipe.recipes.*;
 
@@ -28,6 +28,6 @@ public class RecipeCreator {
 		
 		if(ret.toString().length() < 1)
 			return "";
-		return (HuesoDeWiki.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString() + "\n";
+		return (Config.use2SpaceStyle ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString() + "\n";
 	}
 }
