@@ -18,7 +18,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import xbony2.huesodewiki.HuesoDeWiki;
+import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.api.category.BasicCategory;
 import xbony2.huesodewiki.api.category.BasicInstanceOfCategory;
 import xbony2.huesodewiki.api.category.ICategory;
@@ -49,6 +49,6 @@ public class CategoryCreator {
 		
 		categories.stream().filter((category) -> category.canAdd(itemstack)).forEach((category) -> categoryStrings.add("[[Category:" + category.getCategoryName(itemstack) + "]]"));
 
-		return Joiner.on(HuesoDeWiki.useStackedCategoryStyle ? "\n" : "").join(categoryStrings);
+		return Joiner.on(Config.useStackedCategoryStyle ? "\n" : "").join(categoryStrings);
 	}
 }
