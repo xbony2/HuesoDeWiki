@@ -114,12 +114,15 @@ public class Utils {
 		return ret;
 	}
 
-	@SuppressWarnings("static-access")
+	/**
+	 * @param itemstack Stack to convert into blockstate
+	 * @return State corresponding to the item, taking metadata into account
+	 */
+	@SuppressWarnings("deprecation")
 	public static IBlockState stackToBlockState(ItemStack itemstack){
 		Block b = Block.getBlockFromItem(itemstack.getItem());
 		try {
-			//return b.getStateFromMeta(itemstack.getMetadata());
-			return b.getStateById(Item.getIdFromItem(itemstack.getItem()));
+			return b.getStateFromMeta(itemstack.getMetadata());
 		}catch(Exception e){
 			return b.getDefaultState();
 		}
