@@ -2,10 +2,6 @@ package xbony2.huesodewiki;
 
 import static xbony2.huesodewiki.Utils.getModName;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.infobox.InfoboxCreator;

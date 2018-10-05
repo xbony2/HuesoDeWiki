@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -113,10 +114,12 @@ public class Utils {
 		return ret;
 	}
 
+	@SuppressWarnings("static-access")
 	public static IBlockState stackToBlockState(ItemStack itemstack){
 		Block b = Block.getBlockFromItem(itemstack.getItem());
 		try {
-			return b.getStateFromMeta(itemstack.getMetadata());
+			//return b.getStateFromMeta(itemstack.getMetadata());
+			return b.getStateById(Item.getIdFromItem(itemstack.getItem()));
 		}catch(Exception e){
 			return b.getDefaultState();
 		}

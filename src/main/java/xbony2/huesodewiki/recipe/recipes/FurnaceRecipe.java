@@ -1,13 +1,12 @@
 package xbony2.huesodewiki.recipe.recipes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.IWikiRecipe;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class FurnaceRecipe implements IWikiRecipe {
 	@Override
