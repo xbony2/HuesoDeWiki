@@ -12,7 +12,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -120,11 +119,12 @@ public class Utils {
 	 */
 	@SuppressWarnings("deprecation")
 	public static IBlockState stackToBlockState(ItemStack itemstack){
-		Block b = Block.getBlockFromItem(itemstack.getItem());
+		Block block = Block.getBlockFromItem(itemstack.getItem());
+		
 		try {
-			return b.getStateFromMeta(itemstack.getMetadata());
+			return block.getStateFromMeta(itemstack.getMetadata());
 		}catch(Exception e){
-			return b.getDefaultState();
+			return block.getDefaultState();
 		}
 	}
 
@@ -145,11 +145,14 @@ public class Utils {
 	@Nonnull
 	public static ItemStack getHoveredItemStack(){
 		GuiScreen currentScreen = Minecraft.getMinecraft().currentScreen;
+		
 		if(currentScreen instanceof GuiContainer){
 			Slot hovered = ((GuiContainer)currentScreen).getSlotUnderMouse();
+			
 			if(hovered != null)
 				return hovered.getStack();
 		}
+		
 		return ItemStack.EMPTY;
 	}
 
