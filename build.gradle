@@ -29,8 +29,15 @@ minecraft {
     replaceIn 'HuesoDeWiki.java'
 
     mappings = project.mappingsVersion
+    makeObfSourceJar = false
 }
 
+task srcJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+tasks.build.dependsOn srcJar
 
 processResources {
     inputs.property "version", project.version
