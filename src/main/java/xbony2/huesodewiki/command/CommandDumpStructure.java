@@ -143,9 +143,6 @@ public class CommandDumpStructure extends CommandBase {
 			builder.append("{| class=\"wikitable mw-collapsible mw-collapsed\"\n|-\n! Structure\n|-\n| ");
 
 		builder.append("{{Cg/Multiblock/Alt\n");
-		
-		if(sizeX >= 5 || sizeZ >= 5)
-			builder.append("|oversize=").append(Math.max(sizeX, sizeZ) + 1).append('\n');
 
 		boolean shouldCompact = args.length > 7 && "true".equals(args[7]);
 		boolean previousEmpty = false;
