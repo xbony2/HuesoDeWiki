@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrefixCreator {
-	private static List<IPagePrefix> prefixes = new ArrayList<>();
+	public static List<IPagePrefix> prefixes = new ArrayList<>();
 
 	static {
 		prefixes.add(new CorrectTitlePrefix());
