@@ -78,8 +78,10 @@ public class HuesoDeWiki {
 			}else if(copyNameKey.isActiveAndMatches(eventKey)){
 				ItemStack stack = Utils.getHoveredItemStack();
 
-				if(!stack.isEmpty())
+				if(!stack.isEmpty()){
 					Utils.copyString(stack.getDisplayName());
+					Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copieditemname", stack.getDisplayName()));
+				}
 			}
 		}
 	}
