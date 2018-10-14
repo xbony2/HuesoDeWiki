@@ -236,8 +236,8 @@ public class CommandDumpStructure extends CommandBase {
 		//Clientside commands get the player's position in targetPos, not the pointed block
 		RayTraceResult raytrace = Minecraft.getMinecraft().objectMouseOver;
 		BlockPos pos = null;
-		
-		if(raytrace.typeOfHit == RayTraceResult.Type.BLOCK)
+
+		if(raytrace != null && raytrace.typeOfHit == RayTraceResult.Type.BLOCK)
 			pos = raytrace.getBlockPos();
 
 		if(args.length > 0 && args.length <= 3)
