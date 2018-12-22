@@ -7,6 +7,6 @@ msg.copiedrecipe=Der Rezept von "%s" wurde in die Zwischenablage kopiert.
 msg.copieditemname=Der Name "%s" wurde in die Zwischenablage kopiert.
 
 commands.dumpstructure.usage=dumpstructure <x1> <y1> <z1> <x2> <y2> <z2> [paddingMode] [compact] [wrapInTable]
-commands.dumpstructure.outOfWorld=Kann keine Struktur abspeichern außerhalb der Welt!
+commands.dumpstructure.outOfWorld=Es kann keine Struktur abgespeichert werden, wenn du außerhalb der Welt bist!
 commands.dumpstructure.tooLarge=Die Struktur zum Abspeichern ist zu groß!
-commands.dumpstructure.success=Struktur-Vorlage kopiert mit %s Blöcken in die Zwischenablage.
+commands.dumpstructure.success=Die Struktur-Vorlage wurde kopiert, mit %s Blöcken in der Zwischenablage.
