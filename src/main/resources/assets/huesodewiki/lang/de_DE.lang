@@ -8,5 +8,5 @@ msg.copieditemname=Der Name "%s" wurde in die Zwischenablage kopiert.
 
 commands.dumpstructure.usage=dumpstructure <x1> <y1> <z1> <x2> <y2> <z2> [paddingMode] [compact] [wrapInTable]
 commands.dumpstructure.outOfWorld=Kann keine Struktur abspeichern außerhalb der Welt!
-commands.dumpstructure.tooLarge=Die Struktur zum abspeichern ist zu groß!
+commands.dumpstructure.tooLarge=Die Struktur zum Abspeichern ist zu groß!
 commands.dumpstructure.success=Struktur-Vorlage kopiert mit %s Blöcken in die Zwischenablage.
