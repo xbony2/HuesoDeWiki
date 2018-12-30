@@ -1,0 +1,12 @@
+key.copybasepage=Kopiert die Grundlage der Seite
+key.copyname=Kopiert den Namen des Gegendstandes
+key.categories.huesodewiki=HuesoDeWiki
+
+msg.copiedpage=Die Grundlage der Seite "%s" wurde in die Zwischenablage kopiert.
+msg.copiedrecipe=Der Rezept von "%s" wurde in die Zwischenablage kopiert.
+msg.copieditemname=Der Name "%s" wurde in die Zwischenablage kopiert.
+
+commands.dumpstructure.usage=dumpstructure <x1> <y1> <z1> <x2> <y2> <z2> [paddingMode] [compact] [wrapInTable]
+commands.dumpstructure.outOfWorld=Es kann keine Struktur abgespeichert werden, wenn du außerhalb der Welt bist!
+commands.dumpstructure.tooLarge=Die Struktur zum Abspeichern ist zu groß!
+commands.dumpstructure.success=Die Struktur-Vorlage wurde kopiert, mit %s Blöcken in der Zwischenablage.
