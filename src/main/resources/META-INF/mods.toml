@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="http://github.com/Xbony2/HuesoDeWiki" #optional
+[[mods]]
+modId="huesodewiki"
+# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
+version="${file.jarVersion}"
+displayName="HuesoDeWiki"
+# A text field displayed in the mod UI
+authors="Xbony2, Hubry, TheSatanicSanta"
+description='''
+A small utility mod for editors of the Official FTB Wiki- automatically creates a base page in the clipboard from in-game items.
+'''

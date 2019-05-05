@@ -1,12 +1,13 @@
+/*
 package xbony2.huesodewiki.infobox.parameters;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OreDictNameParameter implements IInfoboxParameter {
 	@Override
@@ -29,3 +30,4 @@ public class OreDictNameParameter implements IInfoboxParameter {
 		return Utils.formatInfoboxList(oreDictNames);
 	}
 }
+*/

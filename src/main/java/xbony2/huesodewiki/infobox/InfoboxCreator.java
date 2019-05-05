@@ -29,14 +29,14 @@ public class InfoboxCreator {
 		parameters.add(new ImageIconParameter());
 		parameters.add(new ModParameter());
 		parameters.add(new TypeParameter());
-		parameters.add(new OreDictNameParameter());
+//		parameters.add(new OreDictNameParameter()); todo tags
 		//parameters.add(new RegistryNameParameter());
 		//parameters.add(new UnlocalizedNameParameter()); // Disabled until issue resolved
 		parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
 			String ret;
 			
 			try{
-				ret = Utils.floatToString(((ItemBlock)itemstack.getItem()).getBlock().getExplosionResistance(null) * 5); //Minecraft is weird with it, don't ask
+				ret = Utils.floatToString(((ItemBlock)itemstack.getItem()).getBlock().getExplosionResistance() * 5); //Minecraft is weird with it, don't ask
 			}catch(Exception e){ //In case of a null pointer
 				ret = "?";
 			}
@@ -64,14 +64,14 @@ public class InfoboxCreator {
 		}, ItemFood.class));
 		
 		parameters.add(new EffectsParameter());
-		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).damageReduceAmount), ItemArmor.class));
+		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).getDamageReduceAmount()), ItemArmor.class));
 		parameters.add(new ToughnessParameter());
-		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> {
+		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> { //todo use attribute on tools for both 
 			Item item = itemstack.getItem();
 			if(item instanceof ItemTool)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_77865_bY")); //attackDamage
 			else if(item instanceof ItemSword){
-				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float damage = 1.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_DAMAGE.getName()))
@@ -86,7 +86,7 @@ public class InfoboxCreator {
 			if(item instanceof ItemTool)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_185065_c")); //attackSpeed
 			else if(item instanceof ItemSword){
-				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getItemAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 				float speed = 4.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_SPEED.getName()))

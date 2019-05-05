@@ -8,7 +8,7 @@ import xbony2.huesodewiki.infobox.parameters.TypeParameter;
 
 public class FirstSentenceCreator {
 	public static String createFirstSentence(ItemStack itemstack){
-		String name = itemstack.getDisplayName();
+		String name = itemstack.getDisplayName().getUnformattedComponentText();
 		String modName = getModName(itemstack);
 		String type = new TypeParameter().getParameterText(itemstack);
 		String linkFix = Config.linkCorrections.get(modName); //is null if there isn't a change required.

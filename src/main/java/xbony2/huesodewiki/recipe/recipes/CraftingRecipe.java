@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.IWikiRecipe;
 
@@ -37,7 +37,7 @@ public class CraftingRecipe implements IWikiRecipe {
 	public List<IRecipe> gatherRecipes(ItemStack itemstack){
 		List<IRecipe> recipes = new ArrayList<>();
 
-		CraftingManager.REGISTRY.forEach((recipe) -> {
+		Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING).forEach((recipe) -> {
 			if(recipe.getRecipeOutput().isItemEqual(itemstack))
 				recipes.add(recipe);
 		});
@@ -61,10 +61,10 @@ public class CraftingRecipe implements IWikiRecipe {
 
 			ret.append('|').append(Utils.getAlphabetLetter(i % width + 1)).append(i / width + 1).append('=');
 
-			if(ingredient instanceof OreIngredient)
-				ret.append(Utils.outputOreDictionaryEntry(ingredient.getMatchingStacks()));
-			else
-				ret.append(Utils.outputIngredient(ingredient));
+//			if(ingredient instanceof OreIngredient)
+//				ret.append(Utils.outputOreDictionaryEntry(ingredient.getMatchingStacks()));
+//			else
+			ret.append(Utils.outputIngredient(ingredient));
 
 			ret.append('\n');
 		}

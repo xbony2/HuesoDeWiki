@@ -1,3 +1,4 @@
+/*
 package xbony2.huesodewiki.command;
 
 import java.util.ArrayList;
@@ -256,3 +257,4 @@ public class CommandDumpStructure extends CommandBase {
 		return "{{Gc|mod=" + Utils.getModAbbrevation(Utils.getModName(FluidRegistry.getModId(fluidstack))) + "|dis=false|" + fluidstack.getLocalizedName() + "}}";
 	}
 }
+*/

@@ -17,6 +17,6 @@ public class NameParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return itemstack.getDisplayName();
+		return itemstack.getDisplayName().getUnformattedComponentText();
 	}
 }

@@ -1,3 +1,4 @@
+/*
 package xbony2.huesodewiki.compat.baubles;
 
 import baubles.api.cap.BaublesCapabilities;
@@ -20,3 +21,4 @@ public class BaubleType implements IType {
 		return itemstack.hasCapability(BaublesCapabilities.CAPABILITY_ITEM_BAUBLE, null);
 	}
 }
+*/

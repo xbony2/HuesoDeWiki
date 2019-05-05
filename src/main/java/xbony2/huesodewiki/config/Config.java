@@ -1,89 +1,71 @@
 package xbony2.huesodewiki.config;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import xbony2.huesodewiki.HuesoDeWiki;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.config.ModConfig;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
 
-	private static final String[] DEFAULT_NAME_CORRECTIONS = new String[]{"Iron Chest", "Iron Chests", "Minecraft", "Vanilla", "Thermal Expansion", "Thermal Expansion 5", "Pressurized Defense", "Pressurized Defence", "Thaumcraft", "Thaumcraft 6"};
-	private static final String[] DEFAULT_LINK_CORRECTIONS = new String[]{"Esteemed Innovation", "Esteemed Innovation (mod)"};
+	private static final List<String> DEFAULT_NAME_CORRECTIONS = Arrays.asList("Iron Chest=Iron Chests", "Minecraft=Vanilla", "Thermal Expansion=Thermal Expansion 5", "Pressurized Defense=Pressurized Defence", "Thaumcraft=Thaumcraft 6");
+	private static final List<String> DEFAULT_LINK_CORRECTIONS = Collections.singletonList("Esteemed Innovation=Esteemed Innovation (mod)");
 
-	public static boolean use2SpaceStyle;
-	public static boolean useStackedCategoryStyle;
-	public static boolean printOutputToLog;
+	public static ForgeConfigSpec.BooleanValue use2SpaceStyle;
+	public static ForgeConfigSpec.BooleanValue useStackedCategoryStyle;
+	public static ForgeConfigSpec.BooleanValue printOutputToLog;
+	public static ForgeConfigSpec.ConfigValue<List<String>> nameCorrectionsRaw;
+	public static ForgeConfigSpec.ConfigValue<List<String>> linkCorrectionsRaw;
 
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();
 
-	static Configuration config;
+	private Config(ForgeConfigSpec.Builder builder){
+		use2SpaceStyle = builder.comment("Use \"2spacestyle\"- put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").")
+				.define("use2SpaceStyle", false);
+		useStackedCategoryStyle = builder.comment("Use \"stacked\" category style– put each category on its own line.")
+				.define("useStackedCategoryStyle", false);
+		printOutputToLog = builder.comment("Enable to print the generated output to the console log- for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux")
+				.define("printOutputToLog", false);
 
-	private static final int CONFIG_VERSION = 1;
+		Predicate<Object> validator = s -> s instanceof String && ((String) s).split("=", 2).length == 2;
 
-	public static void initConfig(File file){
-		config = new Configuration(file, String.valueOf(CONFIG_VERSION));
-		config.load();
+		nameCorrectionsRaw = builder.comment("Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.")
+				.define("nameCorrections", DEFAULT_NAME_CORRECTIONS, validator);
+		linkCorrectionsRaw = builder.comment("Link fixes. Is a map- first entry is the mod's name, second is the FTB Wiki's page.")
+				.define("linkCorrections", DEFAULT_LINK_CORRECTIONS, validator);
 
-		readConfig();
-		updateConfig();
-		
-		MinecraftForge.EVENT_BUS.register(Config.class);
 	}
 
-	private static void readConfig(){
-		use2SpaceStyle = config.getBoolean("Use2SpaceStyle", "Main", false, "Use \"2spacestyle\"- put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").");
-		useStackedCategoryStyle = config.getBoolean("UseStackedCategoryStyle", "Main", false, "Use \"stacked\" category style– put each category on its own line.");
-		String[] nameCorrections = config.getStringList("NameCorrections", "Main", DEFAULT_NAME_CORRECTIONS, "Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.");
-		String[] linkCorrections = config.getStringList("LinkCorrections", "Main", DEFAULT_LINK_CORRECTIONS, "Link fixes. Is a map- first entry is the mod's name, second is the FTB Wiki's page.");
-		printOutputToLog = config.getBoolean("PrintOutputToLog", "Main", false, "Enable to print the generated output to the console log- for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux");
+	public static final ForgeConfigSpec CLIENT_SPEC;
+	public static final Config CLIENT_CONFIG;
 
-		for(int i = 0; i < nameCorrections.length - 1; i += 2)
-			Config.nameCorrections.put(nameCorrections[i], nameCorrections[i + 1]);
-
-		for(int i = 0; i < linkCorrections.length - 1; i += 2)
-			Config.nameCorrections.put(linkCorrections[i], linkCorrections[i + 1]);
-
-		if(config.hasChanged())
-			config.save();
+	static{
+		Pair<Config, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Config::new);
+		CLIENT_CONFIG = specPair.getLeft();
+		CLIENT_SPEC = specPair.getRight();
 	}
 
-	private static void updateConfig(){
-		int version;
+	private static void readCorrections(List<String> source, Map<String, String> dest){
+		dest.clear();
+		for(String s : source){
+			String[] split = s.split("=", 2);
 
-		try {
-			if(config.getLoadedConfigVersion() == null)
-				version = 0;
-			else
-				version = Integer.parseInt(config.getLoadedConfigVersion());
-		}catch(NumberFormatException e){
-			HuesoDeWiki.LOGGER.error("Invalid config version!", e);
-			return;
-		}
+			if(split.length != 2)
+				continue;
 
-		if(version > CONFIG_VERSION){
-			HuesoDeWiki.LOGGER.error("Future config version detected!");
-			return;
-		}
-
-		if(version <= 0){
-			HuesoDeWiki.LOGGER.info("Updating HuesoDeWiki config");
-
-			HuesoDeWiki.LOGGER.info("Resetting name corrections to default");
-			config.get("Main", "NameCorrections", DEFAULT_NAME_CORRECTIONS).set(DEFAULT_NAME_CORRECTIONS);
-
-			readConfig();
+			dest.put(split[0], split[1]);
 		}
 	}
 
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event){
-		if(HuesoDeWiki.MODID.equals(event.getModID()))
-			readConfig();
+	public static void onConfigLoad(ModConfig.Loading event){
+		readCorrections(linkCorrectionsRaw.get(), linkCorrections);
+		readCorrections(nameCorrectionsRaw.get(), nameCorrections);
+	}
+
+	public static void onConfigReload(ModConfig.ConfigReloading event){
+		readCorrections(linkCorrectionsRaw.get(), linkCorrections);
+		readCorrections(nameCorrectionsRaw.get(), nameCorrections);
 	}
 }

@@ -1,3 +1,4 @@
+/*
 package xbony2.huesodewiki.compat.baubles;
 
 import baubles.api.cap.BaublesCapabilities;
@@ -13,3 +14,4 @@ public class BaublesCompat {
 		TypeParameter.types.add(new BaubleType());
 	}
 }
+*/
