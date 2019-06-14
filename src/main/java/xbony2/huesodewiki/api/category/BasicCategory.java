@@ -1,23 +1,25 @@
 package xbony2.huesodewiki.api.category;
 
+import java.util.function.Predicate;
+
 import net.minecraft.item.ItemStack;
 
 public class BasicCategory implements ICategory {
-	private final String NAME;
-	private final ICanAdd CAN_ADD;
+	private final String name;
+	private final Predicate<ItemStack> canAdd;
 	
-	public BasicCategory(String name, ICanAdd canAdd){
-		NAME = name;
-		CAN_ADD = canAdd;
+	public BasicCategory(String name, Predicate<ItemStack> canAdd){
+		this.name = name;
+		this.canAdd = canAdd;
 	}
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return CAN_ADD.canAdd(itemstack);
+		return canAdd.test(itemstack);
 	}
 
 	@Override
 	public String getCategoryName(ItemStack itemstack){
-		return NAME;
+		return name;
 	}
 }

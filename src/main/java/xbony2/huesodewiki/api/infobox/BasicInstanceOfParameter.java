@@ -1,21 +1,23 @@
 package xbony2.huesodewiki.api.infobox;
 
+import java.util.function.Function;
+
 import net.minecraft.item.ItemStack;
 
 public class BasicInstanceOfParameter implements IInfoboxParameter {
-	private final String NAME;
-	private final IGetParameterText GET_PARAMETER_TEXT;
-	private final Class[] CLASSES;
+	private final String name;
+	private final Function<ItemStack, String> paramTextFunction;
+	private final Class[] classes;
 	
-	public BasicInstanceOfParameter(String name, IGetParameterText getParameterText, Class... classes){
-		NAME = name;
-		GET_PARAMETER_TEXT = getParameterText;
-		CLASSES = classes;
+	public BasicInstanceOfParameter(String name, Function<ItemStack, String> paramText, Class... classes){
+		this.name = name;
+		this.paramTextFunction = paramText;
+		this.classes = classes;
 	}
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		for(Class clazz : CLASSES)
+		for(Class clazz : classes)
 			if(clazz.isInstance(itemstack.getItem()))
 				return true;
 		
@@ -24,11 +26,11 @@ public class BasicInstanceOfParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterName(){
-		return NAME;
+		return name;
 	}
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return GET_PARAMETER_TEXT.getParameterText(itemstack);
+		return paramTextFunction.apply(itemstack);
 	}
 }

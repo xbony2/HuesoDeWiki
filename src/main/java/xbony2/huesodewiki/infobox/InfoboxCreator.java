@@ -1,8 +1,5 @@
 package xbony2.huesodewiki.infobox;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,22 +14,21 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.Utils;
+import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.api.infobox.BasicInstanceOfParameter;
-import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.infobox.parameters.*;
 
 public class InfoboxCreator {
-	public static List<IInfoboxParameter> parameters = new ArrayList<>();
-	
-	static {
-		parameters.add(new NameParameter());
-		parameters.add(new ImageIconParameter());
-		parameters.add(new ModParameter());
-		parameters.add(new TypeParameter());
+
+	public static void init() {
+		HuesoDeWikiAPI.parameters.add(new NameParameter());
+		HuesoDeWikiAPI.parameters.add(new ImageIconParameter());
+		HuesoDeWikiAPI.parameters.add(new ModParameter());
+		HuesoDeWikiAPI.parameters.add(new TypeParameter());
 //		parameters.add(new OreDictNameParameter()); todo tags
 		//parameters.add(new RegistryNameParameter());
 		//parameters.add(new UnlocalizedNameParameter()); // Disabled until issue resolved
-		parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
 			String ret;
 			
 			try{
@@ -44,7 +40,7 @@ public class InfoboxCreator {
 			return ret;
 		}, ItemBlock.class));
 		
-		parameters.add(new BasicInstanceOfParameter("hardness", (itemstack) -> {
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("hardness", (itemstack) -> {
 			String ret;
 			
 			try{
@@ -56,17 +52,17 @@ public class InfoboxCreator {
 			return ret;
 		}, ItemBlock.class));
 		
-		parameters.add(new BasicInstanceOfParameter("foodpoints", (itemstack) -> Integer.toString(((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
-		parameters.add(new BasicInstanceOfParameter("saturation", (itemstack) -> Utils.floatToString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack) * ((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
-		parameters.add(new BasicInstanceOfParameter("hunger", (itemstack) -> {
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("foodpoints", (itemstack) -> Integer.toString(((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("saturation", (itemstack) -> Utils.floatToString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack) * ((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("hunger", (itemstack) -> {
 			ItemFood food = (ItemFood)itemstack.getItem();
 			return "{{Shanks|" + Integer.toString(food.getHealAmount(itemstack)) + "|" + Utils.floatToString(food.getSaturationModifier(itemstack)) + "}}";
 		}, ItemFood.class));
 		
-		parameters.add(new EffectsParameter());
-		parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).getDamageReduceAmount()), ItemArmor.class));
-		parameters.add(new ToughnessParameter());
-		parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> { //todo use attribute on tools for both 
+		HuesoDeWikiAPI.parameters.add(new EffectsParameter());
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).getDamageReduceAmount()), ItemArmor.class));
+		HuesoDeWikiAPI.parameters.add(new ToughnessParameter());
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> { //todo use attribute on tools for both 
 			Item item = itemstack.getItem();
 			if(item instanceof ItemTool)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_77865_bY")); //attackDamage
@@ -81,7 +77,7 @@ public class InfoboxCreator {
 			}
 			return "?";
 		}, ItemTool.class, ItemSword.class));
-		parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
 			Item item = itemstack.getItem();
 			if(item instanceof ItemTool)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_185065_c")); //attackSpeed
@@ -97,19 +93,19 @@ public class InfoboxCreator {
 			}
 			return "?";
 		}, ItemTool.class, ItemSword.class));
-		parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemTool.class));
-		parameters.add(new EnchantabilityParameter());
-		parameters.add(new MiningLevelParameter());
-		parameters.add(new MiningSpeedParameter());
-		parameters.add(new StackableParameter());
-		parameters.add(new FlammableParameter());
-		parameters.add(new LuminanceParameter());
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemTool.class));
+		HuesoDeWikiAPI.parameters.add(new EnchantabilityParameter());
+		HuesoDeWikiAPI.parameters.add(new MiningLevelParameter());
+		HuesoDeWikiAPI.parameters.add(new MiningSpeedParameter());
+		HuesoDeWikiAPI.parameters.add(new StackableParameter());
+		HuesoDeWikiAPI.parameters.add(new FlammableParameter());
+		HuesoDeWikiAPI.parameters.add(new LuminanceParameter());
 	}
 	
 	public static String createInfobox(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder("{{Infobox\n");
 		
-		parameters.stream().filter((parameter) -> parameter.canAdd(itemstack)).forEach((parameter) -> ret.append('|').append(parameter.getParameterName()).append('=').append(parameter.getParameterText(itemstack)).append('\n'));
+		HuesoDeWikiAPI.parameters.stream().filter((parameter) -> parameter.canAdd(itemstack)).forEach((parameter) -> ret.append('|').append(parameter.getParameterName()).append('=').append(parameter.getParameterText(itemstack)).append('\n'));
 		
 		ret.append("}}\n");
 		return ret.toString();

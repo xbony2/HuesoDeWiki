@@ -16,13 +16,15 @@ public class InputEventHandler {
 	@SubscribeEvent
 	public static void buttonPressed(InputEvent.KeyInputEvent event){
 		Minecraft mc = Minecraft.getInstance();
-		int eventKey = event.getKey();
-		int scanKey = event.getScanCode();
 
-		if(mc.world == null /*|| !Keyboard.getEventKeyState() || Keyboard.isRepeatEvent()*/)
+		if(mc.world == null)
 			return;
 
-		if(HuesoDeWiki.copyPageKey.isActiveAndMatches(InputMappings.getInputByCode(eventKey, scanKey))){
+		int eventKey = event.getKey();
+		int scanKey = event.getScanCode();
+		InputMappings.Input input = InputMappings.getInputByCode(eventKey, scanKey);
+
+		if(HuesoDeWiki.copyPageKey.isActiveAndMatches(input)){
 			ItemStack stack = Utils.getHoveredItemStack();
 			if(stack.isEmpty())
 				return;
@@ -35,7 +37,7 @@ public class InputEventHandler {
 				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", stack.getDisplayName()));
 			}
 
-		}else if(HuesoDeWiki.copyNameKey.isActiveAndMatches(InputMappings.getInputByCode(eventKey, scanKey))){
+		}else if(HuesoDeWiki.copyNameKey.isActiveAndMatches(input)){
 			ItemStack stack = Utils.getHoveredItemStack();
 
 			if(!stack.isEmpty()){

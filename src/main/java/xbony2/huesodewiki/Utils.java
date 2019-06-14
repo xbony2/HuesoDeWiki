@@ -41,6 +41,7 @@ public class Utils {
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getUnformattedComponentText() + "}}";
 	}
 
+	/* TODO Tags are a thing now, and recipes use them instead of oredict*/
 	public static String outputIngredient(Ingredient ingredient){
 		StringBuilder ret = new StringBuilder();
 
@@ -55,41 +56,6 @@ public class Utils {
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName().getUnformattedComponentText() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
 	}
 
-	/* TODO Tags are a thing now, and recipes use them instead of oredict
-	public static String outputOreDictionaryEntry(ItemStack[] list){
-		try {
-			ItemStack stack = list[0];
-
-			int[] ids = OreDictionary.getOreIDs(stack);
-
-			for(int i = 0; i < ids.length; i++){
-				String potentialEntry = OreDictionary.getOreName(ids[i]);
-				List<ItemStack> potentialCognate = OreDictionary.getOres(potentialEntry);
-
-				NonNullList<ItemStack> potentialCognateExploded = NonNullList.create();
-				for(ItemStack itemStack : potentialCognate)
-					if(itemStack.getMetadata() == OreDictionary.WILDCARD_VALUE)
-						itemStack.getItem().getSubItems(CreativeTabs.SEARCH, potentialCognateExploded);
-					else
-						potentialCognateExploded.add(itemStack);
-
-				boolean isEqual = potentialCognateExploded.size() == list.length;
-
-				if(isEqual) //so far, that is
-					for(int j = 0; j < list.length; j++)
-						if(potentialCognateExploded.get(j).getItem() != list[j].getItem() && potentialCognateExploded.get(j).getItemDamage() != list[j].getItemDamage())
-							isEqual = false;
-
-				if(isEqual)
-					return "{{O|" + potentialEntry + "}}";
-			}
-		}catch(ArrayIndexOutOfBoundsException e){
-			return null;
-		}
-
-		return null;
-	}
-*/
 	public static String doubleToString(double d){
 		String ret = Double.toString(d);
 		if(ret.endsWith(".0"))

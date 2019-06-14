@@ -15,8 +15,9 @@ public class Config {
 	public static ForgeConfigSpec.BooleanValue use2SpaceStyle;
 	public static ForgeConfigSpec.BooleanValue useStackedCategoryStyle;
 	public static ForgeConfigSpec.BooleanValue printOutputToLog;
-	public static ForgeConfigSpec.ConfigValue<List<String>> nameCorrectionsRaw;
-	public static ForgeConfigSpec.ConfigValue<List<String>> linkCorrectionsRaw;
+	
+	private static ForgeConfigSpec.ConfigValue<List<String>> nameCorrectionsRaw;
+	private static ForgeConfigSpec.ConfigValue<List<String>> linkCorrectionsRaw;
 
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();

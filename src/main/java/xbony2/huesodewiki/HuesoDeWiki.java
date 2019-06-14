@@ -13,7 +13,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.config.Config;
+import xbony2.huesodewiki.infobox.InfoboxCreator;
+import xbony2.huesodewiki.prefix.PrefixCreator;
+import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod(HuesoDeWiki.MODID)
 public class HuesoDeWiki {
@@ -32,8 +36,6 @@ public class HuesoDeWiki {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
 		bus.addListener(Config::onConfigLoad);
 		bus.addListener(Config::onConfigReload);
-		
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	private void clientInit(FMLClientSetupEvent event){
@@ -41,6 +43,11 @@ public class HuesoDeWiki {
 		ClientRegistry.registerKeyBinding(copyPageKey);
 		copyNameKey = new KeyBinding("key.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(copyNameKey);
+
+		InfoboxCreator.init();
+		RecipeCreator.init();
+		PrefixCreator.init();
+		CategoryCreator.init();
 		
 //		Compat.preInit();
 	}
