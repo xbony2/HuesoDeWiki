@@ -26,7 +26,7 @@ public class FurnaceRecipe implements IWikiRecipe {
 			recipes = (Map<ResourceLocation, IRecipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().world.getRecipeManager(), IRecipeType.SMELTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting furnace recipe map", e);
-			return "<!--Furnace recipes errored, see console log for details->";
+			return "<!--Furnace recipes errored, see console log for details-->";
 		}
 
 		recipes.forEach((rl, recipe) -> {

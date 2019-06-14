@@ -46,7 +46,7 @@ public class CraftingRecipe implements IWikiRecipe {
 		List<IRecipe<?>> recipes = new ArrayList<>();
 		Map<ResourceLocation, IRecipe<?>> recipeMap;
 		try {
-			recipeMap = (Map<ResourceLocation, IRecipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().world.getRecipeManager(), IRecipeType.SMELTING);
+			recipeMap = (Map<ResourceLocation, IRecipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().world.getRecipeManager(), IRecipeType.CRAFTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
 			return Collections.emptyList();

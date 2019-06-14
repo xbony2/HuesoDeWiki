@@ -6,7 +6,7 @@ import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xbony2.huesodewiki.recipe.RecipeCreator;
@@ -14,13 +14,13 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 @Mod.EventBusSubscriber(modid = HuesoDeWiki.MODID, value = Dist.CLIENT)
 public class InputEventHandler {
 	@SubscribeEvent
-	public static void buttonPressed(InputEvent.KeyInputEvent event){
+	public static void buttonPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Post event){
 		Minecraft mc = Minecraft.getInstance();
 
 		if(mc.world == null)
 			return;
 
-		int eventKey = event.getKey();
+		int eventKey = event.getKeyCode();
 		int scanKey = event.getScanCode();
 		InputMappings.Input input = InputMappings.getInputByCode(eventKey, scanKey);
 

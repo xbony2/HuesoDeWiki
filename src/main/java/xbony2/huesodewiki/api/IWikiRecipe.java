@@ -3,9 +3,9 @@ package xbony2.huesodewiki.api;
 import net.minecraft.item.ItemStack;
 
 public interface IWikiRecipe {
+	String IMC_NAME = "recipe";
+
 	/**
-	 * 
-	 * @param itemstack
 	 * @return null or "" if there are no recipes to add.
 	 */
 	String getRecipes(ItemStack itemstack);
