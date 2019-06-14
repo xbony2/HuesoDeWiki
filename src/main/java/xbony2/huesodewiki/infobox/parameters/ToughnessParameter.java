@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
@@ -9,7 +9,7 @@ public class ToughnessParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).getToughness() > 0.0;
+		return itemstack.getItem() instanceof ArmorItem && ((ArmorItem)itemstack.getItem()).getToughness() > 0.0;
 	}
 
 	@Override
@@ -19,6 +19,6 @@ public class ToughnessParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return Utils.floatToString(((ItemArmor)itemstack.getItem()).getToughness());
+		return Utils.floatToString(((ArmorItem)itemstack.getItem()).getToughness());
 	}
 }

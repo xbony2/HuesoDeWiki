@@ -1,31 +1,28 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolItem;
+import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
+import xbony2.huesodewiki.api.infobox.type.BasicConditionType;
 import xbony2.huesodewiki.api.infobox.type.BasicInstanceOfType;
 import xbony2.huesodewiki.api.infobox.type.IType;
 import xbony2.huesodewiki.infobox.parameters.types.*;
 
 public class TypeParameter implements IInfoboxParameter {
-	public static List<IType> types = new ArrayList<>();
+
+	private static final IType fallback = new BasicConditionType(0, "item", itemstack -> true);
 	
 	static {
-		types.add(new BasicInstanceOfType(5, "block", ItemBlock.class));
-		types.add(new BasicInstanceOfType(10, "food", ItemFood.class));
-		types.add(new ItemType());
-		types.add(new BasicInstanceOfType(10, "armor", ItemArmor.class));
-		types.add(new BasicInstanceOfType(10, "tool", ItemTool.class));
-		types.add(new BasicInstanceOfType(10, "weapon", ItemSword.class, ItemBow.class)); //Not really comprehensive but hey
-		types.add(new TEntityType());
+		HuesoDeWikiAPI.types.add(new BasicConditionType(10, "food", ItemStack::isFood));
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "armor", ArmorItem.class));
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "tool", ToolItem.class));
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "weapon", SwordItem.class, BowItem.class)); //Not really comprehensive but hey
+		HuesoDeWikiAPI.types.add(new TEntityType());
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(5, "block", BlockItem.class));
 	}
 
 	@Override
@@ -37,16 +34,10 @@ public class TypeParameter implements IInfoboxParameter {
 	public String getParameterName(){
 		return "type";
 	}
-	
-	IType possibleType = new ItemType(); //per default. Doesn't work as a local variable because lambda weirdness.
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		types.stream().filter((type) -> type.isApplicable(itemstack) && type.getPriority() > possibleType.getPriority()).forEach((type) -> possibleType = type);
-		
-		IType type = possibleType;
-		possibleType = new ItemType(); //Clearing "local" variable.
-		
-		return type.getName();
+		return HuesoDeWikiAPI.types.stream().filter((type) -> type.isApplicable(itemstack))
+				.findFirst().orElse(fallback).getName();
 	}
 }

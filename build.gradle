@@ -20,7 +20,7 @@ archivesBaseName = "huesodewiki"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190505-1.13.2'
+    mappings channel: 'snapshot', version: '20190614-1.14.2'
     
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -45,7 +45,7 @@ minecraft {
             workingDirectory project.file('run')
 
             // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'SCAN' //REGISTRIES,REGISTRYDUMP are irrelevant for us
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
@@ -60,7 +60,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.191'
+    minecraft 'net.minecraftforge:forge:1.14.2-26.0.25'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

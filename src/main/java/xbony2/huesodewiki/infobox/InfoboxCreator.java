@@ -4,17 +4,12 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
+import xbony2.huesodewiki.api.infobox.BasicConditionParameter;
 import xbony2.huesodewiki.api.infobox.BasicInstanceOfParameter;
 import xbony2.huesodewiki.infobox.parameters.*;
 
@@ -32,42 +27,45 @@ public class InfoboxCreator {
 			String ret;
 			
 			try{
-				ret = Utils.floatToString(((ItemBlock)itemstack.getItem()).getBlock().getExplosionResistance() * 5); //Minecraft is weird with it, don't ask
+				ret = Utils.floatToString(((BlockItem)itemstack.getItem()).getBlock().getExplosionResistance() * 5); //Minecraft is weird with it, don't ask
 			}catch(Exception e){ //In case of a null pointer
 				ret = "?";
 			}
 			
 			return ret;
-		}, ItemBlock.class));
+		}, BlockItem.class));
 		
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("hardness", (itemstack) -> {
 			String ret;
 			
 			try{
-				ret = Utils.floatToString(((ItemBlock)itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
+				ret = Utils.floatToString(((BlockItem)itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
 			}catch(Exception e){ //In case of a null pointer
 				ret = "?";
 			}
 			
 			return ret;
-		}, ItemBlock.class));
+		}, BlockItem.class));
 		
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("foodpoints", (itemstack) -> Integer.toString(((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("saturation", (itemstack) -> Utils.floatToString(((ItemFood)itemstack.getItem()).getSaturationModifier(itemstack) * ((ItemFood)itemstack.getItem()).getHealAmount(itemstack)), ItemFood.class));
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("hunger", (itemstack) -> {
-			ItemFood food = (ItemFood)itemstack.getItem();
-			return "{{Shanks|" + Integer.toString(food.getHealAmount(itemstack)) + "|" + Utils.floatToString(food.getSaturationModifier(itemstack)) + "}}";
-		}, ItemFood.class));
+		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("foodpoints", (itemstack) -> Integer.toString(itemstack.getItem().getFood().getHealing()), ItemStack::isFood));
+		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("saturation", (itemstack) -> {
+			Food food = itemstack.getItem().getFood();
+			return Utils.floatToString(food.getSaturation() * food.getHealing() * 2.0F);
+		}, ItemStack::isFood));
+		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("hunger", (itemstack) -> {
+			Food food = itemstack.getItem().getFood();
+			return "{{Shanks|" + food.getHealing() + "|" + Utils.floatToString(food.getSaturation()) + "}}";
+		}, ItemStack::isFood));
 		
 		HuesoDeWikiAPI.parameters.add(new EffectsParameter());
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ItemArmor)itemstack.getItem()).getDamageReduceAmount()), ItemArmor.class));
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ArmorItem)itemstack.getItem()).getDamageReduceAmount()), ArmorItem.class));
 		HuesoDeWikiAPI.parameters.add(new ToughnessParameter());
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> { //todo use attribute on tools for both 
 			Item item = itemstack.getItem();
-			if(item instanceof ItemTool)
-				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_77865_bY")); //attackDamage
-			else if(item instanceof ItemSword){
-				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+			if(item instanceof ToolItem)
+				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ToolItem.class, (ToolItem) item, "field_77865_bY")); //attackDamage
+			else if(item instanceof SwordItem){
+				Multimap<String, AttributeModifier> multimap = ((SwordItem)item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 				float damage = 1.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_DAMAGE.getName()))
@@ -76,13 +74,13 @@ public class InfoboxCreator {
 				return Utils.floatToString(damage);
 			}
 			return "?";
-		}, ItemTool.class, ItemSword.class));
+		}, ToolItem.class, SwordItem.class));
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
 			Item item = itemstack.getItem();
-			if(item instanceof ItemTool)
-				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ItemTool.class, (ItemTool) item, "field_185065_c")); //attackSpeed
-			else if(item instanceof ItemSword){
-				Multimap<String, AttributeModifier> multimap = ((ItemSword)item).getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
+			if(item instanceof ToolItem)
+				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ToolItem.class, (ToolItem) item, "field_185065_c")); //attackSpeed
+			else if(item instanceof SwordItem){
+				Multimap<String, AttributeModifier> multimap = ((SwordItem)item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 				float speed = 4.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_SPEED.getName()))
@@ -92,8 +90,8 @@ public class InfoboxCreator {
 				return String.format("%.2g", speed);
 			}
 			return "?";
-		}, ItemTool.class, ItemSword.class));
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemTool.class));
+		}, ToolItem.class, SwordItem.class));
+		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemStack::isDamageable));
 		HuesoDeWikiAPI.parameters.add(new EnchantabilityParameter());
 		HuesoDeWikiAPI.parameters.add(new MiningLevelParameter());
 		HuesoDeWikiAPI.parameters.add(new MiningSpeedParameter());

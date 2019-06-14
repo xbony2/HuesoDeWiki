@@ -1,10 +1,10 @@
 package xbony2.huesodewiki;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,12 +29,12 @@ public class InputEventHandler {
 			if(stack.isEmpty())
 				return;
 
-			if(GuiScreen.isCtrlKeyDown()){
+			if(Screen.hasControlDown()){
 				Utils.copyString(RecipeCreator.createRecipes(stack));
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedrecipe", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copiedrecipe", stack.getDisplayName()));
 			}else{
 				Utils.copyString(PageCreator.createPage(stack));
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copiedpage", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copiedpage", stack.getDisplayName()));
 			}
 
 		}else if(HuesoDeWiki.copyNameKey.isActiveAndMatches(input)){
@@ -42,7 +42,7 @@ public class InputEventHandler {
 
 			if(!stack.isEmpty()){
 				Utils.copyString(stack.getDisplayName().getUnformattedComponentText());
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TextComponentTranslation("msg.copieditemname", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copieditemname", stack.getDisplayName()));
 			}
 		}
 	}

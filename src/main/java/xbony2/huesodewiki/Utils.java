@@ -3,11 +3,11 @@ package xbony2.huesodewiki;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Slot;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.ModContainer;
@@ -74,7 +74,7 @@ public class Utils {
 	 * @param itemstack Stack to convert into blockstate
 	 * @return State corresponding to the item
 	 */
-	public static IBlockState stackToBlockState(ItemStack itemstack){
+	public static BlockState stackToBlockState(ItemStack itemstack){
 		return Block.getBlockFromItem(itemstack.getItem()).getDefaultState();
 	}
 
@@ -95,10 +95,10 @@ public class Utils {
 	 */
 	@Nonnull
 	public static ItemStack getHoveredItemStack(){
-		GuiScreen currentScreen = Minecraft.getInstance().currentScreen;
+		Screen currentScreen = Minecraft.getInstance().currentScreen;
 
-		if(currentScreen instanceof GuiContainer){
-			Slot hovered = ((GuiContainer) currentScreen).getSlotUnderMouse();
+		if(currentScreen instanceof ContainerScreen){
+			Slot hovered = ((ContainerScreen) currentScreen).getSlotUnderMouse();
 
 			if(hovered != null)
 				return hovered.getStack();

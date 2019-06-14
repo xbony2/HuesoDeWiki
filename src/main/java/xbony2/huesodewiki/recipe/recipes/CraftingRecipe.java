@@ -1,30 +1,37 @@
 package xbony2.huesodewiki.recipe.recipes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.common.crafting.VanillaRecipeTypes;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import xbony2.huesodewiki.HuesoDeWiki;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.IWikiRecipe;
 
 public class CraftingRecipe implements IWikiRecipe {
 
+	// RecipeManager#getRecipes(IRecipeType), TODO check if forge ATs this away later, or possibly AT this on our own
+	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "func_215366_a", IRecipeType.class);
+
 	@Override
 	public String getRecipes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
-		List<IRecipe> recipes = gatherRecipes(itemstack);
+		List<IRecipe<?>> recipes = gatherRecipes(itemstack);
 
 		if(recipes.isEmpty())
 			return "";
 
-		for(Iterator<IRecipe> iterator = recipes.iterator(); iterator.hasNext(); ){
+		for(Iterator<IRecipe<?>> iterator = recipes.iterator(); iterator.hasNext(); ){
 			IRecipe recipe = iterator.next();
 			ret.append(outputRecipe(recipe));
 			if(iterator.hasNext())
@@ -34,17 +41,25 @@ public class CraftingRecipe implements IWikiRecipe {
 		return ret.toString();
 	}
 
-	public List<IRecipe> gatherRecipes(ItemStack itemstack){
-		List<IRecipe> recipes = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	public List<IRecipe<?>> gatherRecipes(ItemStack itemstack){
+		List<IRecipe<?>> recipes = new ArrayList<>();
+		Map<ResourceLocation, IRecipe<?>> recipeMap;
+		try {
+			recipeMap = (Map<ResourceLocation, IRecipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().world.getRecipeManager(), IRecipeType.SMELTING);
+		}catch(IllegalAccessException | InvocationTargetException e){
+			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
+			return Collections.emptyList();
+		}
 
-		Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING).forEach((recipe) -> {
+		recipeMap.forEach((rl, recipe) -> {
 			if(recipe.getRecipeOutput().isItemEqual(itemstack))
 				recipes.add(recipe);
 		});
 		return recipes;
 	}
 
-	public String outputRecipe(IRecipe recipe){
+	public String outputRecipe(IRecipe<?> recipe){
 		StringBuilder ret = new StringBuilder("{{Cg/Crafting Table\n");
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
