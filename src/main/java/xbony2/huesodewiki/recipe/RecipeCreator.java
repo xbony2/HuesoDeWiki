@@ -7,7 +7,7 @@ import xbony2.huesodewiki.recipe.recipes.CraftingRecipe;
 import xbony2.huesodewiki.recipe.recipes.FurnaceRecipe;
 
 public class RecipeCreator {
-	public static void init() {
+	public static void init(){
 		HuesoDeWikiAPI.recipes.add(new CraftingRecipe());
 		HuesoDeWikiAPI.recipes.add(new FurnaceRecipe());
 	}

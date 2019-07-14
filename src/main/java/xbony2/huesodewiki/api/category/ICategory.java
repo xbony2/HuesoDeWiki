@@ -6,6 +6,6 @@ public interface ICategory {
 	String IMC_NAME = "category";
 
 	boolean canAdd(ItemStack itemstack);
-	
+
 	String getCategoryName(ItemStack itemstack);
 }

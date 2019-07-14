@@ -9,17 +9,17 @@ import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 public class MiningSpeedParameter implements IInfoboxParameter {
 	
 	@Override
-	public boolean canAdd(ItemStack itemstack) {
+	public boolean canAdd(ItemStack itemstack){
 		return itemstack.getItem() instanceof ToolItem;
 	}
 
 	@Override
-	public String getParameterName() {
+	public String getParameterName(){
 		return "miningspeed";
 	}
 
 	@Override
-	public String getParameterText(ItemStack itemstack) {
+	public String getParameterText(ItemStack itemstack){
 		IItemTier tier = ((ToolItem) itemstack.getItem()).getTier();
 		return Utils.floatToString(tier.getEfficiency());
 	}

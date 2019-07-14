@@ -15,7 +15,7 @@ import xbony2.huesodewiki.infobox.parameters.*;
 
 public class InfoboxCreator {
 
-	public static void init() {
+	public static void init(){
 		HuesoDeWikiAPI.parameters.add(new NameParameter());
 		HuesoDeWikiAPI.parameters.add(new ImageIconParameter());
 		HuesoDeWikiAPI.parameters.add(new ModParameter());
@@ -26,8 +26,8 @@ public class InfoboxCreator {
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
 			String ret;
 			
-			try{
-				ret = Utils.floatToString(((BlockItem)itemstack.getItem()).getBlock().getExplosionResistance() * 5); //Minecraft is weird with it, don't ask
+			try {
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getExplosionResistance() * 5); //Minecraft is weird with it, don't ask
 			}catch(Exception e){ //In case of a null pointer
 				ret = "?";
 			}
@@ -37,9 +37,9 @@ public class InfoboxCreator {
 		
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("hardness", (itemstack) -> {
 			String ret;
-			
-			try{
-				ret = Utils.floatToString(((BlockItem)itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
+
+			try {
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
 			}catch(Exception e){ //In case of a null pointer
 				ret = "?";
 			}
@@ -58,14 +58,14 @@ public class InfoboxCreator {
 		}, ItemStack::isFood));
 		
 		HuesoDeWikiAPI.parameters.add(new EffectsParameter());
-		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ArmorItem)itemstack.getItem()).getDamageReduceAmount()), ArmorItem.class));
+		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("armorrating", (itemstack) -> Integer.toString(((ArmorItem) itemstack.getItem()).getDamageReduceAmount()), ArmorItem.class));
 		HuesoDeWikiAPI.parameters.add(new ToughnessParameter());
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> { //todo use attribute on tools for both 
 			Item item = itemstack.getItem();
 			if(item instanceof ToolItem)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ToolItem.class, (ToolItem) item, "field_77865_bY")); //attackDamage
 			else if(item instanceof SwordItem){
-				Multimap<String, AttributeModifier> multimap = ((SwordItem)item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
+				Multimap<String, AttributeModifier> multimap = ((SwordItem) item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 				float damage = 1.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_DAMAGE.getName()))
@@ -80,7 +80,7 @@ public class InfoboxCreator {
 			if(item instanceof ToolItem)
 				return Utils.floatToString(ObfuscationReflectionHelper.getPrivateValue(ToolItem.class, (ToolItem) item, "field_185065_c")); //attackSpeed
 			else if(item instanceof SwordItem){
-				Multimap<String, AttributeModifier> multimap = ((SwordItem)item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
+				Multimap<String, AttributeModifier> multimap = ((SwordItem) item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 				float speed = 4.0f; //default
 				for(String name : multimap.keySet())
 					if(name.equals(SharedMonsterAttributes.ATTACK_SPEED.getName()))

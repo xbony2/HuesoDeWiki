@@ -23,16 +23,16 @@ import xbony2.huesodewiki.config.Config;
 
 public class CategoryCreator {
 
-	public static void init() {
+	public static void init(){
 		HuesoDeWikiAPI.categories.add(new ModCategory());
 		HuesoDeWikiAPI.categories.add(new BasicCategory("Food", ItemStack::isFood));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Music Discs", MusicDiscItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Farming", HoeItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Shearing", ShearsItem.class));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Footwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem)itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.FEET));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Legwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem)itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.LEGS));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Chestwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem)itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.CHEST));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Headwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem)itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.HEAD));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Footwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.FEET));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Legwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.LEGS));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Chestwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.CHEST));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Headwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getEquipmentSlot() == EquipmentSlotType.HEAD));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Felling", AxeItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Fishing", FishingRodItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Mining", PickaxeItem.class));
@@ -40,7 +40,7 @@ public class CategoryCreator {
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Melee weapons", SwordItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Ranged weapons", BowItem.class));
 	}
-	
+
 	public static String createCategories(ItemStack itemstack){
 		List<String> categoryStrings = new ArrayList<>();
 		

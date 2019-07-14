@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 
 public class PrefixCreator {
-	public static void init() {
+	public static void init(){
 		HuesoDeWikiAPI.prefixes.add(new CorrectTitlePrefix());
 		HuesoDeWikiAPI.prefixes.add(new LowercaseTitlePrefix());
 	}

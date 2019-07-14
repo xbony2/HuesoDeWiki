@@ -8,8 +8,8 @@ import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.api.infobox.type.IType;
 
 /**
- * Hooks for addons to use. 
- * Do not add things directly, send IMC containing suppliers 
+ * Hooks for addons to use.
+ * Do not add things directly, send IMC containing suppliers
  * of instances of these instead. The message method name is listed
  * in the relevant classes.
  */
