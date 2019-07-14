@@ -36,6 +36,10 @@ public class Utils {
 	public static String getModAbbrevation(ItemStack itemstack){
 		return getModAbbrevation(getModName(itemstack));
 	}
+	
+	public static String getModAbbrevation(Block block){
+		return getModAbbrevation(getModName(block.getRegistryName().getNamespace()));
+	}
 
 	public static String outputItem(ItemStack itemstack){
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getUnformattedComponentText() + "}}";

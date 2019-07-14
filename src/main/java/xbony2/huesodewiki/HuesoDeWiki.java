@@ -1,6 +1,7 @@
 package xbony2.huesodewiki;
 
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -9,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +22,7 @@ import xbony2.huesodewiki.api.category.ICategory;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.api.infobox.type.IType;
 import xbony2.huesodewiki.category.CategoryCreator;
+import xbony2.huesodewiki.command.StructureCommand;
 import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.infobox.InfoboxCreator;
 import xbony2.huesodewiki.prefix.PrefixCreator;
@@ -47,6 +50,8 @@ public class HuesoDeWiki {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
 		bus.addListener(Config::onConfigLoad);
 		bus.addListener(Config::onConfigReload);
+
+		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 	}
 
 	private void clientInit(FMLClientSetupEvent event){
@@ -59,7 +64,7 @@ public class HuesoDeWiki {
 		RecipeCreator.init();
 		PrefixCreator.init();
 		CategoryCreator.init();
-		
+
 //		Compat.preInit();
 	}
 
@@ -76,10 +81,7 @@ public class HuesoDeWiki {
 		imcs.map(InterModComms.IMCMessage::getMessageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
 	}
 
-	/*
-	@EventHandler TODO commands, because client commands dont exist for now and also brigadier
-	public void postInit(FMLPostInitializationEvent event){
-		ClientCommandHandler.instance.registerCommand(new CommandDumpStructure());
+	private void serverStarting(FMLServerStartingEvent event){
+		StructureCommand.register(event.getCommandDispatcher());
 	}
-	*/
 }

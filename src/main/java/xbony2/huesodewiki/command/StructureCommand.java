@@ -1,69 +1,91 @@
-/*
 package xbony2.huesodewiki.command;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.BlockPosArgument;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.ForgeI18n;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import xbony2.huesodewiki.Utils;
 
-public class CommandDumpStructure extends CommandBase {
-	@Override
-	public String getName(){
-		return "dumpstructure";
+import static com.mojang.brigadier.arguments.BoolArgumentType.getBool;
+import static net.minecraft.command.arguments.BlockPosArgument.getLoadedBlockPos;
+
+public class StructureCommand {
+	private static final String START_POS = "startPos";
+	private static final String END_POS = "endPos";
+	private static final String SHOULD_COMPACT = "shouldCompact";
+	private static final String SHOULD_WRAP_IN_TABLE = "shouldWrapInTable";
+
+	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.dumpstructure.tooLarge"));
+
+	public static void register(CommandDispatcher<CommandSource> dispatcher){
+		dispatcher.register(Commands.literal("dumpstructure")
+				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayerEntity) //TODO make it work on servers, but not with /execute
+				.then(Commands.argument(START_POS, BlockPosArgument.blockPos())
+						.then(Commands.argument(END_POS, BlockPosArgument.blockPos())
+								.executes(
+										ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+												getLoadedBlockPos(ctx, END_POS), "center",
+												false, false))
+								.then(Commands.argument(SHOULD_COMPACT, BoolArgumentType.bool())
+										.executes(
+												ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+														getLoadedBlockPos(ctx, END_POS), "center",
+														getBool(ctx, SHOULD_COMPACT), false))
+										.then(Commands.argument(SHOULD_WRAP_IN_TABLE, BoolArgumentType.bool())
+												.executes(
+														ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+																getLoadedBlockPos(ctx, END_POS), "center",
+																getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
+												.then(Commands.literal("center")
+														.executes(
+																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+																		getLoadedBlockPos(ctx, END_POS), "center",
+																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE))))
+												.then(Commands.literal("back")
+														.executes(
+																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+																		getLoadedBlockPos(ctx, END_POS), "back",
+																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE))))
+												.then(Commands.literal("front")
+														.executes(
+																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
+																		getLoadedBlockPos(ctx, END_POS), "front",
+																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
+												)))))
+		);
 	}
 
-	@Override
-	public String getUsage(ICommandSender sender){
-		return "commands.dumpstructure.usage";
-	}
+	private static int execute(CommandSource source, BlockPos start, BlockPos end, String paddingMode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException {
 
-	@Override
-	public List<String> getAliases(){
-		return Collections.emptyList();
-	}
-
-	private int amount;
-	
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if(args.length < 6)
-			throw new WrongUsageException("commands.dumpstructure.usage");
-
-		BlockPos start = parseBlockPos(sender, args, 0, false);
-		BlockPos end = parseBlockPos(sender, args, 3, false);
-		World world = sender.getEntityWorld();
-		
-		if(!world.isAreaLoaded(start, end, false))
-			throw new CommandException("commands.dumpstructure.outOfWorld");
+		World world = source.getWorld();
+		ServerPlayerEntity player = source.asPlayer();
 
 		int sizeX = Math.abs(start.getX() - end.getX());
 		int sizeZ = Math.abs(start.getZ() - end.getZ());
-		
+
 		if(sizeX >= 26 || sizeZ >= 26) //template supports up to 26x26 layers
-			throw new CommandException("commands.dumpstructure.tooLarge");
+			throw STRUCTURE_TOO_LARGE.create();
 
 		if(start.getY() < end.getY()){
 			int y = end.getY() - start.getY();
@@ -78,17 +100,13 @@ public class CommandDumpStructure extends CommandBase {
 		int paddingSizeStart = 0;
 
 		BlockPos startPadded = start, endPadded = end;
-		
-		if(args.length > 6){
-			String paddingMode = args[6];
-			
-			if(paddingMode.equals("back")){
-				paddingSizeStart = paddingSizeEnd;
-				paddingSizeEnd = 0;
-			}else if(paddingMode.equals("center")){
-				paddingSizeStart = paddingSizeEnd / 2 + paddingSizeEnd % 2;
-				paddingSizeEnd = paddingSizeEnd / 2;
-			}
+
+		if(paddingMode.equals("back")){
+			paddingSizeStart = paddingSizeEnd;
+			paddingSizeEnd = 0;
+		}else if(paddingMode.equals("center")){
+			paddingSizeStart = paddingSizeEnd / 2 + paddingSizeEnd % 2;
+			paddingSizeEnd = paddingSizeEnd / 2;
 		}
 
 		if(sizeX > sizeZ){
@@ -105,79 +123,76 @@ public class CommandDumpStructure extends CommandBase {
 		int maxZ = Math.max(start.getZ(), end.getZ());
 
 		BlockPos startPoint = startPadded;
-		amount = 0;
-		BlockPos.getAllInBoxMutable(startPadded, endPadded).forEach(pos -> {
+		int amount = 0;
+		for(BlockPos pos : BlockPos.getAllInBoxMutable(startPadded, endPadded)){
 			int x = startPoint.getX() - pos.getX();
 			int y = startPoint.getY() - pos.getY();
 			int z = startPoint.getZ() - pos.getZ();
-			
+
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
-				IBlockState state = world.getBlockState(pos);
+				BlockState state = world.getBlockState(pos);
 				
-				if(state.getBlock() instanceof BlockLiquid || state.getBlock() instanceof IFluidBlock){
-					Fluid fluid = FluidRegistry.lookupFluidForBlock(state.getBlock());
-					
-					if(fluid != null){
-						structure.add(new MultiblockPiece(x, y, z, new FluidStack(fluid, 1000), reverse));
-						return;
-					}
-				}
-				
-				RayTraceResult ray = new RayTraceResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), EnumFacing.UP, pos);
-				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, (EntityPlayer) sender);
-				
+				RayTraceResult ray = new BlockRayTraceResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
+				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, player);
+
 				if(!stack.isEmpty())
 					amount++;
-				
+				else{
+					IFluidState fluid = world.getFluidState(pos);
+					if(!fluid.isEmpty()){
+						structure.add(new MultiblockPiece(x, y, z, fluid, reverse));
+						amount++;
+						continue;
+					}
+				}
+
 				structure.add(new MultiblockPiece(x, y, z, stack, reverse));
 			}else
 				structure.add(new MultiblockPiece(x, y, z, reverse));
-		});
-		
+		}
+
 		structure.sort(reverse ? MultiblockPiece.ZX_COMPARE : MultiblockPiece.XZ_COMPARE);
-		
-		boolean shouldWrapInTable = args.length > 8 && "true".equals(args[8]);
-		
+
 		StringBuilder builder = new StringBuilder();
-				
+
 		if(shouldWrapInTable)
 			builder.append("{| class=\"wikitable mw-collapsible mw-collapsed\"\n|-\n! Structure\n|-\n| ");
 
 		builder.append("{{Cg/Multiblock/Alt\n");
 
-		boolean shouldCompact = args.length > 7 && "true".equals(args[7]);
 		boolean previousEmpty = false;
 		for(MultiblockPiece piece : structure){
 			if(shouldCompact){
 				if(previousEmpty && !piece.isEmpty())
 					builder.append('\n');
-				
+
 				previousEmpty = piece.isEmpty();
 			}
-			
+
 			builder.append(piece.toString());
-			
+
 			if(!shouldCompact || !piece.isEmpty())
 				builder.append('\n');
-			
+
 		}
-		
+
 		if(shouldCompact && previousEmpty)
 			builder.append('\n');
-		
+
 		builder.append("}}");
-		
+
 		if(shouldWrapInTable)
 			builder.append("\n|}");
 
 		Utils.copyString(builder.toString());
-		sender.sendMessage(new TextComponentTranslation("commands.dumpstructure.success", amount));
+		source.sendFeedback(new TranslationTextComponent("commands.dumpstructure.success", amount), true);
+		return structure.size();
 	}
 
 	private static class MultiblockPiece {
 		final int x, y, z;
 		ItemStack stack;
-		FluidStack fluidStack;
+		IFluidState fluid;
 		final boolean reverse;
 
 		MultiblockPiece(int x, int y, int z, boolean reverse){
@@ -191,70 +206,45 @@ public class CommandDumpStructure extends CommandBase {
 		MultiblockPiece(int x, int y, int z, ItemStack stack, boolean reverse){
 			this(x, y, z, reverse);
 			this.stack = stack;
-			this.fluidStack = null;
+			this.fluid = null;
 		}
 
-		MultiblockPiece(int x, int y, int z, FluidStack stack, boolean reverse){
+		MultiblockPiece(int x, int y, int z, IFluidState fluid, boolean reverse){
 			this(x, y, z, reverse);
-			this.fluidStack = stack;
+			this.fluid = fluid;
 		}
 
 		static final Comparator<MultiblockPiece> XZ_COMPARE = Comparator.comparingInt((MultiblockPiece p) -> p.y).thenComparingInt((MultiblockPiece p) -> p.x).thenComparingInt((MultiblockPiece p) -> p.z);
 
 		static final Comparator<MultiblockPiece> ZX_COMPARE = Comparator.comparingInt((MultiblockPiece p) -> p.y).thenComparingInt((MultiblockPiece p) -> p.z).thenComparingInt((MultiblockPiece p) -> p.x);
 
+
 		public boolean isEmpty(){
-			return stack.isEmpty() && fluidStack == null;
+			return stack.isEmpty() && fluid == null;
 		}
 
 		@Override
 		public String toString(){
 			StringBuilder builder = new StringBuilder("|").append(Utils.getAlphabetLetter(y));
-			
+
 			if(reverse)
 				builder.append(Utils.getAlphabetLetter(z)).append(x);
 			else
 				builder.append(Utils.getAlphabetLetter(x)).append(z);
-			
+
 			builder.append('=');
 
 			if(!stack.isEmpty())
 				builder.append(Utils.outputItem(stack));
-			else if(fluidStack != null)
-				builder.append(outputFluid(fluidStack));
-			
+			else if(fluid != null)
+				builder.append(outputFluid(fluid));
+
 			return builder.toString();
 		}
 	}
 
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender){
-		return true;
-	}
-
-	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos){
-		//Clientside commands get the player's position in targetPos, not the pointed block
-		RayTraceResult raytrace = Minecraft.getMinecraft().objectMouseOver;
-		BlockPos pos = null;
-
-		if(raytrace != null && raytrace.typeOfHit == RayTraceResult.Type.BLOCK)
-			pos = raytrace.getBlockPos();
-
-		if(args.length > 0 && args.length <= 3)
-			return getTabCompletionCoordinate(args, 0, pos);
-		else if(args.length > 3 && args.length <= 6)
-			return getTabCompletionCoordinate(args, 3, pos);
-		else if(args.length == 7)
-			return getListOfStringsMatchingLastWord(args, "center", "back", "front");
-		else if(args.length == 8 || args.length == 9)
-			return getListOfStringsMatchingLastWord(args, "true", "false");
-		
-		return Collections.emptyList();
-	}
-
-	private static String outputFluid(FluidStack fluidstack){
-		return "{{Gc|mod=" + Utils.getModAbbrevation(Utils.getModName(FluidRegistry.getModId(fluidstack))) + "|dis=false|" + fluidstack.getLocalizedName() + "}}";
+	private static String outputFluid(IFluidState fluid){
+		Block block = fluid.getBlockState().getBlock();
+		return "{{Gc|mod=" + Utils.getModAbbrevation(block) + "|dis=false|" + ForgeI18n.parseMessage(block.getTranslationKey()) + "}}";
 	}
 }
-*/
