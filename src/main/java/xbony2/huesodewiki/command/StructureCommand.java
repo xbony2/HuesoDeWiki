@@ -35,7 +35,9 @@ public class StructureCommand {
 	private static final String END_POS = "endPos";
 	private static final String SHOULD_COMPACT = "shouldCompact";
 	private static final String SHOULD_WRAP_IN_TABLE = "shouldWrapInTable";
+	private static final String PADDING_MODE = "paddingMode";
 
+	private static final EnumArgumentType<Padding> PADDING = new EnumArgumentType<>(Padding.class);
 	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.dumpstructure.tooLarge"));
 
 	public static void register(CommandDispatcher<CommandSource> dispatcher){
@@ -45,38 +47,28 @@ public class StructureCommand {
 						.then(Commands.argument(END_POS, BlockPosArgument.blockPos())
 								.executes(
 										ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-												getLoadedBlockPos(ctx, END_POS), "center",
+												getLoadedBlockPos(ctx, END_POS), Padding.CENTER,
 												false, false))
 								.then(Commands.argument(SHOULD_COMPACT, BoolArgumentType.bool())
 										.executes(
 												ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-														getLoadedBlockPos(ctx, END_POS), "center",
+														getLoadedBlockPos(ctx, END_POS), Padding.CENTER,
 														getBool(ctx, SHOULD_COMPACT), false))
 										.then(Commands.argument(SHOULD_WRAP_IN_TABLE, BoolArgumentType.bool())
 												.executes(
 														ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-																getLoadedBlockPos(ctx, END_POS), "center",
+																getLoadedBlockPos(ctx, END_POS), Padding.CENTER,
 																getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
-												.then(Commands.literal("center")
+												.then(Commands.argument(PADDING_MODE, PADDING)
 														.executes(
 																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-																		getLoadedBlockPos(ctx, END_POS), "center",
+																		getLoadedBlockPos(ctx, END_POS), PADDING.getValue(ctx, PADDING_MODE),
 																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE))))
-												.then(Commands.literal("back")
-														.executes(
-																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-																		getLoadedBlockPos(ctx, END_POS), "back",
-																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE))))
-												.then(Commands.literal("front")
-														.executes(
-																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-																		getLoadedBlockPos(ctx, END_POS), "front",
-																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
-												)))))
+										))))
 		);
 	}
 
-	private static int execute(CommandSource source, BlockPos start, BlockPos end, String paddingMode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException {
+	private static int execute(CommandSource source, BlockPos start, BlockPos end, Padding mode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException{
 
 		World world = source.getWorld();
 		ServerPlayerEntity player = source.asPlayer();
@@ -101,10 +93,10 @@ public class StructureCommand {
 
 		BlockPos startPadded = start, endPadded = end;
 
-		if(paddingMode.equals("back")){
+		if(mode == Padding.BACK){
 			paddingSizeStart = paddingSizeEnd;
 			paddingSizeEnd = 0;
-		}else if(paddingMode.equals("center")){
+		}else if(mode == Padding.CENTER){
 			paddingSizeStart = paddingSizeEnd / 2 + paddingSizeEnd % 2;
 			paddingSizeEnd = paddingSizeEnd / 2;
 		}
@@ -131,7 +123,7 @@ public class StructureCommand {
 
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
 				BlockState state = world.getBlockState(pos);
-				
+
 				RayTraceResult ray = new BlockRayTraceResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
 				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, player);
 
@@ -187,6 +179,10 @@ public class StructureCommand {
 		Utils.copyString(builder.toString());
 		source.sendFeedback(new TranslationTextComponent("commands.dumpstructure.success", amount), true);
 		return structure.size();
+	}
+
+	private enum Padding {
+		CENTER, BACK, FRONT
 	}
 
 	private static class MultiblockPiece {

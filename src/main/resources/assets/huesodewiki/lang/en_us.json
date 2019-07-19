@@ -8,5 +8,6 @@
     "msg.copieditemname": "Copied the name \"%s\" to the clipboard.",
 
     "commands.dumpstructure.tooLarge": "Structure to dump is too large!",
-    "commands.dumpstructure.success": "Copied structure template with %s blocks to the clipboard."
+    "commands.dumpstructure.success": "Copied structure template with %s blocks to the clipboard.",
+    "commands.argument.enum.invalid": "Invalid value '%s'"
 }
