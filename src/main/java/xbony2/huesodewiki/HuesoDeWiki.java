@@ -23,6 +23,7 @@ import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.api.infobox.type.IType;
 import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.command.StructureCommand;
+import xbony2.huesodewiki.command.TagDumpCommand;
 import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.infobox.InfoboxCreator;
 import xbony2.huesodewiki.prefix.PrefixCreator;
@@ -83,5 +84,6 @@ public class HuesoDeWiki {
 
 	private void serverStarting(FMLServerStartingEvent event){
 		StructureCommand.register(event.getCommandDispatcher());
+		TagDumpCommand.register(event.getCommandDispatcher());
 	}
 }

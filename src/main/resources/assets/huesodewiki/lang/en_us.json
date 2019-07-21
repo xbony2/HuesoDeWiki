@@ -9,5 +9,7 @@
 
     "commands.huesodewiki.dumpstructure.tooLarge": "Structure to dump is too large!",
     "commands.huesodewiki.dumpstructure.success": "Copied structure template with %s blocks to the clipboard.",
+    "commands.huesodewiki.dumptags.success": "Dumped tags for namespace %s to %s.txt.",
+    "commands.huesodewiki.dumptags.write_failed": "Failed to write tag dump file, check log for details!",
     "commands.huesodewiki.argument.enum.invalid": "Invalid value '%s'"
 }
