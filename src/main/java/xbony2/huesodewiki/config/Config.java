@@ -25,12 +25,12 @@ public class Config {
 	private Config(ForgeConfigSpec.Builder builder){
 		use2SpaceStyle = builder.comment("Use \"2spacestyle\"- put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").")
 				.define("use2SpaceStyle", false);
-		useStackedCategoryStyle = builder.comment("Use \"stacked\" category style– put each category on its own line.")
+		useStackedCategoryStyle = builder.comment("Use \"stacked\" category style- put each category on its own line.")
 				.define("useStackedCategoryStyle", false);
 		printOutputToLog = builder.comment("Enable to print the generated output to the console log- for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux")
 				.define("printOutputToLog", false);
 
-		Predicate<Object> validator = s -> s instanceof String && ((String) s).split("=", 2).length == 2;
+		Predicate<Object> validator = s -> s instanceof List && ((List<?>) s).stream().allMatch(o -> o instanceof String && ((String) o).split("=", 2).length == 2);
 
 		nameCorrectionsRaw = builder.comment("Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.")
 				.define("nameCorrections", DEFAULT_NAME_CORRECTIONS, validator);

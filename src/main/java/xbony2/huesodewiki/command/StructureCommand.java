@@ -150,7 +150,7 @@ public class StructureCommand {
 		if(shouldWrapInTable)
 			builder.append("{| class=\"wikitable mw-collapsible mw-collapsed\"\n|-\n! Structure\n|-\n| ");
 
-		builder.append("{{Cg/Multiblock/Alt\n");
+		builder.append("{{Cg/Multiblock\n");
 
 		boolean previousEmpty = false;
 		for(MultiblockPiece piece : structure){

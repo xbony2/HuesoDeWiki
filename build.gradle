@@ -20,7 +20,7 @@ archivesBaseName = "huesodewiki"
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190714-1.14.3'
+    mappings channel: 'snapshot', version: '20190720-1.14.3'
     
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -60,7 +60,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.3-27.0.50'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.0.11'
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -72,7 +72,7 @@ jar {
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Xbony2",
+            "Implementation-Vendor": "Xbony2",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
