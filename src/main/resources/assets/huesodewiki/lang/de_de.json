@@ -1,12 +1,12 @@
 {
-	"key.copybasepage": "Kopiert die Grundlage der Seite",
-	"key.copyname": "Kopiert den Namen des Gegendstandes",
+	"key.huesodewiki.copybasepage": "Kopiert die Grundlage der Seite",
+	"key.huesodewiki.copyname": "Kopiert den Namen des Gegendstandes",
 	"key.categories.huesodewiki": "HuesoDeWiki",
 
-	"msg.copiedpage": "Die Grundlage der Seite \"%s\" wurde in die Zwischenablage kopiert.",
-	"msg.copiedrecipe": "Der Rezept von \"%s\" wurde in die Zwischenablage kopiert.",
-	"msg.copieditemname": "Der Name \"%s\" wurde in die Zwischenablage kopiert.",
+	"msg.huesodewiki.copiedpage": "Die Grundlage der Seite \"%s\" wurde in die Zwischenablage kopiert.",
+	"msg.huesodewiki.copiedrecipe": "Der Rezept von \"%s\" wurde in die Zwischenablage kopiert.",
+	"msg.huesodewiki.copieditemname": "Der Name \"%s\" wurde in die Zwischenablage kopiert.",
 
-	"commands.dumpstructure.tooLarge": "Die Struktur zum Abspeichern ist zu groß!",
-	"commands.dumpstructure.success": "Die Struktur-Vorlage wurde kopiert, mit %s Blöcken in der Zwischenablage."
+	"commands.huesodewiki.dumpstructure.tooLarge": "Die Struktur zum Abspeichern ist zu groß!",
+	"commands.huesodewiki.dumpstructure.success": "Die Struktur-Vorlage wurde kopiert, mit %s Blöcken in der Zwischenablage."
 }

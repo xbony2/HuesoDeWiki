@@ -38,7 +38,7 @@ public class StructureCommand {
 	private static final String PADDING_MODE = "paddingMode";
 
 	private static final EnumArgumentType<Padding> PADDING = new EnumArgumentType<>(Padding.class);
-	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.dumpstructure.tooLarge"));
+	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.huesodewiki.dumpstructure.tooLarge"));
 
 	public static void register(CommandDispatcher<CommandSource> dispatcher){
 		dispatcher.register(Commands.literal("dumpstructure")
@@ -177,7 +177,7 @@ public class StructureCommand {
 			builder.append("\n|}");
 
 		Utils.copyString(builder.toString());
-		source.sendFeedback(new TranslationTextComponent("commands.dumpstructure.success", amount), true);
+		source.sendFeedback(new TranslationTextComponent("commands.huesodewiki.dumpstructure.success", amount), true);
 		return structure.size();
 	}
 

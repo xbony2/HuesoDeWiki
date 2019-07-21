@@ -55,9 +55,9 @@ public class HuesoDeWiki {
 	}
 
 	private void clientInit(FMLClientSetupEvent event){
-		copyPageKey = new KeyBinding("key.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
+		copyPageKey = new KeyBinding("key.huesodewiki.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(copyPageKey);
-		copyNameKey = new KeyBinding("key.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
+		copyNameKey = new KeyBinding("key.huesodewiki.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(copyNameKey);
 
 		InfoboxCreator.init();

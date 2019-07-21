@@ -31,10 +31,10 @@ public class InputEventHandler {
 
 			if(Screen.hasControlDown()){
 				Utils.copyString(RecipeCreator.createRecipes(stack));
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copiedrecipe", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.huesodewiki.copiedrecipe", stack.getDisplayName()));
 			}else{
 				Utils.copyString(PageCreator.createPage(stack));
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copiedpage", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.huesodewiki.copiedpage", stack.getDisplayName()));
 			}
 
 		}else if(HuesoDeWiki.copyNameKey.isActiveAndMatches(input)){
@@ -42,7 +42,7 @@ public class InputEventHandler {
 
 			if(!stack.isEmpty()){
 				Utils.copyString(stack.getDisplayName().getUnformattedComponentText());
-				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.copieditemname", stack.getDisplayName()));
+				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.huesodewiki.copieditemname", stack.getDisplayName()));
 			}
 		}
 	}

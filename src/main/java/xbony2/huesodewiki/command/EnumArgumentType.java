@@ -17,7 +17,7 @@ import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class EnumArgumentType<T extends Enum<T>> implements ArgumentType<T> {
-	private static final DynamicCommandExceptionType INVALID_ENUM = new DynamicCommandExceptionType(obj -> new TranslationTextComponent("commands.argument.enum.invalid", obj));
+	private static final DynamicCommandExceptionType INVALID_ENUM = new DynamicCommandExceptionType(obj -> new TranslationTextComponent("commands.huesodewiki.argument.enum.invalid", obj));
 
 	private final Class<T> enumClass;
 	private final ImmutableMap<String, T> nameToEnum;

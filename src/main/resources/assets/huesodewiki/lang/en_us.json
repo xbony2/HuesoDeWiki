@@ -1,13 +1,13 @@
 {
-    "key.copybasepage": "Copy base page",
-    "key.copyname": "Copy item name",
+    "key.huesodewiki.copybasepage": "Copy base page",
+    "key.huesodewiki.copyname": "Copy item name",
     "key.categories.huesodewiki": "HuesoDeWiki",
 
-    "msg.copiedpage": "Copied base page \"%s\" to the clipboard.",
-    "msg.copiedrecipe": "Copied the recipe of \"%s\" to the clipboard.",
-    "msg.copieditemname": "Copied the name \"%s\" to the clipboard.",
+    "msg.huesodewiki.copiedpage": "Copied base page \"%s\" to the clipboard.",
+    "msg.huesodewiki.copiedrecipe": "Copied the recipe of \"%s\" to the clipboard.",
+    "msg.huesodewiki.copieditemname": "Copied the name \"%s\" to the clipboard.",
 
-    "commands.dumpstructure.tooLarge": "Structure to dump is too large!",
-    "commands.dumpstructure.success": "Copied structure template with %s blocks to the clipboard.",
-    "commands.argument.enum.invalid": "Invalid value '%s'"
+    "commands.huesodewiki.dumpstructure.tooLarge": "Structure to dump is too large!",
+    "commands.huesodewiki.dumpstructure.success": "Copied structure template with %s blocks to the clipboard.",
+    "commands.huesodewiki.argument.enum.invalid": "Invalid value '%s'"
 }
