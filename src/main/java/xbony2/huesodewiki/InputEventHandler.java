@@ -41,7 +41,7 @@ public class InputEventHandler {
 			ItemStack stack = Utils.getHoveredItemStack();
 
 			if(!stack.isEmpty()){
-				Utils.copyString(stack.getDisplayName().getUnformattedComponentText());
+				Utils.copyString(stack.getDisplayName().getString());
 				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.huesodewiki.copieditemname", stack.getDisplayName()));
 			}
 		}

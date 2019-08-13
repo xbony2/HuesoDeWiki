@@ -42,7 +42,7 @@ public class TagDumpCommand {
 				if(rl == null || !rl.getNamespace().equals(modid))
 					continue;
 
-				String displayName = item.getDisplayName(item.getDefaultInstance()).getUnformattedComponentText();
+				String displayName = item.getDisplayName(item.getDefaultInstance()).getString();
 				for(ResourceLocation tag : item.getTags())
 					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");
 			}

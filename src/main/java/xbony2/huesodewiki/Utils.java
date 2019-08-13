@@ -42,7 +42,7 @@ public class Utils {
 	}
 
 	public static String outputItem(ItemStack itemstack){
-		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getUnformattedComponentText() + "}}";
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getString() + "}}";
 	}
 
 	/* TODO Tags are a thing now, and recipes use them instead of oredict*/
@@ -57,7 +57,7 @@ public class Utils {
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
-		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName().getUnformattedComponentText() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName().getString() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
 	}
 
 	public static String doubleToString(double d){
