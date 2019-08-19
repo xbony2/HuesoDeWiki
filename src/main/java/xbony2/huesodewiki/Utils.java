@@ -1,5 +1,10 @@
 package xbony2.huesodewiki;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
@@ -8,13 +13,32 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.Tag;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import xbony2.huesodewiki.config.Config;
 
 public class Utils {
+	private static final MethodHandle INGREDIENT_ACCEPTED_ITEMS;
+	private static final MethodHandle TAGLIST_TAG;
+
+	static{
+		try {
+			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "field_199807_b");
+			INGREDIENT_ACCEPTED_ITEMS = MethodHandles.lookup().unreflectGetter(field);
+
+			field = ObfuscationReflectionHelper.findField(Ingredient.TagList.class, "field_199800_a");
+			TAGLIST_TAG = MethodHandles.lookup().unreflectGetter(field);
+		}catch(IllegalAccessException e){
+			throw new RuntimeException("Failed to lookup field", e);
+		}
+	}
+
 	public static String getModName(String modid){
 		ModContainer container = ModList.get().getModContainerById(modid).orElse(null);
 		if(container == null)
@@ -36,24 +60,50 @@ public class Utils {
 	public static String getModAbbrevation(ItemStack itemstack){
 		return getModAbbrevation(getModName(itemstack));
 	}
-	
-	public static String getModAbbrevation(Block block){
-		return getModAbbrevation(getModName(block.getRegistryName().getNamespace()));
+
+	public static String getModAbbrevation(IForgeRegistryEntry<?> entry){
+		return getModAbbrevation(getModName(entry.getRegistryName().getNamespace()));
 	}
 
 	public static String outputItem(ItemStack itemstack){
 		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getString() + "}}";
 	}
 
-	/* TODO Tags are a thing now, and recipes use them instead of oredict*/
 	public static String outputIngredient(Ingredient ingredient){
 		StringBuilder ret = new StringBuilder();
 
-		for(ItemStack itemstack : ingredient.getMatchingStacks()){
-			ret.append(outputItem(itemstack));
+		Ingredient.IItemList[] acceptedItems;
+		try {
+			acceptedItems = (Ingredient.IItemList[]) INGREDIENT_ACCEPTED_ITEMS.invokeExact(ingredient);
+		}catch(Throwable throwable){
+			throw new RuntimeException(throwable);
+		}
+		List<Tag<Item>> tags = new ArrayList<>();
+		for(Ingredient.IItemList acceptedItem : acceptedItems){
+			if(acceptedItem instanceof Ingredient.TagList){
+				Ingredient.TagList tagList = (Ingredient.TagList) acceptedItem;
+				try {
+					@SuppressWarnings("unchecked")
+					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
+					tags.add(tag);
+				}catch(Throwable throwable){
+					throw new RuntimeException(throwable);
+				}
+			}
+		}
+		for(Tag<Item> tag : tags){
+			ret.append(outputTag(tag));
 		}
 
+		for(ItemStack itemstack : ingredient.getMatchingStacks())
+			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
+				ret.append(outputItem(itemstack));
+
 		return ret.toString();
+	}
+
+	public static String outputTag(Tag<?> tag){
+		return "{{O|" + tag.getId() + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
