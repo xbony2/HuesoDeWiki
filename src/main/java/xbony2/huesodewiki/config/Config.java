@@ -16,8 +16,8 @@ public class Config {
 	public static ForgeConfigSpec.BooleanValue useStackedCategoryStyle;
 	public static ForgeConfigSpec.BooleanValue printOutputToLog;
 	
-	private static ForgeConfigSpec.ConfigValue<List<String>> nameCorrectionsRaw;
-	private static ForgeConfigSpec.ConfigValue<List<String>> linkCorrectionsRaw;
+	private static ForgeConfigSpec.ConfigValue<List<? extends String>> nameCorrectionsRaw;
+	private static ForgeConfigSpec.ConfigValue<List<? extends String>> linkCorrectionsRaw;
 
 	public static Map<String, String> nameCorrections = new HashMap<>();
 	public static Map<String, String> linkCorrections = new HashMap<>();
@@ -30,12 +30,12 @@ public class Config {
 		printOutputToLog = builder.comment("Enable to print the generated output to the console log- for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux")
 				.define("printOutputToLog", false);
 
-		Predicate<Object> validator = s -> s instanceof List && ((List<?>) s).stream().allMatch(o -> o instanceof String && ((String) o).split("=", 2).length == 2);
+		Predicate<Object> validator = s -> s instanceof String && ((String) s).split("=", 2).length == 2;
 
 		nameCorrectionsRaw = builder.comment("Name fixes. Is a map- first entry is the mod's internal name, second is the FTB Wiki's name.")
-				.define("nameCorrections", DEFAULT_NAME_CORRECTIONS, validator);
+				.defineList("nameCorrections", DEFAULT_NAME_CORRECTIONS, validator);
 		linkCorrectionsRaw = builder.comment("Link fixes. Is a map- first entry is the mod's name, second is the FTB Wiki's page.")
-				.define("linkCorrections", DEFAULT_LINK_CORRECTIONS, validator);
+				.defineList("linkCorrections", DEFAULT_LINK_CORRECTIONS, validator);
 
 	}
 
@@ -48,7 +48,7 @@ public class Config {
 		CLIENT_SPEC = specPair.getRight();
 	}
 
-	private static void readCorrections(List<String> source, Map<String, String> dest){
+	private static void readCorrections(List<? extends String> source, Map<String, String> dest){
 		dest.clear();
 		for(String s : source){
 			String[] split = s.split("=", 2);
