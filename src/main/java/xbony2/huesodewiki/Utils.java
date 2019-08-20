@@ -27,7 +27,7 @@ public class Utils {
 	private static final MethodHandle INGREDIENT_ACCEPTED_ITEMS;
 	private static final MethodHandle TAGLIST_TAG;
 
-	static{
+	static {
 		try {
 			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "field_199807_b");
 			INGREDIENT_ACCEPTED_ITEMS = MethodHandles.lookup().unreflectGetter(field);
