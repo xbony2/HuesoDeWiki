@@ -2,6 +2,7 @@ package xbony2.huesodewiki;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -68,6 +69,7 @@ public class Utils {
 	public static String outputOreDictionaryEntry(ItemStack[] list){
 		try{
 			ItemStack stack = list[0];
+			List<String> validEntries = new ArrayList<>();
 		
 			int[] ids = OreDictionary.getOreIDs(stack);
 			
@@ -90,8 +92,12 @@ public class Utils {
 							isEqual = false;
 				
 				if(isEqual)
-					return "{{O|" + potentialEntry + "}}";
+					validEntries.add("{{O|" + potentialEntry + "}}");
 			}
+			if(validEntries.size() == 1) 
+				return validEntries.get(0);
+			if(validEntries.size() > 1) 
+				return " One of:  " + String.join("", validEntries);
 		}catch(ArrayIndexOutOfBoundsException e){
 			return null;
 		}
