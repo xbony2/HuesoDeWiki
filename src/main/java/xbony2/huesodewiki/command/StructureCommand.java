@@ -1,17 +1,19 @@
 package xbony2.huesodewiki.command;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.IFluidState;
@@ -37,7 +39,6 @@ public class StructureCommand {
 	private static final String SHOULD_WRAP_IN_TABLE = "shouldWrapInTable";
 	private static final String PADDING_MODE = "paddingMode";
 
-	private static final EnumArgumentType<Padding> PADDING = new EnumArgumentType<>(Padding.class);
 	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.huesodewiki.dumpstructure.tooLarge"));
 
 	public static void register(CommandDispatcher<CommandSource> dispatcher){
@@ -59,10 +60,12 @@ public class StructureCommand {
 														ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
 																getLoadedBlockPos(ctx, END_POS), Padding.CENTER,
 																getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
-												.then(Commands.argument(PADDING_MODE, PADDING)
+												.then(Commands.argument(PADDING_MODE, StringArgumentType.word())
+														.suggests((context, builder) -> ISuggestionProvider.suggest(Arrays.stream(Padding.values())
+																.map(Enum::name).map(s -> s.toLowerCase(Locale.ROOT)), builder))
 														.executes(
 																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
-																		getLoadedBlockPos(ctx, END_POS), PADDING.getValue(ctx, PADDING_MODE),
+																		getLoadedBlockPos(ctx, END_POS), Padding.parse(ctx, PADDING_MODE),
 																		getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE))))
 										))))
 		);
@@ -182,7 +185,19 @@ public class StructureCommand {
 	}
 
 	private enum Padding {
-		CENTER, BACK, FRONT
+		CENTER, BACK, FRONT;
+
+		private static final DynamicCommandExceptionType INVALID_ENUM = new DynamicCommandExceptionType(
+				obj -> new TranslationTextComponent("commands.huesodewiki.argument.enum.invalid", obj));
+
+		static Padding parse(CommandContext<CommandSource> context, String argName) throws CommandSyntaxException{
+			String argument = context.getArgument(argName, String.class);
+			try {
+				return valueOf(argument.toUpperCase(Locale.ROOT));
+			}catch(IllegalArgumentException e){
+				throw INVALID_ENUM.create(argument);
+			}
+		}
 	}
 
 	private static class MultiblockPiece {
@@ -215,7 +230,7 @@ public class StructureCommand {
 		static final Comparator<MultiblockPiece> ZX_COMPARE = Comparator.comparingInt((MultiblockPiece p) -> p.y).thenComparingInt((MultiblockPiece p) -> p.z).thenComparingInt((MultiblockPiece p) -> p.x);
 
 
-		public boolean isEmpty(){
+		boolean isEmpty(){
 			return stack.isEmpty() && fluid == null;
 		}
 

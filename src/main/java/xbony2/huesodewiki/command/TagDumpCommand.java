@@ -11,11 +11,14 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import xbony2.huesodewiki.HuesoDeWiki;
 
@@ -29,6 +32,7 @@ public class TagDumpCommand {
 				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayerEntity) //TODO make it work on servers, but not with /execute
 				.then(Commands.argument("modAbbrv", StringArgumentType.word())
 						.then(Commands.argument("modid", StringArgumentType.word())
+								.suggests((context, builder) -> ISuggestionProvider.suggest(ModList.get().getMods().stream().map(ModInfo::getModId), builder))
 								.executes(ctx -> execute(ctx.getSource(), getString(ctx, "modAbbrv"), getString(ctx, "modid")))))
 		);
 	}
