@@ -63,6 +63,14 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.1.107'
 }
 
+task srcJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java
+}
+
+artifacts {
+    archives srcJar
+}
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
