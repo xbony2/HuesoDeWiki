@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[27,)"
+loaderVersion="[30,)"
 issueTrackerURL="http://github.com/Xbony2/HuesoDeWiki" #optional
 
 [[mods]]
@@ -10,5 +10,5 @@ displayName="HuesoDeWiki"
 # A text field displayed in the mod UI
 authors="Xbony2, Hubry, TheSatanicSanta"
 description='''
-A small utility mod for editors of the Official FTB Wiki- automatically creates a base page in the clipboard from in-game items.
+A small utility mod for editors of the Official FTB Wiki. It automatically creates a base page in the clipboard from in-game items.
 '''

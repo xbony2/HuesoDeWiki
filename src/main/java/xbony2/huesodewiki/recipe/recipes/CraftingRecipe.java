@@ -23,6 +23,7 @@ public class CraftingRecipe implements IWikiRecipe {
 	// RecipeManager#getRecipes(IRecipeType), TODO check if forge ATs this away later, or possibly AT this on our own
 	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "func_215366_a", IRecipeType.class);
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public String getRecipes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
@@ -41,7 +42,7 @@ public class CraftingRecipe implements IWikiRecipe {
 		return ret.toString();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "resource"})
 	public List<IRecipe<?>> gatherRecipes(ItemStack itemstack){
 		List<IRecipe<?>> recipes = new ArrayList<>();
 		Map<ResourceLocation, IRecipe<?>> recipeMap;
@@ -76,9 +77,9 @@ public class CraftingRecipe implements IWikiRecipe {
 
 			ret.append('|').append(Utils.getAlphabetLetter(i % width + 1)).append(i / width + 1).append('=');
 
-//			if(ingredient instanceof OreIngredient)
-//				ret.append(Utils.outputOreDictionaryEntry(ingredient.getMatchingStacks()));
-//			else
+			/*if(ingredient instanceof OreIngredient) // TODO
+				ret.append(Utils.outputOreDictionaryEntry(ingredient.getMatchingStacks()));
+			else*/
 			ret.append(Utils.outputIngredient(ingredient));
 
 			ret.append('\n');
@@ -92,6 +93,7 @@ public class CraftingRecipe implements IWikiRecipe {
 		return ret.append("}}\n").toString();
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected int getWidth(IRecipe recipe){
 		if(recipe instanceof IShapedRecipe)
 			return ((IShapedRecipe) recipe).getRecipeWidth();

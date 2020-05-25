@@ -112,15 +112,19 @@ public class Utils {
 
 	public static String doubleToString(double d){
 		String ret = Double.toString(d);
+		
 		if(ret.endsWith(".0"))
 			ret = ret.replaceAll(".0$", "");
+		
 		return ret;
 	}
 
 	public static String floatToString(float f){
 		String ret = Float.toString(f);
+		
 		if(ret.endsWith(".0"))
 			ret = ret.replaceAll(".0$", "");
+		
 		return ret;
 	}
 

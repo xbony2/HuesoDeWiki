@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
-import xbony2.huesodewiki.api.IPagePrefix;
+import xbony2.huesodewiki.api.IHatnote;
 import xbony2.huesodewiki.api.IWikiRecipe;
 import xbony2.huesodewiki.api.category.ICategory;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
@@ -25,8 +25,8 @@ import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.command.StructureCommand;
 import xbony2.huesodewiki.command.TagDumpCommand;
 import xbony2.huesodewiki.config.Config;
+import xbony2.huesodewiki.hatnote.HatnoteCreator;
 import xbony2.huesodewiki.infobox.InfoboxCreator;
-import xbony2.huesodewiki.prefix.PrefixCreator;
 import xbony2.huesodewiki.recipe.RecipeCreator;
 
 import java.util.List;
@@ -63,15 +63,15 @@ public class HuesoDeWiki {
 
 		InfoboxCreator.init();
 		RecipeCreator.init();
-		PrefixCreator.init();
+		HatnoteCreator.init();
 		CategoryCreator.init();
 
-//		Compat.preInit();
+		//Compat.preInit();
 	}
 
 	private void processIMC(InterModProcessEvent event){
 		processIMCStream(event.getIMCStream(IWikiRecipe.IMC_NAME::equals), IWikiRecipe.class, HuesoDeWikiAPI.recipes);
-		processIMCStream(event.getIMCStream(IPagePrefix.IMC_NAME::equals), IPagePrefix.class, HuesoDeWikiAPI.prefixes);
+		processIMCStream(event.getIMCStream(IHatnote.IMC_NAME::equals), IHatnote.class, HuesoDeWikiAPI.hatnotes);
 		processIMCStream(event.getIMCStream(IInfoboxParameter.IMC_NAME::equals), IInfoboxParameter.class, HuesoDeWikiAPI.parameters);
 		processIMCStream(event.getIMCStream(ICategory.IMC_NAME::equals), ICategory.class, HuesoDeWikiAPI.categories);
 		processIMCStream(event.getIMCStream(IType.IMC_NAME::equals), IType.class, HuesoDeWikiAPI.types);

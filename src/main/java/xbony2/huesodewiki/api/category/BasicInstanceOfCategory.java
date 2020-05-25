@@ -2,6 +2,7 @@ package xbony2.huesodewiki.api.category;
 
 import net.minecraft.item.ItemStack;
 
+@SuppressWarnings("rawtypes")
 public class BasicInstanceOfCategory implements ICategory {
 	private final String name;
 	private final Class[] classes;

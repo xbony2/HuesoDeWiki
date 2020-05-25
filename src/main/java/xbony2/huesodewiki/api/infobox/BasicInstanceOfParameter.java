@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 
+@SuppressWarnings("rawtypes")
 public class BasicInstanceOfParameter implements IInfoboxParameter {
 	private final String name;
 	private final Function<ItemStack, String> paramTextFunction;

@@ -17,7 +17,7 @@ import xbony2.huesodewiki.api.IWikiRecipe;
 
 public class FurnaceRecipe implements IWikiRecipe {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "resource"})
 	@Override
 	public String getRecipes(ItemStack itemstack){
 		List<ItemStack> inputs = new ArrayList<>();

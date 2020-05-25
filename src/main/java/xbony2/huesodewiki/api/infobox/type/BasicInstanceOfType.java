@@ -2,6 +2,7 @@ package xbony2.huesodewiki.api.infobox.type;
 
 import net.minecraft.item.ItemStack;
 
+@SuppressWarnings("rawtypes")
 public class BasicInstanceOfType implements IType {
 	private final int priority;
 	private final String name;

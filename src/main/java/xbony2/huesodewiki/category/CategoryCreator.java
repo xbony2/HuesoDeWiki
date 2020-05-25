@@ -7,13 +7,13 @@ import com.google.common.base.Joiner;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.AxeItem;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ShearsItem;
+import net.minecraft.item.ShootableItem;
 import net.minecraft.item.ShovelItem;
 import net.minecraft.item.SwordItem;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
@@ -38,7 +38,7 @@ public class CategoryCreator {
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Mining", PickaxeItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Digging", ShovelItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Melee weapons", SwordItem.class));
-		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Ranged weapons", BowItem.class));
+		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Ranged weapons", ShootableItem.class));
 	}
 
 	public static String createCategories(ItemStack itemstack){

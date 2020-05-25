@@ -37,20 +37,22 @@ public class TagDumpCommand {
 		);
 	}
 
-	private static int execute(CommandSource source, String modAbbrv, String modid) throws CommandSyntaxException{
+	@SuppressWarnings("resource")
+	private static int execute(CommandSource source, String modAbbrv, String modid) throws CommandSyntaxException {
 		File output = new File(Minecraft.getInstance().gameDir, modAbbrv + ".txt");
+		
 		try(FileWriter writer = new FileWriter(output)){
-
 			for(Item item : ForgeRegistries.ITEMS){
 				ResourceLocation rl = item.getRegistryName();
+				
 				if(rl == null || !rl.getNamespace().equals(modid))
 					continue;
 
 				String displayName = item.getDisplayName(item.getDefaultInstance()).getString();
+				
 				for(ResourceLocation tag : item.getTags())
 					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");
 			}
-
 		}catch(IOException e){
 			HuesoDeWiki.LOGGER.error("Failed to write tag dump file {}", output.getName(), e);
 			throw WRITE_FAILED.create();

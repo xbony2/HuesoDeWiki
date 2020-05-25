@@ -11,14 +11,14 @@ public class FirstSentenceCreator {
 		String name = itemstack.getDisplayName().getString();
 		String modName = getModName(itemstack);
 		String type = new TypeParameter().getParameterText(itemstack);
-		String linkFix = Config.linkCorrections.get(modName); //is null if there isn't a change required.
+		String linkFix = Config.linkCorrections.get(modName); // is null if there isn't a change required.
 		
 		StringBuilder ret = new StringBuilder();
 		ret.append("The '''");
 		ret.append(name);
 		ret.append("''' ");
 		ret.append(name.endsWith("s") ? "are " : "is ");
-		ret.append(type.startsWith("a") || type.startsWith("e") || type.startsWith("i") || type.startsWith("o") || type.startsWith("u") ? "an " : "a ");//blerg
+		ret.append(type.startsWith("a") || type.startsWith("e") || type.startsWith("i") || type.startsWith("o") || type.startsWith("u") ? "an " : "a "); // blerg
 		ret.append(type);
 		ret.append(" added by [[").append((linkFix != null ? linkFix + "|" : ""));
 		ret.append(modName);
