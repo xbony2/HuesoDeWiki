@@ -13,6 +13,7 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod.EventBusSubscriber(modid = HuesoDeWiki.MODID, value = Dist.CLIENT)
 public class InputEventHandler {
+	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void buttonPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Post event){
 		Minecraft mc = Minecraft.getInstance();
@@ -26,6 +27,7 @@ public class InputEventHandler {
 
 		if(HuesoDeWiki.copyPageKey.isActiveAndMatches(input)){
 			ItemStack stack = Utils.getHoveredItemStack();
+			
 			if(stack.isEmpty())
 				return;
 

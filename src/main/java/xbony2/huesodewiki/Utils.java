@@ -78,12 +78,14 @@ public class Utils {
 		}catch(Throwable throwable){
 			throw new RuntimeException(throwable);
 		}
+		
 		List<Tag<Item>> tags = new ArrayList<>();
+		
 		for(Ingredient.IItemList acceptedItem : acceptedItems){
 			if(acceptedItem instanceof Ingredient.TagList){
 				Ingredient.TagList tagList = (Ingredient.TagList) acceptedItem;
+				
 				try {
-					@SuppressWarnings("unchecked")
 					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
 					tags.add(tag);
 				}catch(Throwable throwable){
@@ -151,6 +153,7 @@ public class Utils {
 	 * are not hovering over a slot or they are hovering over a slot in a non-supported Gui, returns an
 	 * empty ItemStack.
 	 */
+	@SuppressWarnings({"rawtypes", "resource"})
 	@Nonnull
 	public static ItemStack getHoveredItemStack(){
 		Screen currentScreen = Minecraft.getInstance().currentScreen;
@@ -170,6 +173,7 @@ public class Utils {
 	 *
 	 * @param toCopy The string to add to the clipboard
 	 */
+	@SuppressWarnings("resource")
 	public static void copyString(String toCopy){
 		Minecraft.getInstance().keyboardListener.setClipboardString(toCopy);
 
