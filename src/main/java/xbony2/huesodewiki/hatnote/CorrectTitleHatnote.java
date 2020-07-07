@@ -8,7 +8,8 @@ public class CorrectTitleHatnote implements IHatnote {
 	
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return StringUtils.containsAny(itemstack.getDisplayName().getString(), '#', '<', '>', '[', ']', '|', '{', '}'); // see: https://en.wikipedia.org/wiki/Wikipedia:NCHASHTAG
+		// see: https://en.wikipedia.org/wiki/Wikipedia:NCHASHTAG
+		return StringUtils.containsAny(itemstack.getDisplayName().getString(), '#', '<', '>', '[', ']', '|', '{', '}');
 	}
 
 	@Override

@@ -61,6 +61,4 @@ public class TagDumpCommand {
 		source.sendFeedback(new TranslationTextComponent("commands.huesodewiki.dumptags.success", modid, modAbbrv), true);
 		return 1;
 	}
-
-
 }

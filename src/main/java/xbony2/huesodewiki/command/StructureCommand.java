@@ -16,13 +16,13 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.ISuggestionProvider;
 import net.minecraft.command.arguments.BlockPosArgument;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.ForgeI18n;
@@ -127,13 +127,14 @@ public class StructureCommand {
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
 				BlockState state = world.getBlockState(pos);
 
-				RayTraceResult ray = new BlockRayTraceResult(new Vec3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
+				RayTraceResult ray = new BlockRayTraceResult(new Vector3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
 				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, player);
 
 				if(!stack.isEmpty())
 					amount++;
 				else{
-					IFluidState fluid = world.getFluidState(pos);
+					FluidState fluid = world.getFluidState(pos);
+					
 					if(!fluid.isEmpty()){
 						structure.add(new MultiblockPiece(x, y, z, fluid, reverse));
 						amount++;
@@ -203,7 +204,7 @@ public class StructureCommand {
 	private static class MultiblockPiece {
 		final int x, y, z;
 		ItemStack stack;
-		IFluidState fluid;
+		FluidState fluid;
 		final boolean reverse;
 
 		MultiblockPiece(int x, int y, int z, boolean reverse){
@@ -220,7 +221,7 @@ public class StructureCommand {
 			this.fluid = null;
 		}
 
-		MultiblockPiece(int x, int y, int z, IFluidState fluid, boolean reverse){
+		MultiblockPiece(int x, int y, int z, FluidState fluid, boolean reverse){
 			this(x, y, z, reverse);
 			this.fluid = fluid;
 		}
@@ -254,7 +255,7 @@ public class StructureCommand {
 		}
 	}
 
-	private static String outputFluid(IFluidState fluid){
+	private static String outputFluid(FluidState fluid){
 		Block block = fluid.getBlockState().getBlock();
 		return "{{Gc|mod=" + Utils.getModAbbrevation(block) + "|dis=false|" + ForgeI18n.parseMessage(block.getTranslationKey()) + "}}";
 	}

@@ -2,8 +2,9 @@ package xbony2.huesodewiki.infobox;
 
 import com.google.common.collect.Multimap;
 
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import xbony2.huesodewiki.Utils;
@@ -13,24 +14,23 @@ import xbony2.huesodewiki.api.infobox.BasicInstanceOfParameter;
 import xbony2.huesodewiki.infobox.parameters.*;
 
 public class InfoboxCreator {
-
-	
-	@SuppressWarnings("deprecation")
 	public static void init(){
 		HuesoDeWikiAPI.parameters.add(new NameParameter());
 		HuesoDeWikiAPI.parameters.add(new ImageIconParameter());
 		HuesoDeWikiAPI.parameters.add(new ModParameter());
 		HuesoDeWikiAPI.parameters.add(new TypeParameter());
-		//parameters.add(new OreDictNameParameter()); todo tags
+		//parameters.add(new OreDictNameParameter()); // TODO: tags
 		//parameters.add(new RegistryNameParameter());
 		//parameters.add(new UnlocalizedNameParameter()); // Disabled until issue resolved
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("blastresistance", (itemstack) -> {
 			String ret;
 			
 			try {
-				// Forge recommends not using getExplosionResistance, but it's not clear what the alternative is. Possibly requires a BlockState which we don't have since this is an item.
-				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getExplosionResistance() * 5);
-			}catch(Exception e){ //In case of a null pointer
+				// Forge recommends not using getExplosionResistance, but it's not clear what the alternative is.
+				// Possibly requires a BlockState which we don't have since this is an item.
+				//ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getExplosionResistance() * 5);
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getExplosionResistance(null, null, null) * 5); // XXX
+			}catch(NullPointerException e){ // In case of a null pointer
 				ret = "?";
 			}
 			
@@ -42,8 +42,9 @@ public class InfoboxCreator {
 
 			try {
 				// Forge recommends using the BlockState instead, but we don't have access to this, since this is an item.
-				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
-			}catch(Exception e){ //In case of a null pointer
+				// ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getBlockHardness(null, null)); // XXX
+			}catch(NullPointerException e){ // In case of a null pointer
 				ret = "?";
 			}
 			
@@ -69,20 +70,18 @@ public class InfoboxCreator {
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("damage", (itemstack) -> {
 			Item item = itemstack.getItem();
 			
-			Multimap<String, AttributeModifier> attributes = null;
+			Multimap<Attribute, AttributeModifier> attributes = null;
 			
 			if(item instanceof ToolItem)
 				attributes = ((ToolItem) item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 			else if(item instanceof SwordItem)
 				attributes = ((SwordItem) item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
 			
-			
-			
 			float damage = 1.0f; // default
 			
-			for(String name : attributes.keySet())
-				if(name.equals(SharedMonsterAttributes.ATTACK_DAMAGE.getName()))
-					for(AttributeModifier modifier : attributes.get(name))
+			for(Attribute attribute : attributes.keySet())
+				if(attribute.equals(Attributes.field_233823_f_)) // This is Attributes.ATTACK_DAMAGE
+					for(AttributeModifier modifier : attributes.get(attribute))
 						damage += modifier.getAmount();
 			
 			return Utils.floatToString(damage);
@@ -91,7 +90,7 @@ public class InfoboxCreator {
 		HuesoDeWikiAPI.parameters.add(new BasicInstanceOfParameter("aspeed", (itemstack) -> {
 			Item item = itemstack.getItem();
 			
-			Multimap<String, AttributeModifier> attributes = null;
+			Multimap<Attribute, AttributeModifier> attributes = null;
 			
 			if(item instanceof ToolItem)
 				attributes = ((ToolItem) item).getAttributeModifiers(EquipmentSlotType.MAINHAND);
@@ -104,9 +103,9 @@ public class InfoboxCreator {
 			
 			float speed = 4.0f; //default
 			
-			for(String name : attributes.keySet())
-				if(name.equals(SharedMonsterAttributes.ATTACK_SPEED.getName()))
-					for(AttributeModifier modifier : attributes.get(name))
+			for(Attribute attribute : attributes.keySet())
+				if(attribute.equals(Attributes.field_233825_h_)) // Attributes.ATTACK_SPEED
+					for(AttributeModifier modifier : attributes.get(attribute))
 						speed += modifier.getAmount();
 			
 			return String.format("%.2g", speed);

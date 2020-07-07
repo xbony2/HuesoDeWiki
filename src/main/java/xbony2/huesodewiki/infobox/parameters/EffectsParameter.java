@@ -5,7 +5,7 @@ import net.minecraft.item.PotionItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.mojang.datafixers.util.Pair;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
@@ -28,7 +28,7 @@ public class EffectsParameter implements IInfoboxParameter {
 	public String getParameterText(ItemStack itemstack){
 		if(itemstack.isFood()){
 			List<Pair<EffectInstance, Float>> effects = itemstack.getItem().getFood().getEffects();
-			return effects.stream().map(pair -> formatEffect(pair.getLeft(), pair.getRight())).collect(Collectors.joining());
+			return effects.stream().map(pair -> formatEffect(pair.getFirst(), pair.getSecond())).collect(Collectors.joining());
 		}else{
 			List<EffectInstance> effects = PotionUtils.getEffectsFromStack(itemstack);
 			return effects.stream().map(effect -> formatEffect(effect, 1)).collect(Collectors.joining());
@@ -38,9 +38,12 @@ public class EffectsParameter implements IInfoboxParameter {
 
 	private static String formatEffect(EffectInstance effect, float chance){
 		String s = "{{Effect|" + I18n.format(effect.getEffectName()) + "|" + effect.getDuration() + "|" + effect.getAmplifier();
+		
 		if(chance != 1f)
 			s += "|" + Utils.floatToString((1000.0f * chance) / 10f); //round to one decimal
+		
 		s += "}}";
+		
 		return s;
 	}
 }
