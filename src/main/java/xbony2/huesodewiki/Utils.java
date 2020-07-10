@@ -19,7 +19,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.Ingredient.IItemList;
 import net.minecraft.item.crafting.Ingredient.TagList;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
