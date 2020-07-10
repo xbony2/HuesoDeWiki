@@ -16,6 +16,9 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.Ingredient.IItemList;
+import net.minecraft.item.crafting.Ingredient.TagList;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
@@ -72,21 +75,22 @@ public class Utils {
 	public static String outputIngredient(Ingredient ingredient){
 		StringBuilder ret = new StringBuilder();
 
-		Ingredient.IItemList[] acceptedItems;
+		IItemList[] acceptedItems;
+		
 		try {
-			acceptedItems = (Ingredient.IItemList[]) INGREDIENT_ACCEPTED_ITEMS.invokeExact(ingredient);
+			acceptedItems = (IItemList[]) INGREDIENT_ACCEPTED_ITEMS.invokeExact(ingredient);
 		}catch(Throwable throwable){
 			throw new RuntimeException(throwable);
 		}
 		
-		List<Tag<Item>> tags = new ArrayList<>();
+		List<ITag<Item>> tags = new ArrayList<>();
 		
-		for(Ingredient.IItemList acceptedItem : acceptedItems){
-			if(acceptedItem instanceof Ingredient.TagList){
-				Ingredient.TagList tagList = (Ingredient.TagList) acceptedItem;
+		for(IItemList acceptedItem : acceptedItems){
+			if(acceptedItem instanceof TagList){
+				TagList tagList = (TagList) acceptedItem;
 				
 				try {
-					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
+					ITag<Item> tag = (ITag<Item>) TAGLIST_TAG.invokeExact(tagList);
 					tags.add(tag);
 				}catch(Throwable throwable){
 					throw new RuntimeException(throwable);
@@ -94,7 +98,7 @@ public class Utils {
 			}
 		}
 		
-		for(Tag<Item> tag : tags)
+		for(ITag<Item> tag : tags)
 			ret.append(outputTag(tag));
 
 		for(ItemStack itemstack : ingredient.getMatchingStacks())
@@ -104,7 +108,7 @@ public class Utils {
 		return ret.toString();
 	}
 
-	public static String outputTag(Tag<?> tag){
+	public static String outputTag(ITag<?> tag){
 		return "{{O|" + tag.func_230236_b_() + "}}"; // This isn't Tag#getId but I have no idea what is, it's all obfuscated because MCP kinda sucks
 	}
 
