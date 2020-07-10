@@ -93,19 +93,19 @@ public class Utils {
 				}
 			}
 		}
-		for(Tag<Item> tag : tags){
+		
+		for(Tag<Item> tag : tags)
 			ret.append(outputTag(tag));
-		}
 
 		for(ItemStack itemstack : ingredient.getMatchingStacks())
-			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
+			if(tags.stream().noneMatch(tag -> tag.func_230235_a_(itemstack.getItem()))) // Tag#contains
 				ret.append(outputItem(itemstack));
 
 		return ret.toString();
 	}
 
 	public static String outputTag(Tag<?> tag){
-		return "{{O|" + tag.getId() + "}}";
+		return "{{O|" + tag.func_230236_b_() + "}}"; // This isn't Tag#getId but I have no idea what is, it's all obfuscated because MCP kinda sucks
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
