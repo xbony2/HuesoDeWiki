@@ -19,6 +19,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.Ingredient.IItemList;
 import net.minecraft.item.crafting.Ingredient.TagList;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -101,14 +102,15 @@ public class Utils {
 			ret.append(outputTag(tag));
 
 		for(ItemStack itemstack : ingredient.getMatchingStacks())
-			if(tags.stream().noneMatch(tag -> tag.func_230235_a_(itemstack.getItem()))) // Tag#contains
+			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
 				ret.append(outputItem(itemstack));
 
 		return ret.toString();
 	}
 
-	public static String outputTag(ITag<?> tag){
-		return "{{O|" + tag.func_230236_b_() + "}}"; // This isn't Tag#getId but I have no idea what is, it's all obfuscated because MCP kinda sucks
+	public static String outputTag(ITag<Item> tag){
+		// This previously used Tag#getId, but that no longer exists.
+		return "{{O|" + ItemTags.getCollection().func_232973_a_(tag) + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){

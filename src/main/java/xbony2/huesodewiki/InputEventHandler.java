@@ -31,7 +31,7 @@ public class InputEventHandler {
 			if(stack.isEmpty())
 				return;
 
-			if(Screen.func_231172_r_()){ // This is Screen.hasControlDown()
+			if(Screen.hasControlDown()){
 				Utils.copyString(RecipeCreator.createRecipes(stack));
 				Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent("msg.huesodewiki.copiedrecipe", stack.getDisplayName()));
 			}else{

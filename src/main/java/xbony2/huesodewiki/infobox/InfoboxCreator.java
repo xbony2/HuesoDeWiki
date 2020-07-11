@@ -80,7 +80,7 @@ public class InfoboxCreator {
 			float damage = 1.0f; // default
 			
 			for(Attribute attribute : attributes.keySet())
-				if(attribute.equals(Attributes.field_233823_f_)) // This is Attributes.ATTACK_DAMAGE
+				if(attribute.equals(Attributes.ATTACK_DAMAGE))
 					for(AttributeModifier modifier : attributes.get(attribute))
 						damage += modifier.getAmount();
 			
@@ -104,7 +104,7 @@ public class InfoboxCreator {
 			float speed = 4.0f; //default
 			
 			for(Attribute attribute : attributes.keySet())
-				if(attribute.equals(Attributes.field_233825_h_)) // Attributes.ATTACK_SPEED
+				if(attribute.equals(Attributes.ATTACK_SPEED))
 					for(AttributeModifier modifier : attributes.get(attribute))
 						speed += modifier.getAmount();
 			
