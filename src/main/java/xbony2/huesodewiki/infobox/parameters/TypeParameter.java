@@ -17,11 +17,11 @@ public class TypeParameter implements IInfoboxParameter {
 
 	private static final IType fallback = new BasicConditionType(0, "item", itemstack -> true);
 	
-	static{
+	static {
 		HuesoDeWikiAPI.types.add(new BasicConditionType(10, "food", ItemStack::isFood));
 		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "armor", ArmorItem.class));
 		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "tool", ToolItem.class));
-		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "weapon", SwordItem.class, ShootableItem.class)); // Not really comprehensive but hey
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "weapon", SwordItem.class, ShootableItem.class)); // Not comprehensive, of course
 		HuesoDeWikiAPI.types.add(new TEntityType());
 		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(5, "block", BlockItem.class));
 	}

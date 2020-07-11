@@ -13,6 +13,7 @@ import xbony2.huesodewiki.recipe.RecipeCreator;
 
 @Mod.EventBusSubscriber(modid = HuesoDeWiki.MODID, value = Dist.CLIENT)
 public class InputEventHandler {
+	
 	@SuppressWarnings("resource")
 	@SubscribeEvent
 	public static void buttonPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Post event){

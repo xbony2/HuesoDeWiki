@@ -26,11 +26,8 @@ public class InfoboxCreator {
 			String ret;
 			
 			try {
-				// Forge recommends not using getExplosionResistance, but it's not clear what the alternative is.
-				// Possibly requires a BlockState which we don't have since this is an item.
-				//ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getExplosionResistance() * 5);
-				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getExplosionResistance(null, null, null) * 5); // XXX
-			}catch(NullPointerException e){ // In case of a null pointer
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getExplosionResistance(null, null, null));
+			}catch(NullPointerException e){
 				ret = "?";
 			}
 			
@@ -41,9 +38,7 @@ public class InfoboxCreator {
 			String ret;
 
 			try {
-				// Forge recommends using the BlockState instead, but we don't have access to this, since this is an item.
-				// ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getBlockHardness(null, null, null));
-				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getBlockHardness(null, null)); // XXX
+				ret = Utils.floatToString(((BlockItem) itemstack.getItem()).getBlock().getDefaultState().getBlockHardness(null, null));
 			}catch(NullPointerException e){ // In case of a null pointer
 				ret = "?";
 			}

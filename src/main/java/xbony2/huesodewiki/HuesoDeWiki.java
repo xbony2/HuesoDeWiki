@@ -36,7 +36,6 @@ import java.util.stream.Stream;
 @Mod(HuesoDeWiki.MODID)
 public class HuesoDeWiki {
 	public static final String MODID = "huesodewiki";
-	public static final String VERSION = "@VERSION@";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
@@ -65,8 +64,6 @@ public class HuesoDeWiki {
 		RecipeCreator.init();
 		HatnoteCreator.init();
 		CategoryCreator.init();
-
-		//Compat.preInit();
 	}
 
 	private void processIMC(InterModProcessEvent event){

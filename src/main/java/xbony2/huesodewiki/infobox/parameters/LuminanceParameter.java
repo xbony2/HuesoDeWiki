@@ -12,6 +12,7 @@ public class LuminanceParameter implements IInfoboxParameter {
 	public boolean canAdd(ItemStack itemstack){
 		if(itemstack.getItem() instanceof BlockItem){
 			Block block = ((BlockItem) itemstack.getItem()).getBlock();
+			
 			try {
 				return block.getLightValue(Utils.stackToBlockState(itemstack), null, null) > 0;
 			}catch(Exception e){

@@ -24,6 +24,7 @@ public class RecipeCreator {
 		
 		if(ret.toString().length() < 1)
 			return "";
+		
 		return (Config.use2SpaceStyle.get() ? "== Recipe ==" : "==Recipe==") + "\n" + ret.toString() + "\n";
 	}
 }
