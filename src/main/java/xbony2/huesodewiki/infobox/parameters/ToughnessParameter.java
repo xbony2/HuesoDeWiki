@@ -9,7 +9,7 @@ public class ToughnessParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getToughness() > 0.0;
+		return itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getArmorMaterial().getToughness() > 0.0;
 	}
 
 	@Override
@@ -19,6 +19,6 @@ public class ToughnessParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return Utils.floatToString(((ArmorItem) itemstack.getItem()).getToughness());
+		return Utils.floatToString(((ArmorItem) itemstack.getItem()).getArmorMaterial().getToughness());
 	}
 }

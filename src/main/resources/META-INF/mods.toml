@@ -1,14 +1,28 @@
 modLoader="javafml"
-loaderVersion="[30,)"
-issueTrackerURL="http://github.com/Xbony2/HuesoDeWiki" #optional
+loaderVersion="[33,)"
+license=All rights reserved
+issueTrackerURL="http://github.com/Xbony2/HuesoDeWiki"
 
 [[mods]]
 modId="huesodewiki"
-# The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 version="${file.jarVersion}"
 displayName="HuesoDeWiki"
-# A text field displayed in the mod UI
+displayURL="https://www.curseforge.com/minecraft/mc-mods/huesodewiki"
 authors="Xbony2, Hubry, TheSatanicSanta"
 description='''
 A small utility mod for editors of the Official FTB Wiki. It automatically creates a base page in the clipboard from in-game items.
 '''
+
+[[dependencies.huesodewiki]]
+	modId="forge"
+	mandatory=true
+	versionRange="[33,)"
+	ordering="NONE"
+	side="BOTH"
+
+[[dependencies.huesodewiki]]
+	modId="minecraft"
+	mandatory=true
+	versionRange="[1.16.2,)"
+	ordering="NONE"
+	side="BOTH"
