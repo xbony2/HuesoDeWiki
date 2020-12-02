@@ -16,7 +16,7 @@ public class EffectsParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return (itemstack.isFood() && itemstack.getItem().getFood().getEffects().isEmpty()) || itemstack.getItem() instanceof PotionItem;
+		return (itemstack.isFood() && !itemstack.getItem().getFood().getEffects().isEmpty()) || itemstack.getItem() instanceof PotionItem;
 	}
 
 	@Override
