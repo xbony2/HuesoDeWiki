@@ -81,7 +81,6 @@ public class HuesoDeWiki {
 	}
 
 	private void registerCommands(RegisterCommandsEvent event){
-		//event.getServer().getcom
 		StructureCommand.register(event.getDispatcher());
 		TagDumpCommand.register(event.getDispatcher());
 	}
