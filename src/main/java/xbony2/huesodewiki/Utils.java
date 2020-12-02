@@ -110,7 +110,7 @@ public class Utils {
 
 	public static String outputTag(ITag<Item> tag){
 		// This previously used Tag#getId, but that no longer exists.
-		return "{{O|" + ItemTags.getCollection().func_232973_a_(tag) + "}}";
+		return "{{O|" + ItemTags.getCollection().getDirectIdFromTag(tag) + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
