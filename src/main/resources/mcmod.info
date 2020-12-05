@@ -1,0 +1,18 @@
+
+[{
+
+"modid": "huesodewiki",
+"name": "HuesoDeWiki",
+"description": "",
+"mcversion": "1.16.4",
+"version": "1.B.0a",
+"url": "https://www.curseforge.com/minecraft/mc-mods/huesodewiki",
+"updateUrl": "",
+"authors": [ "Xbony2", "Hubry", "TheSatanicSanta" ],
+"credits": "",
+"logoFile": "",
+"screenshots": [],
+"parent":"",
+"dependencies": [ ]
+
+}]
