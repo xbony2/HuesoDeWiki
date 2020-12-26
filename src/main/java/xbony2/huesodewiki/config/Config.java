@@ -27,6 +27,7 @@ public class Config {
 	public static ForgeConfigSpec.BooleanValue use2SpaceStyle;
 	public static ForgeConfigSpec.BooleanValue useStackedCategoryStyle;
 	public static ForgeConfigSpec.BooleanValue printOutputToLog;
+	public static ForgeConfigSpec.BooleanValue outputEnchantability;
 	
 	private static ForgeConfigSpec.ConfigValue<List<? extends String>> nameCorrectionsRaw;
 	private static ForgeConfigSpec.ConfigValue<List<? extends String>> linkCorrectionsRaw;
@@ -35,12 +36,17 @@ public class Config {
 	public static Map<String, String> linkCorrections = new HashMap<>();
 
 	private Config(ForgeConfigSpec.Builder builder){
-		use2SpaceStyle = builder.comment("Use \"2spacestyle\": put an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").")
+		use2SpaceStyle = builder.comment("Enable to use \"2spacestyle\"; puts an extra space in headers (like \"== Recipe ==\", as vs \"==Recipe==\").")
 				.define("use2SpaceStyle", false);
-		useStackedCategoryStyle = builder.comment("Use \"stacked\" category style: put each category on its own line.")
+		
+		useStackedCategoryStyle = builder.comment("Enable to use \"stacked\" category style; puts each category on its own line.")
 				.define("useStackedCategoryStyle", false);
+		
 		printOutputToLog = builder.comment("Enable to print the generated output to the console log: for debugging purposes or as a workaround for OpenJDK bug JDK-8179547 on Linux")
 				.define("printOutputToLog", false);
+		
+		outputEnchantability = builder.comment("Disable to prevent output of the enchantability parameter (recommended if mods like Apotheosis are installed).")
+				.define("outputEnchantability", true);
 
 		Predicate<Object> validator = s -> s instanceof String && ((String) s).split("=", 2).length == 2;
 

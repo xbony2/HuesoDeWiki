@@ -11,6 +11,7 @@ import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.api.infobox.BasicConditionParameter;
 import xbony2.huesodewiki.api.infobox.BasicInstanceOfParameter;
+import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.infobox.parameters.*;
 
 public class InfoboxCreator {
@@ -107,7 +108,10 @@ public class InfoboxCreator {
 		}, ToolItem.class, SwordItem.class));
 		
 		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemStack::isDamageable));
-		HuesoDeWikiAPI.parameters.add(new EnchantabilityParameter());
+		
+		if(Config.outputEnchantability.get())
+			HuesoDeWikiAPI.parameters.add(new EnchantabilityParameter());
+		
 		HuesoDeWikiAPI.parameters.add(new MiningLevelParameter());
 		HuesoDeWikiAPI.parameters.add(new MiningSpeedParameter());
 		HuesoDeWikiAPI.parameters.add(new StackableParameter());
