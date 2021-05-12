@@ -3,7 +3,7 @@ package xbony2.huesodewiki.api;
 import net.minecraft.item.ItemStack;
 
 /**
- * This is used to declare conditional topmost hatnote to articles, like <a href="https://ftb.gamepedia.com/Template:Correct_title">Template:Correct title</a>. These come before the infobox.
+ * This is used to declare conditional topmost hatnote to articles, like <a href="https://ftb.fandom.com/wiki/Template:Correct_title">Template:Correct title</a>. These come before the infobox.
  */
 public interface IHatnote {
 	String IMC_NAME = "hatnote";
