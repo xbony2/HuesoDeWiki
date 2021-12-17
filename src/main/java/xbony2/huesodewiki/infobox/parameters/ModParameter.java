@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 

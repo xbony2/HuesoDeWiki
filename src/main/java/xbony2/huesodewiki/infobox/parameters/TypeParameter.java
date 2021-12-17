@@ -1,11 +1,11 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShootableItem;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolItem;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.DiggerItem;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 import xbony2.huesodewiki.api.infobox.type.BasicConditionType;
@@ -18,10 +18,10 @@ public class TypeParameter implements IInfoboxParameter {
 	private static final IType fallback = new BasicConditionType(0, "item", itemstack -> true);
 	
 	static {
-		HuesoDeWikiAPI.types.add(new BasicConditionType(10, "food", ItemStack::isFood));
+		HuesoDeWikiAPI.types.add(new BasicConditionType(10, "food", ItemStack::isEdible));
 		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "armor", ArmorItem.class));
-		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "tool", ToolItem.class));
-		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "weapon", SwordItem.class, ShootableItem.class)); // Not comprehensive, of course
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "tool", DiggerItem.class));
+		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(10, "weapon", SwordItem.class, ProjectileWeaponItem.class)); // Not comprehensive, of course
 		HuesoDeWikiAPI.types.add(new TEntityType());
 		HuesoDeWikiAPI.types.add(new BasicInstanceOfType(5, "block", BlockItem.class));
 	}

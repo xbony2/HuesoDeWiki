@@ -9,13 +9,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
@@ -25,21 +25,21 @@ import xbony2.huesodewiki.HuesoDeWiki;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 
 public class TagDumpCommand {
-	private static final SimpleCommandExceptionType WRITE_FAILED = new SimpleCommandExceptionType(new TranslationTextComponent("commands.huesodewiki.dumptags.write_failed"));
+	private static final SimpleCommandExceptionType WRITE_FAILED = new SimpleCommandExceptionType(new TranslatableComponent("commands.huesodewiki.dumptags.write_failed"));
 
-	public static void register(CommandDispatcher<CommandSource> dispatcher){
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
 		dispatcher.register(Commands.literal("dumptags")
-				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayerEntity) //TODO make it work on servers, but not with /execute
+				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayer) //TODO make it work on servers, but not with /execute
 				.then(Commands.argument("modAbbrv", StringArgumentType.word())
 						.then(Commands.argument("modid", StringArgumentType.word())
-								.suggests((context, builder) -> ISuggestionProvider.suggest(ModList.get().getMods().stream().map(ModInfo::getModId), builder))
+								.suggests((context, builder) -> SharedSuggestionProvider.suggest(ModList.get().getMods().stream().map(ModInfo::getModId), builder))
 								.executes(ctx -> execute(ctx.getSource(), getString(ctx, "modAbbrv"), getString(ctx, "modid")))))
 		);
 	}
 
 	@SuppressWarnings("resource")
-	private static int execute(CommandSource source, String modAbbrv, String modid) throws CommandSyntaxException {
-		File output = new File(Minecraft.getInstance().gameDir, modAbbrv + ".txt");
+	private static int execute(CommandSourceStack source, String modAbbrv, String modid) throws CommandSyntaxException {
+		File output = new File(Minecraft.getInstance().gameDirectory, modAbbrv + ".txt");
 		
 		try(FileWriter writer = new FileWriter(output)){
 			for(Item item : ForgeRegistries.ITEMS){
@@ -48,7 +48,7 @@ public class TagDumpCommand {
 				if(rl == null || !rl.getNamespace().equals(modid))
 					continue;
 
-				String displayName = item.getDisplayName(item.getDefaultInstance()).getString();
+				String displayName = item.getName(item.getDefaultInstance()).getString();
 				
 				for(ResourceLocation tag : item.getTags())
 					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");
@@ -58,7 +58,7 @@ public class TagDumpCommand {
 			throw WRITE_FAILED.create();
 		}
 
-		source.sendFeedback(new TranslationTextComponent("commands.huesodewiki.dumptags.success", modid, modAbbrv), true);
+		source.sendSuccess(new TranslatableComponent("commands.huesodewiki.dumptags.success", modid, modAbbrv), true);
 		return 1;
 	}
 }

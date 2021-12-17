@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.api.category;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface ICategory {
 	String IMC_NAME = "category";

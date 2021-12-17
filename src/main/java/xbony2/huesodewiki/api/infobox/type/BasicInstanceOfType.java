@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.api.infobox.type;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 @SuppressWarnings("rawtypes")
 public class BasicInstanceOfType implements IType {

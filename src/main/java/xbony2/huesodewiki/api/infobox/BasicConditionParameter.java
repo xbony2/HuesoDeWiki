@@ -3,7 +3,7 @@ package xbony2.huesodewiki.api.infobox;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class BasicConditionParameter implements IInfoboxParameter {
 	private final String name;

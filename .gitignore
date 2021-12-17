@@ -27,6 +27,7 @@ classes/
 /.idea/
 *.iml
 /out/
+/logs/
 
 # Gradle
 !gradle/wrapper/gradle-wrapper.jar

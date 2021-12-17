@@ -2,7 +2,7 @@ package xbony2.huesodewiki.api.infobox;
 
 import java.util.function.Function;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 @SuppressWarnings("rawtypes")
 public class BasicInstanceOfParameter implements IInfoboxParameter {

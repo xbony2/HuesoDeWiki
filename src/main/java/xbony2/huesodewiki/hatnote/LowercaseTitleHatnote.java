@@ -1,12 +1,12 @@
 package xbony2.huesodewiki.hatnote;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.IHatnote;
 
 public class LowercaseTitleHatnote implements IHatnote {
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return Character.isLowerCase(itemstack.getDisplayName().getString().charAt(0));
+		return Character.isLowerCase(itemstack.getHoverName().getString().charAt(0));
 	}
 
 	@Override

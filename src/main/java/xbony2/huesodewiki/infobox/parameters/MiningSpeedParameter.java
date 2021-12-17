@@ -1,8 +1,8 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DiggerItem;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
@@ -10,7 +10,7 @@ public class MiningSpeedParameter implements IInfoboxParameter {
 	
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return itemstack.getItem() instanceof ToolItem;
+		return itemstack.getItem() instanceof DiggerItem;
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class MiningSpeedParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		IItemTier tier = ((ToolItem) itemstack.getItem()).getTier();
-		return Utils.floatToString(tier.getEfficiency());
+		Tier tier = ((DiggerItem) itemstack.getItem()).getTier();
+		return Utils.floatToString(tier.getSpeed());
 	}
 }

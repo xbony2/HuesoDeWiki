@@ -1,10 +1,10 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.PotionItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.PotionUtils;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.item.PotionItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import com.mojang.datafixers.util.Pair;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
@@ -16,7 +16,7 @@ public class EffectsParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return (itemstack.isFood() && !itemstack.getItem().getFood().getEffects().isEmpty()) || itemstack.getItem() instanceof PotionItem;
+		return (itemstack.isEdible() && !itemstack.getItem().getFoodProperties().getEffects().isEmpty()) || itemstack.getItem() instanceof PotionItem;
 	}
 
 	@Override
@@ -26,18 +26,18 @@ public class EffectsParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		if(itemstack.isFood()){
-			List<Pair<EffectInstance, Float>> effects = itemstack.getItem().getFood().getEffects();
+		if(itemstack.isEdible()){
+			List<Pair<MobEffectInstance, Float>> effects = itemstack.getItem().getFoodProperties().getEffects();
 			return effects.stream().map(pair -> formatEffect(pair.getFirst(), pair.getSecond())).collect(Collectors.joining());
 		}else{
-			List<EffectInstance> effects = PotionUtils.getEffectsFromStack(itemstack);
+			List<MobEffectInstance> effects = PotionUtils.getMobEffects(itemstack);
 			return effects.stream().map(effect -> formatEffect(effect, 1)).collect(Collectors.joining());
 		}
 	}
 
 
-	private static String formatEffect(EffectInstance effect, float chance){
-		String s = "{{Effect|" + I18n.format(effect.getEffectName()) + "|" + effect.getDuration() + "|" + effect.getAmplifier();
+	private static String formatEffect(MobEffectInstance effect, float chance){
+		String s = "{{Effect|" + I18n.get(effect.getDescriptionId()) + "|" + effect.getDuration() + "|" + effect.getAmplifier();
 		
 		if(chance != 1f)
 			s += "|" + Utils.floatToString((1000.0f * chance) / 10f); //round to one decimal

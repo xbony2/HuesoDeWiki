@@ -5,13 +5,13 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.HuesoDeWiki;
@@ -21,19 +21,19 @@ import xbony2.huesodewiki.api.IWikiRecipe;
 public class CraftingRecipe implements IWikiRecipe {
 
 	// RecipeManager#getRecipes(IRecipeType), TODO check if forge ATs this away later, or possibly AT this on our own
-	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "func_215366_a", IRecipeType.class);
+	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "byType", RecipeType.class);
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public String getRecipes(ItemStack itemstack){
 		StringBuilder ret = new StringBuilder();
-		List<IRecipe<?>> recipes = gatherRecipes(itemstack);
+		List<Recipe<?>> recipes = gatherRecipes(itemstack);
 
 		if(recipes.isEmpty())
 			return "";
 
-		for(Iterator<IRecipe<?>> iterator = recipes.iterator(); iterator.hasNext(); ){
-			IRecipe recipe = iterator.next();
+		for(Iterator<Recipe<?>> iterator = recipes.iterator(); iterator.hasNext(); ){
+			Recipe recipe = iterator.next();
 			ret.append(outputRecipe(recipe));
 			if(iterator.hasNext())
 				ret.append('\n');
@@ -43,24 +43,24 @@ public class CraftingRecipe implements IWikiRecipe {
 	}
 
 	@SuppressWarnings({"unchecked", "resource"})
-	public List<IRecipe<?>> gatherRecipes(ItemStack itemstack){
-		List<IRecipe<?>> recipes = new ArrayList<>();
-		Map<ResourceLocation, IRecipe<?>> recipeMap;
+	public List<Recipe<?>> gatherRecipes(ItemStack itemstack){
+		List<Recipe<?>> recipes = new ArrayList<>();
+		Map<ResourceLocation, Recipe<?>> recipeMap;
 		try {
-			recipeMap = (Map<ResourceLocation, IRecipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().world.getRecipeManager(), IRecipeType.CRAFTING);
+			recipeMap = (Map<ResourceLocation, Recipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().level.getRecipeManager(), RecipeType.CRAFTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
 			return Collections.emptyList();
 		}
 
 		recipeMap.forEach((rl, recipe) -> {
-			if(recipe.getRecipeOutput().isItemEqual(itemstack))
+			if(recipe.getResultItem().sameItem(itemstack))
 				recipes.add(recipe);
 		});
 		return recipes;
 	}
 
-	public String outputRecipe(IRecipe<?> recipe){
+	public String outputRecipe(Recipe<?> recipe){
 		StringBuilder ret = new StringBuilder("{{Cg/Crafting Table\n");
 		NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
@@ -72,7 +72,7 @@ public class CraftingRecipe implements IWikiRecipe {
 
 		for(int i = 0; i < ingredients.size(); i++){
 			Ingredient ingredient = ingredients.get(i);
-			if(ingredient == Ingredient.EMPTY || ingredient.getMatchingStacks().length == 0)
+			if(ingredient == Ingredient.EMPTY || ingredient.getItems().length == 0)
 				continue;
 
 			ret.append('|').append(Utils.getAlphabetLetter(i % width + 1)).append(i / width + 1).append('=');
@@ -85,7 +85,7 @@ public class CraftingRecipe implements IWikiRecipe {
 			ret.append('\n');
 		}
 
-		ret.append("|O=").append(Utils.outputItemOutput(recipe.getRecipeOutput())).append('\n');
+		ret.append("|O=").append(Utils.outputItemOutput(recipe.getResultItem())).append('\n');
 
 		if(shapeless)
 			ret.append("|shapeless=true\n");
@@ -94,7 +94,7 @@ public class CraftingRecipe implements IWikiRecipe {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected int getWidth(IRecipe recipe){
+	protected int getWidth(Recipe recipe){
 		if(recipe instanceof IShapedRecipe)
 			return ((IShapedRecipe) recipe).getRecipeWidth();
 

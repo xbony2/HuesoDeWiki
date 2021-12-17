@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.Ingredient.IItemList;
-import net.minecraft.item.crafting.Ingredient.TagList;
-import net.minecraft.tags.ITag;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Ingredient.Value;
+import net.minecraft.world.item.crafting.Ingredient.TagValue;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
@@ -32,10 +32,10 @@ public class Utils {
 
 	static {
 		try {
-			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "field_199807_b");
+			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "values");
 			INGREDIENT_ACCEPTED_ITEMS = MethodHandles.lookup().unreflectGetter(field);
 
-			field = ObfuscationReflectionHelper.findField(Ingredient.TagList.class, "field_199800_a");
+			field = ObfuscationReflectionHelper.findField(Ingredient.TagValue.class, "tag");
 			TAGLIST_TAG = MethodHandles.lookup().unreflectGetter(field);
 		}catch(IllegalAccessException e){
 			throw new RuntimeException("Failed to lookup field", e);
@@ -69,28 +69,28 @@ public class Utils {
 	}
 
 	public static String outputItem(ItemStack itemstack){
-		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getDisplayName().getString() + "}}";
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|dis=false|" + itemstack.getHoverName().getString() + "}}";
 	}
 
 	public static String outputIngredient(Ingredient ingredient){
 		StringBuilder ret = new StringBuilder();
 
-		IItemList[] acceptedItems;
+		Value[] acceptedItems;
 		
 		try {
-			acceptedItems = (IItemList[]) INGREDIENT_ACCEPTED_ITEMS.invokeExact(ingredient);
+			acceptedItems = (Value[]) INGREDIENT_ACCEPTED_ITEMS.invokeExact(ingredient);
 		}catch(Throwable throwable){
 			throw new RuntimeException(throwable);
 		}
 		
-		List<ITag<Item>> tags = new ArrayList<>();
+		List<Tag<Item>> tags = new ArrayList<>();
 		
-		for(IItemList acceptedItem : acceptedItems){
-			if(acceptedItem instanceof TagList){
-				TagList tagList = (TagList) acceptedItem;
+		for(Value acceptedItem : acceptedItems){
+			if(acceptedItem instanceof TagValue){
+				TagValue tagList = (TagValue) acceptedItem;
 				
 				try {
-					ITag<Item> tag = (ITag<Item>) TAGLIST_TAG.invokeExact(tagList);
+					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
 					tags.add(tag);
 				}catch(Throwable throwable){
 					throw new RuntimeException(throwable);
@@ -98,23 +98,23 @@ public class Utils {
 			}
 		}
 		
-		for(ITag<Item> tag : tags)
+		for(Tag<Item> tag : tags)
 			ret.append(outputTag(tag));
 
-		for(ItemStack itemstack : ingredient.getMatchingStacks())
+		for(ItemStack itemstack : ingredient.getItems())
 			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
 				ret.append(outputItem(itemstack));
 
 		return ret.toString();
 	}
 
-	public static String outputTag(ITag<Item> tag){
+	public static String outputTag(Tag<Item> tag){
 		// This previously used Tag#getId, but that no longer exists.
-		return "{{O|" + ItemTags.getCollection().getDirectIdFromTag(tag) + "}}";
+		return "{{O|" + ItemTags.getAllTags().getId(tag) + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
-		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getDisplayName().getString() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
+		return "{{Gc|mod=" + getModAbbrevation(itemstack) + "|link=none|" + itemstack.getHoverName().getString() + (itemstack.getCount() != 1 ? "|" + itemstack.getCount() : "") + "}}";
 	}
 
 	public static String doubleToString(double d){
@@ -140,7 +140,7 @@ public class Utils {
 	 * @return State corresponding to the item
 	 */
 	public static BlockState stackToBlockState(ItemStack itemstack){
-		return Block.getBlockFromItem(itemstack.getItem()).getDefaultState();
+		return Block.byItem(itemstack.getItem()).defaultBlockState();
 	}
 
 	/**
@@ -161,13 +161,13 @@ public class Utils {
 	@SuppressWarnings({"rawtypes", "resource"})
 	@Nonnull
 	public static ItemStack getHoveredItemStack(){
-		Screen currentScreen = Minecraft.getInstance().currentScreen;
+		Screen currentScreen = Minecraft.getInstance().screen;
 
-		if(currentScreen instanceof ContainerScreen){
-			Slot hovered = ((ContainerScreen) currentScreen).getSlotUnderMouse();
+		if(currentScreen instanceof AbstractContainerScreen){
+			Slot hovered = ((AbstractContainerScreen) currentScreen).getSlotUnderMouse();
 
 			if(hovered != null)
-				return hovered.getStack();
+				return hovered.getItem();
 		}
 
 		return ItemStack.EMPTY;
@@ -180,7 +180,7 @@ public class Utils {
 	 */
 	@SuppressWarnings("resource")
 	public static void copyString(String toCopy){
-		Minecraft.getInstance().keyboardListener.setClipboardString(toCopy);
+		Minecraft.getInstance().keyboardHandler.setClipboard(toCopy);
 
 		if(Config.printOutputToLog.get())
 			HuesoDeWiki.LOGGER.info("Generated text:\n" + toCopy);

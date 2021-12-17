@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.api;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface IWikiRecipe {
 	String IMC_NAME = "recipe";

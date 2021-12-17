@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.recipe;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.recipe.recipes.CraftingRecipe;

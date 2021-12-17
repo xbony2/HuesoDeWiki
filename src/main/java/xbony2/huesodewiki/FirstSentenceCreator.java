@@ -2,13 +2,13 @@ package xbony2.huesodewiki;
 
 import static xbony2.huesodewiki.Utils.getModName;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.config.Config;
 import xbony2.huesodewiki.infobox.parameters.TypeParameter;
 
 public class FirstSentenceCreator {
 	public static String createFirstSentence(ItemStack itemstack){
-		String name = itemstack.getDisplayName().getString();
+		String name = itemstack.getHoverName().getString();
 		String modName = getModName(itemstack);
 		String type = new TypeParameter().getParameterText(itemstack);
 		String linkFix = Config.linkCorrections.get(modName); // is null if there isn't a change required.

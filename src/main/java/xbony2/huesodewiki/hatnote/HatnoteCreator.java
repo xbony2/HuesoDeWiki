@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.hatnote;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 
 public class HatnoteCreator {

@@ -2,7 +2,7 @@ package xbony2.huesodewiki.api.infobox.type;
 
 import java.util.function.Predicate;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class BasicConditionType implements IType {
 	private final int priority;

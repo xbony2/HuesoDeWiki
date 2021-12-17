@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.api.category;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 @SuppressWarnings("rawtypes")
 public class BasicInstanceOfCategory implements ICategory {

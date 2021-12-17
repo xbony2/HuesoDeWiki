@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.category;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.category.ICategory;
 

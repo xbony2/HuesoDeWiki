@@ -2,7 +2,7 @@ package xbony2.huesodewiki.infobox.parameters;
 
 import static xbony2.huesodewiki.Utils.outputItemOutput;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
 public class ImageIconParameter implements IInfoboxParameter {

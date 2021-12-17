@@ -2,7 +2,7 @@ package xbony2.huesodewiki;
 
 import static xbony2.huesodewiki.Utils.getModName;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.category.CategoryCreator;
 import xbony2.huesodewiki.hatnote.HatnoteCreator;
 import xbony2.huesodewiki.infobox.InfoboxCreator;

@@ -8,20 +8,23 @@ buildscript {
 	}
 
 	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 	}
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
 version = modVersion
 group = 'xbony2.huesodewiki'
 archivesBaseName = 'huesodewiki'
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+//sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaVersion.VERSION_1_8
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-	mappings channel: 'snapshot', version: mappingsVersion
- 
+	//mappings channel: 'snapshot', version: mappingsVersion
+	mappings channel: 'official', version: mcVersion
+
 	runs {
 		client {
 			workingDirectory = project.file 'run'

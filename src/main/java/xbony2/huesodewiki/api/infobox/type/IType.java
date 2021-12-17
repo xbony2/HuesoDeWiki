@@ -1,6 +1,6 @@
 package xbony2.huesodewiki.api.infobox.type;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface IType {
 	String IMC_NAME = "item_type";

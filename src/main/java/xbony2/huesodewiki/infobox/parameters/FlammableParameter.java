@@ -1,8 +1,8 @@
 package xbony2.huesodewiki.infobox.parameters;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
 public class FlammableParameter implements IInfoboxParameter {
@@ -13,7 +13,7 @@ public class FlammableParameter implements IInfoboxParameter {
 			Block block = ((BlockItem) itemstack.getItem()).getBlock();
 			
 			try {
-				return block.isFlammable(block.getDefaultState(), null, null, null);
+				return block.isFlammable(block.defaultBlockState(), null, null, null);
 			}catch(Exception e){
 				return false;
 			}

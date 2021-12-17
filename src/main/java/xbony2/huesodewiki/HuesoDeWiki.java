@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.KeyMapping;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -40,8 +40,8 @@ public class HuesoDeWiki {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	public static KeyBinding copyPageKey;
-	public static KeyBinding copyNameKey;
+	public static KeyMapping copyPageKey;
+	public static KeyMapping copyNameKey;
 
 	public HuesoDeWiki(){
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -56,9 +56,9 @@ public class HuesoDeWiki {
 	}
 
 	private void clientInit(FMLClientSetupEvent event){
-		copyPageKey = new KeyBinding("key.huesodewiki.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
+		copyPageKey = new KeyMapping("key.huesodewiki.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(copyPageKey);
-		copyNameKey = new KeyBinding("key.huesodewiki.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
+		copyNameKey = new KeyMapping("key.huesodewiki.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
 		ClientRegistry.registerKeyBinding(copyNameKey);
 
 		InfoboxCreator.init();

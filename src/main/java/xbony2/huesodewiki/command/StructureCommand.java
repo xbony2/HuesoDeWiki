@@ -9,22 +9,22 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.ISuggestionProvider;
-import net.minecraft.command.arguments.BlockPosArgument;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.ForgeI18n;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import xbony2.huesodewiki.Utils;
@@ -39,11 +39,11 @@ public class StructureCommand {
 	private static final String SHOULD_WRAP_IN_TABLE = "shouldWrapInTable";
 	private static final String PADDING_MODE = "paddingMode";
 
-	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslationTextComponent("commands.huesodewiki.dumpstructure.tooLarge"));
+	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslatableComponent("commands.huesodewiki.dumpstructure.tooLarge"));
 
-	public static void register(CommandDispatcher<CommandSource> dispatcher){
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
 		dispatcher.register(Commands.literal("dumpstructure")
-				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayerEntity) //TODO make it work on servers, but not with /execute
+				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayer) //TODO make it work on servers, but not with /execute
 				.then(Commands.argument(START_POS, BlockPosArgument.blockPos())
 						.then(Commands.argument(END_POS, BlockPosArgument.blockPos())
 								.executes(
@@ -61,7 +61,7 @@ public class StructureCommand {
 																getLoadedBlockPos(ctx, END_POS), Padding.CENTER,
 																getBool(ctx, SHOULD_COMPACT), getBool(ctx, SHOULD_WRAP_IN_TABLE)))
 												.then(Commands.argument(PADDING_MODE, StringArgumentType.word())
-														.suggests((context, builder) -> ISuggestionProvider.suggest(Arrays.stream(Padding.values())
+														.suggests((context, builder) -> SharedSuggestionProvider.suggest(Arrays.stream(Padding.values())
 																.map(Enum::name).map(s -> s.toLowerCase(Locale.ROOT)), builder))
 														.executes(
 																ctx -> execute(ctx.getSource(), getLoadedBlockPos(ctx, START_POS),
@@ -71,10 +71,10 @@ public class StructureCommand {
 		);
 	}
 
-	private static int execute(CommandSource source, BlockPos start, BlockPos end, Padding mode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException{
+	private static int execute(CommandSourceStack source, BlockPos start, BlockPos end, Padding mode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException{
 
-		World world = source.getWorld();
-		ServerPlayerEntity player = source.asPlayer();
+		Level world = source.getLevel();
+		ServerPlayer player = source.getPlayerOrException();
 
 		int sizeX = Math.abs(start.getX() - end.getX());
 		int sizeZ = Math.abs(start.getZ() - end.getZ());
@@ -84,8 +84,8 @@ public class StructureCommand {
 
 		if(start.getY() < end.getY()){
 			int y = end.getY() - start.getY();
-			start = start.up(y);
-			end = end.down(y);
+			start = start.above(y);
+			end = end.below(y);
 		}
 
 		List<MultiblockPiece> structure = new ArrayList<>();
@@ -105,11 +105,11 @@ public class StructureCommand {
 		}
 
 		if(sizeX > sizeZ){
-			endPadded = end.add(0, 0, start.getZ() > end.getZ() ? -paddingSizeEnd : paddingSizeEnd);
-			startPadded = start.add(0, 0, start.getZ() > end.getZ() ? paddingSizeStart : -paddingSizeStart);
+			endPadded = end.offset(0, 0, start.getZ() > end.getZ() ? -paddingSizeEnd : paddingSizeEnd);
+			startPadded = start.offset(0, 0, start.getZ() > end.getZ() ? paddingSizeStart : -paddingSizeStart);
 		}else if(sizeZ > sizeX){
-			endPadded = end.add(start.getX() > end.getX() ? -paddingSizeEnd : paddingSizeEnd, 0, 0);
-			startPadded = start.add(start.getX() > end.getX() ? paddingSizeStart : -paddingSizeStart, 0, 0);
+			endPadded = end.offset(start.getX() > end.getX() ? -paddingSizeEnd : paddingSizeEnd, 0, 0);
+			startPadded = start.offset(start.getX() > end.getX() ? paddingSizeStart : -paddingSizeStart, 0, 0);
 		}
 
 		int minX = Math.min(start.getX(), end.getX());
@@ -119,7 +119,7 @@ public class StructureCommand {
 
 		BlockPos startPoint = startPadded;
 		int amount = 0;
-		for(BlockPos pos : BlockPos.getAllInBoxMutable(startPadded, endPadded)){
+		for(BlockPos pos : BlockPos.betweenClosed(startPadded, endPadded)){
 			int x = startPoint.getX() - pos.getX();
 			int y = startPoint.getY() - pos.getY();
 			int z = startPoint.getZ() - pos.getZ();
@@ -127,7 +127,7 @@ public class StructureCommand {
 			if(pos.getX() >= minX && pos.getX() <= maxX && pos.getZ() >= minZ && pos.getZ() <= maxZ){
 				BlockState state = world.getBlockState(pos);
 
-				RayTraceResult ray = new BlockRayTraceResult(new Vector3d(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
+				HitResult ray = new BlockHitResult(new Vec3(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
 				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, player);
 
 				if(!stack.isEmpty())
@@ -181,7 +181,7 @@ public class StructureCommand {
 			builder.append("\n|}");
 
 		Utils.copyString(builder.toString());
-		source.sendFeedback(new TranslationTextComponent("commands.huesodewiki.dumpstructure.success", amount), true);
+		source.sendSuccess(new TranslatableComponent("commands.huesodewiki.dumpstructure.success", amount), true);
 		return structure.size();
 	}
 
@@ -189,9 +189,9 @@ public class StructureCommand {
 		CENTER, BACK, FRONT;
 
 		private static final DynamicCommandExceptionType INVALID_ENUM = new DynamicCommandExceptionType(
-				obj -> new TranslationTextComponent("commands.huesodewiki.argument.enum.invalid", obj));
+				obj -> new TranslatableComponent("commands.huesodewiki.argument.enum.invalid", obj));
 
-		static Padding parse(CommandContext<CommandSource> context, String argName) throws CommandSyntaxException{
+		static Padding parse(CommandContext<CommandSourceStack> context, String argName) throws CommandSyntaxException{
 			String argument = context.getArgument(argName, String.class);
 			try {
 				return valueOf(argument.toUpperCase(Locale.ROOT));
@@ -256,7 +256,7 @@ public class StructureCommand {
 	}
 
 	private static String outputFluid(FluidState fluid){
-		Block block = fluid.getBlockState().getBlock();
-		return "{{Gc|mod=" + Utils.getModAbbrevation(block) + "|dis=false|" + ForgeI18n.parseMessage(block.getTranslationKey()) + "}}";
+		Block block = fluid.createLegacyBlock().getBlock();
+		return "{{Gc|mod=" + Utils.getModAbbrevation(block) + "|dis=false|" + ForgeI18n.parseMessage(block.getDescriptionId()) + "}}";
 	}
 }
