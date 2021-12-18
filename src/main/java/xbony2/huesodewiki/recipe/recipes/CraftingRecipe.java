@@ -48,7 +48,6 @@ public class CraftingRecipe implements IWikiRecipe {
 		Map<ResourceLocation, Recipe<?>> recipeMap;
 		try {
 			recipeMap = (Map<ResourceLocation, Recipe<?>>) getRecipes.invoke(Minecraft.getInstance().level.getRecipeManager(), RecipeType.CRAFTING);
-			//recipeMap = (Map<ResourceLocation, Recipe<?>>) Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
 			return Collections.emptyList();
@@ -77,10 +76,6 @@ public class CraftingRecipe implements IWikiRecipe {
 				continue;
 
 			ret.append('|').append(Utils.getAlphabetLetter(i % width + 1)).append(i / width + 1).append('=');
-
-			/*if(ingredient instanceof OreIngredient) // TODO
-				ret.append(Utils.outputOreDictionaryEntry(ingredient.getMatchingStacks()));
-			else*/
 			ret.append(Utils.outputIngredient(ingredient));
 
 			ret.append('\n');

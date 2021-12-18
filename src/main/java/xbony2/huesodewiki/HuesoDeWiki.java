@@ -77,7 +77,6 @@ public class HuesoDeWiki {
 
 	@SuppressWarnings("unchecked")
 	private <T> void processIMCStream(Stream<InterModComms.IMCMessage> imcs, Class<T> validClass, List<T> targetList){
-		//imcs.map(InterModComms.IMCMessage::getMessageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
 		imcs.map(InterModComms.IMCMessage::messageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
 	}
 

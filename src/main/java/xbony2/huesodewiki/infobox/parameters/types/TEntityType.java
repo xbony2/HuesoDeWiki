@@ -2,6 +2,7 @@ package xbony2.huesodewiki.infobox.parameters.types;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.EntityBlock;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.infobox.type.IType;
 
@@ -18,7 +19,7 @@ public class TEntityType implements IType {
 
 	@Override
 	public boolean isApplicable(ItemStack itemstack){
-		//return Block.byItem(itemstack.getItem()).hasTileEntity(Utils.stackToBlockState(itemstack));
-		return Block.byItem(itemstack.getItem()).isRandomlyTicking(Utils.stackToBlockState(itemstack));
+		// "tile entities" are now called "block entities"
+		return Block.byItem(itemstack.getItem()) instanceof EntityBlock;
 	}
 }
