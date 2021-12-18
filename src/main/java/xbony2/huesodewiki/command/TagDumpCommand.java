@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import xbony2.huesodewiki.HuesoDeWiki;
 
@@ -29,10 +29,10 @@ public class TagDumpCommand {
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
 		dispatcher.register(Commands.literal("dumptags")
-				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayer) //TODO make it work on servers, but not with /execute
+				.requires(s -> FMLEnvironment.dist.isClient() && s.getEntity() instanceof ServerPlayer) // TODO make it work on servers, but not with /execute
 				.then(Commands.argument("modAbbrv", StringArgumentType.word())
 						.then(Commands.argument("modid", StringArgumentType.word())
-								.suggests((context, builder) -> SharedSuggestionProvider.suggest(ModList.get().getMods().stream().map(ModInfo::getModId), builder))
+								.suggests((context, builder) -> SharedSuggestionProvider.suggest(ModList.get().getMods().stream().map(IModInfo::getModId), builder))
 								.executes(ctx -> execute(ctx.getSource(), getString(ctx, "modAbbrv"), getString(ctx, "modid")))))
 		);
 	}

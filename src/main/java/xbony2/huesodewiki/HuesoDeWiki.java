@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -14,7 +15,6 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -77,7 +77,8 @@ public class HuesoDeWiki {
 
 	@SuppressWarnings("unchecked")
 	private <T> void processIMCStream(Stream<InterModComms.IMCMessage> imcs, Class<T> validClass, List<T> targetList){
-		imcs.map(InterModComms.IMCMessage::getMessageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
+		//imcs.map(InterModComms.IMCMessage::getMessageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
+		imcs.map(InterModComms.IMCMessage::messageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
 	}
 
 	private void registerCommands(RegisterCommandsEvent event){

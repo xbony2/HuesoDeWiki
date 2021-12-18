@@ -6,7 +6,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.HuesoDeWikiAPI;
 import xbony2.huesodewiki.api.infobox.BasicConditionParameter;

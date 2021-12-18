@@ -4,8 +4,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
-
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class Config {
@@ -60,7 +59,7 @@ public class Config {
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Config CLIENT_CONFIG;
 
-	static{
+	static {
 		Pair<Config, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Config::new);
 		CLIENT_CONFIG = specPair.getLeft();
 		CLIENT_SPEC = specPair.getRight();
@@ -78,12 +77,12 @@ public class Config {
 		}
 	}
 
-	public static void onConfigLoad(ModConfig.Loading event){
+	public static void onConfigLoad(ModConfigEvent.Loading event){
 		readCorrections(linkCorrectionsRaw.get(), linkCorrections);
 		readCorrections(nameCorrectionsRaw.get(), nameCorrections);
 	}
 
-	public static void onConfigReload(ModConfig.Reloading event){
+	public static void onConfigReload(ModConfigEvent.Reloading event){
 		readCorrections(linkCorrectionsRaw.get(), linkCorrections);
 		readCorrections(nameCorrectionsRaw.get(), nameCorrections);
 	}

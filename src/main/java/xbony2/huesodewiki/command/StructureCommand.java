@@ -25,12 +25,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.ForgeI18n;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.fmllegacy.ForgeI18n;
 import xbony2.huesodewiki.Utils;
 
 import static com.mojang.brigadier.arguments.BoolArgumentType.getBool;
-import static net.minecraft.command.arguments.BlockPosArgument.getLoadedBlockPos;
+import static net.minecraft.commands.arguments.coordinates.BlockPosArgument.getLoadedBlockPos;
 
 public class StructureCommand {
 	private static final String START_POS = "startPos";

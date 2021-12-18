@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import xbony2.huesodewiki.HuesoDeWiki;
 import xbony2.huesodewiki.Utils;
 import xbony2.huesodewiki.api.IWikiRecipe;
@@ -47,7 +47,8 @@ public class CraftingRecipe implements IWikiRecipe {
 		List<Recipe<?>> recipes = new ArrayList<>();
 		Map<ResourceLocation, Recipe<?>> recipeMap;
 		try {
-			recipeMap = (Map<ResourceLocation, Recipe<?>>) CraftingRecipe.getRecipes.invoke(Minecraft.getInstance().level.getRecipeManager(), RecipeType.CRAFTING);
+			recipeMap = (Map<ResourceLocation, Recipe<?>>) getRecipes.invoke(Minecraft.getInstance().level.getRecipeManager(), RecipeType.CRAFTING);
+			//recipeMap = (Map<ResourceLocation, Recipe<?>>) Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
 			return Collections.emptyList();

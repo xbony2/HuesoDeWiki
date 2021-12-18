@@ -18,6 +18,7 @@ public class TEntityType implements IType {
 
 	@Override
 	public boolean isApplicable(ItemStack itemstack){
-		return Block.byItem(itemstack.getItem()).hasTileEntity(Utils.stackToBlockState(itemstack));
+		//return Block.byItem(itemstack.getItem()).hasTileEntity(Utils.stackToBlockState(itemstack));
+		return Block.byItem(itemstack.getItem()).isRandomlyTicking(Utils.stackToBlockState(itemstack));
 	}
 }
