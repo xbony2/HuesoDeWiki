@@ -6,7 +6,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xbony2.huesodewiki.recipe.RecipeCreator;
@@ -16,7 +16,7 @@ public class InputEventHandler {
 	
 	@SuppressWarnings("resource")
 	@SubscribeEvent
-	public static void buttonPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Post event){
+	public static void buttonPressed(ScreenEvent.KeyboardKeyPressedEvent.Post event){
 		Minecraft mc = Minecraft.getInstance();
 
 		if(mc.level == null)

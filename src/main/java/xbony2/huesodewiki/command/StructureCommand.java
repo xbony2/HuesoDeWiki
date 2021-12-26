@@ -25,8 +25,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeI18n;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fmllegacy.ForgeI18n;
 import xbony2.huesodewiki.Utils;
 
 import static com.mojang.brigadier.arguments.BoolArgumentType.getBool;
@@ -128,7 +128,7 @@ public class StructureCommand {
 				BlockState state = world.getBlockState(pos);
 
 				HitResult ray = new BlockHitResult(new Vec3(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5), Direction.UP, pos, true);
-				ItemStack stack = state.getBlock().getPickBlock(state, ray, world, pos, player);
+				ItemStack stack = state.getBlock().getCloneItemStack(state, ray, world, pos, player);
 
 				if(!stack.isEmpty())
 					amount++;

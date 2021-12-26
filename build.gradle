@@ -3,7 +3,6 @@ import java.time.Instant
 buildscript {
 	repositories {
 		maven { url = 'https://files.minecraftforge.net/maven' }
-		jcenter()
 		mavenCentral()
 	}
 
@@ -18,11 +17,9 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 version = modVersion
 group = 'xbony2.huesodewiki'
 archivesBaseName = 'huesodewiki'
-//sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = JavaVersion.VERSION_1_8
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
 
 minecraft {
-	//mappings channel: 'snapshot', version: mappingsVersion
 	mappings channel: 'official', version: mcVersion
 
 	runs {
