@@ -72,7 +72,6 @@ public class StructureCommand {
 	}
 
 	private static int execute(CommandSourceStack source, BlockPos start, BlockPos end, Padding mode, boolean shouldCompact, boolean shouldWrapInTable) throws CommandSyntaxException{
-
 		Level world = source.getLevel();
 		ServerPlayer player = source.getPlayerOrException();
 

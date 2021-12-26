@@ -29,10 +29,10 @@ public class CategoryCreator {
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Music Discs", RecordItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Farming", HoeItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Shearing", ShearsItem.class));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Footwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getSlot() == EquipmentSlot.FEET));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Legwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getSlot() == EquipmentSlot.LEGS));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Chestwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getSlot() == EquipmentSlot.CHEST));
-		HuesoDeWikiAPI.categories.add(new BasicCategory("Headwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getSlot() == EquipmentSlot.HEAD));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Footwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem item && item.getSlot() == EquipmentSlot.FEET));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Legwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem item && item.getSlot() == EquipmentSlot.LEGS));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Chestwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem item && item.getSlot() == EquipmentSlot.CHEST));
+		HuesoDeWikiAPI.categories.add(new BasicCategory("Headwear", (itemstack) -> itemstack.getItem() instanceof ArmorItem item && item.getSlot() == EquipmentSlot.HEAD));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Felling", AxeItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Fishing", FishingRodItem.class));
 		HuesoDeWikiAPI.categories.add(new BasicInstanceOfCategory("Mining", PickaxeItem.class));

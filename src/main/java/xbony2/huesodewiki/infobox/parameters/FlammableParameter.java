@@ -9,8 +9,8 @@ public class FlammableParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		if(itemstack.getItem() instanceof BlockItem){
-			Block block = ((BlockItem) itemstack.getItem()).getBlock();
+		if(itemstack.getItem() instanceof BlockItem item){
+			Block block = item.getBlock();
 			
 			try {
 				return block.isFlammable(block.defaultBlockState(), null, null, null);

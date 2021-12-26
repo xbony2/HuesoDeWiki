@@ -75,10 +75,10 @@ public class InfoboxCreator {
 			
 			Multimap<Attribute, AttributeModifier> attributes = null;
 			
-			if(item instanceof DiggerItem)
-				attributes = ((DiggerItem) item).getDefaultAttributeModifiers(EquipmentSlot.MAINHAND);
-			else if(item instanceof SwordItem)
-				attributes = ((SwordItem) item).getDefaultAttributeModifiers(EquipmentSlot.MAINHAND);
+			if(item instanceof DiggerItem diggerItem)
+				attributes = diggerItem.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND);
+			else if(item instanceof SwordItem swordItem)
+				attributes = swordItem.getDefaultAttributeModifiers(EquipmentSlot.MAINHAND);
 			
 			float damage = 1.0f; // default
 			

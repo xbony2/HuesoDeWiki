@@ -9,7 +9,7 @@ public class ToughnessParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return itemstack.getItem() instanceof ArmorItem && ((ArmorItem) itemstack.getItem()).getMaterial().getToughness() > 0.0;
+		return itemstack.getItem() instanceof ArmorItem item && item.getMaterial().getToughness() > 0.0;
 	}
 
 	@Override
