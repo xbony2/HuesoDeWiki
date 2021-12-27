@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[33,)"
+loaderVersion="[39,)"
 license="All rights reserved"
 issueTrackerURL="http://github.com/Xbony2/HuesoDeWiki"
 
@@ -16,13 +16,13 @@ A small utility mod for editors of the Official FTB Wiki. It automatically creat
 [[dependencies.huesodewiki]]
 	modId="forge"
 	mandatory=true
-	versionRange="[33,)"
+	versionRange="[39,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.huesodewiki]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.16.2,)"
+	versionRange="[1.18.1,)"
 	ordering="NONE"
 	side="BOTH"

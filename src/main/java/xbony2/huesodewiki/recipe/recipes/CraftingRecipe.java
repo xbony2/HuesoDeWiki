@@ -91,8 +91,8 @@ public class CraftingRecipe implements IWikiRecipe {
 
 	@SuppressWarnings("rawtypes")
 	protected int getWidth(Recipe recipe){
-		if(recipe instanceof IShapedRecipe)
-			return ((IShapedRecipe) recipe).getRecipeWidth();
+		if(recipe instanceof IShapedRecipe shapedRecipe)
+			return shapedRecipe.getRecipeWidth();
 
 		return recipe.getIngredients().size() > 6 ? 3 : 2;
 	}

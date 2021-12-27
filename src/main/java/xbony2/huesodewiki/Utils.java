@@ -86,9 +86,7 @@ public class Utils {
 		List<Tag<Item>> tags = new ArrayList<>();
 		
 		for(Value acceptedItem : acceptedItems){
-			if(acceptedItem instanceof TagValue){
-				TagValue tagList = (TagValue) acceptedItem;
-				
+			if(acceptedItem instanceof TagValue tagList){
 				try {
 					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
 					tags.add(tag);
@@ -163,8 +161,8 @@ public class Utils {
 	public static ItemStack getHoveredItemStack(){
 		Screen currentScreen = Minecraft.getInstance().screen;
 
-		if(currentScreen instanceof AbstractContainerScreen){
-			Slot hovered = ((AbstractContainerScreen) currentScreen).getSlotUnderMouse();
+		if(currentScreen instanceof AbstractContainerScreen containerScreen){
+			Slot hovered = containerScreen.getSlotUnderMouse();
 
 			if(hovered != null)
 				return hovered.getItem();
