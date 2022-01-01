@@ -21,7 +21,7 @@ import xbony2.huesodewiki.api.IWikiRecipe;
 public class CraftingRecipe implements IWikiRecipe {
 
 	// RecipeManager#getRecipes(IRecipeType), TODO check if forge ATs this away later, or possibly AT this on our own
-	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "byType", RecipeType.class);
+	static final Method getRecipes = ObfuscationReflectionHelper.findMethod(RecipeManager.class, "m_44054_", RecipeType.class);
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -48,6 +48,7 @@ public class CraftingRecipe implements IWikiRecipe {
 		Map<ResourceLocation, Recipe<?>> recipeMap;
 		try {
 			recipeMap = (Map<ResourceLocation, Recipe<?>>) getRecipes.invoke(Minecraft.getInstance().level.getRecipeManager(), RecipeType.CRAFTING);
+			//var l = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING);
 		}catch(IllegalAccessException | InvocationTargetException e){
 			HuesoDeWiki.LOGGER.error("Exception getting crafting recipe map", e);
 			return Collections.emptyList();
