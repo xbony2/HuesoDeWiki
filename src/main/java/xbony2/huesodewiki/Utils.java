@@ -32,10 +32,10 @@ public class Utils {
 
 	static {
 		try {
-			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "values");
+			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "f_110707_"); // values
 			INGREDIENT_ACCEPTED_ITEMS = MethodHandles.lookup().unreflectGetter(field);
 
-			field = ObfuscationReflectionHelper.findField(Ingredient.TagValue.class, "tag");
+			field = ObfuscationReflectionHelper.findField(Ingredient.TagValue.class, "f_114664_"); // tag
 			TAGLIST_TAG = MethodHandles.lookup().unreflectGetter(field);
 		}catch(IllegalAccessException e){
 			throw new RuntimeException("Failed to lookup field", e);
