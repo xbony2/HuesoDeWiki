@@ -20,7 +20,7 @@ public class Config {
 	private static final List<String> DEFAULT_LINK_CORRECTIONS = Arrays.asList(
 		"Esteemed Innovation=Esteemed Innovation (mod)",
 		"Highlands=Highlands (mod)",
-		"Vampirism (mod)"
+		"Vampirism=Vampirism (mod)"
 	);
 
 	public static ForgeConfigSpec.BooleanValue use2SpaceStyle;
