@@ -256,6 +256,6 @@ public class StructureCommand {
 
 	private static String outputFluid(FluidState fluid){
 		Block block = fluid.createLegacyBlock().getBlock();
-		return "{{Gc|mod=" + Utils.getModAbbrevation(block) + "|dis=false|" + ForgeI18n.parseMessage(block.getDescriptionId()) + "}}";
+		return "{{Gc|mod=" + Utils.getModAbbrevation(block.asItem().getDefaultInstance()) + "|dis=false|" + ForgeI18n.parseMessage(block.getDescriptionId()) + "}}";
 	}
 }

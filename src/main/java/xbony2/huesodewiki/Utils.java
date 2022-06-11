@@ -23,7 +23,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistry;
 import xbony2.huesodewiki.config.Config;
 
 public class Utils {
@@ -64,7 +64,7 @@ public class Utils {
 		return getModAbbrevation(getModName(itemstack));
 	}
 
-	public static String getModAbbrevation(IForgeRegistryEntry<?> entry){
+	public static String getModAbbrevation(IForgeRegistry<?> entry){
 		return getModAbbrevation(getModName(entry.getRegistryName().getNamespace()));
 	}
 
@@ -95,22 +95,26 @@ public class Utils {
 				}
 			}
 		}
+
+		System.out.println("Tags: " + tags.size());
 		
 		for(TagKey<Item> tag : tags)
 			ret.append(outputTag(tag));
 
-		for(ItemStack itemstack : ingredient.getItems())
+		// dunno what this is for
+		/*for(ItemStack itemstack : ingredient.getItems())
 			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
+				ret.append(outputItem(itemstack));*/
+
+		for(ItemStack itemstack : ingredient.getItems())
+			if(tags.stream().noneMatch(tag -> itemstack.getItem().builtInRegistryHolder().is(tag)))
 				ret.append(outputItem(itemstack));
 
 		return ret.toString();
 	}
 
 	public static String outputTag(TagKey<Item> tag){
-		// let's just try this -bony
-		return "{{O|" + tag.toString() + "}}";
-		// This previously used Tag#getId, but that no longer exists.
-		//return "{{O|" + ItemTags.getAllTags().getId(tag) + "}}";
+		return "{{O|" + tag.location() + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
