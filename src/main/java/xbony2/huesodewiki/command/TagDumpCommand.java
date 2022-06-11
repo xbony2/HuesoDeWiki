@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
@@ -43,7 +44,7 @@ public class TagDumpCommand {
 		
 		try(FileWriter writer = new FileWriter(output)){
 			for(Item item : ForgeRegistries.ITEMS){
-				ResourceLocation rl = item.getRegistryName();
+				ResourceLocation rl = Registry.ITEM.getKey(item);
 				
 				if(rl == null || !rl.getNamespace().equals(modid))
 					continue;

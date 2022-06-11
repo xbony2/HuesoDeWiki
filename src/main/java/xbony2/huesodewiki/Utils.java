@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -18,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Ingredient.Value;
 import net.minecraft.world.item.crafting.Ingredient.TagValue;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
@@ -35,7 +35,7 @@ public class Utils {
 			Field field = ObfuscationReflectionHelper.findField(Ingredient.class, "f_43902_"); // values
 			INGREDIENT_ACCEPTED_ITEMS = MethodHandles.lookup().unreflectGetter(field);
 
-			field = ObfuscationReflectionHelper.findField(Ingredient.TagValue.class, "f_43959_"); // tag
+			field = ObfuscationReflectionHelper.findField(TagValue.class, "f_43959_"); // tag
 			TAGLIST_TAG = MethodHandles.lookup().unreflectGetter(field);
 		}catch(IllegalAccessException e){
 			throw new RuntimeException("Failed to lookup field", e);
@@ -83,12 +83,12 @@ public class Utils {
 			throw new RuntimeException(throwable);
 		}
 		
-		List<Tag<Item>> tags = new ArrayList<>();
+		List<TagKey<Item>> tags = new ArrayList<>();
 		
 		for(Value acceptedItem : acceptedItems){
 			if(acceptedItem instanceof TagValue tagList){
 				try {
-					Tag<Item> tag = (Tag<Item>) TAGLIST_TAG.invokeExact(tagList);
+					TagKey<Item> tag = (TagKey<Item>) TAGLIST_TAG.invokeExact(tagList);
 					tags.add(tag);
 				}catch(Throwable throwable){
 					throw new RuntimeException(throwable);
@@ -96,7 +96,7 @@ public class Utils {
 			}
 		}
 		
-		for(Tag<Item> tag : tags)
+		for(TagKey<Item> tag : tags)
 			ret.append(outputTag(tag));
 
 		for(ItemStack itemstack : ingredient.getItems())
@@ -106,9 +106,11 @@ public class Utils {
 		return ret.toString();
 	}
 
-	public static String outputTag(Tag<Item> tag){
+	public static String outputTag(TagKey<Item> tag){
+		// let's just try this -bony
+		return "{{O|" + tag.toString() + "}}";
 		// This previously used Tag#getId, but that no longer exists.
-		return "{{O|" + ItemTags.getAllTags().getId(tag) + "}}";
+		//return "{{O|" + ItemTags.getAllTags().getId(tag) + "}}";
 	}
 
 	public static String outputItemOutput(ItemStack itemstack){
