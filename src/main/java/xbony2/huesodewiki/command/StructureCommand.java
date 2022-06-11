@@ -9,6 +9,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,7 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeI18n;
 import net.minecraftforge.fml.loading.FMLEnvironment;
@@ -39,7 +39,7 @@ public class StructureCommand {
 	private static final String SHOULD_WRAP_IN_TABLE = "shouldWrapInTable";
 	private static final String PADDING_MODE = "paddingMode";
 
-	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(new TranslatableComponent("commands.huesodewiki.dumpstructure.tooLarge"));
+	private static final SimpleCommandExceptionType STRUCTURE_TOO_LARGE = new SimpleCommandExceptionType(Component.translatable("commands.huesodewiki.dumpstructure.tooLarge"));
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
 		dispatcher.register(Commands.literal("dumpstructure")
@@ -180,7 +180,7 @@ public class StructureCommand {
 			builder.append("\n|}");
 
 		Utils.copyString(builder.toString());
-		source.sendSuccess(new TranslatableComponent("commands.huesodewiki.dumpstructure.success", amount), true);
+		source.sendSuccess(Component.translatable("commands.huesodewiki.dumpstructure.success", amount), true);
 		return structure.size();
 	}
 
@@ -188,7 +188,7 @@ public class StructureCommand {
 		CENTER, BACK, FRONT;
 
 		private static final DynamicCommandExceptionType INVALID_ENUM = new DynamicCommandExceptionType(
-				obj -> new TranslatableComponent("commands.huesodewiki.argument.enum.invalid", obj));
+				obj -> Component.translatable("commands.huesodewiki.argument.enum.invalid", obj));
 
 		static Padding parse(CommandContext<CommandSourceStack> context, String argName) throws CommandSyntaxException{
 			String argument = context.getArgument(argName, String.class);

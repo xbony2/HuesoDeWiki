@@ -12,10 +12,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forgespi.language.IModInfo;
@@ -25,7 +25,7 @@ import xbony2.huesodewiki.HuesoDeWiki;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 
 public class TagDumpCommand {
-	private static final SimpleCommandExceptionType WRITE_FAILED = new SimpleCommandExceptionType(new TranslatableComponent("commands.huesodewiki.dumptags.write_failed"));
+	private static final SimpleCommandExceptionType WRITE_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.huesodewiki.dumptags.write_failed"));
 
 	public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
 		dispatcher.register(Commands.literal("dumptags")
@@ -58,7 +58,7 @@ public class TagDumpCommand {
 			throw WRITE_FAILED.create();
 		}
 
-		source.sendSuccess(new TranslatableComponent("commands.huesodewiki.dumptags.success", modid, modAbbrv), true);
+		source.sendSuccess(Component.translatable("commands.huesodewiki.dumptags.success", modid, modAbbrv), true);
 		return 1;
 	}
 }
