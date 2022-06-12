@@ -95,17 +95,12 @@ public class Utils {
 				}
 			}
 		}
-
-		System.out.println("Tags: " + tags.size());
 		
 		for(TagKey<Item> tag : tags)
 			ret.append(outputTag(tag));
 
-		// dunno what this is for
-		/*for(ItemStack itemstack : ingredient.getItems())
-			if(tags.stream().noneMatch(tag -> tag.contains(itemstack.getItem())))
-				ret.append(outputItem(itemstack));*/
-
+		// this probably won't work in a year or so, but for now, it seems to work?
+		// by the time it doesn't work, I'll look at what JEI does -bony
 		for(ItemStack itemstack : ingredient.getItems())
 			if(tags.stream().noneMatch(tag -> itemstack.getItem().builtInRegistryHolder().is(tag)))
 				ret.append(outputItem(itemstack));
