@@ -99,10 +99,8 @@ public class Utils {
 		for(TagKey<Item> tag : tags)
 			ret.append(outputTag(tag));
 
-		// this probably won't work in a year or so, but for now, it seems to work?
-		// by the time it doesn't work, I'll look at what JEI does -bony
 		for(ItemStack itemstack : ingredient.getItems())
-			if(tags.stream().noneMatch(tag -> itemstack.getItem().builtInRegistryHolder().is(tag)))
+			if(tags.stream().noneMatch(itemstack::is))
 				ret.append(outputItem(itemstack));
 
 		return ret.toString();

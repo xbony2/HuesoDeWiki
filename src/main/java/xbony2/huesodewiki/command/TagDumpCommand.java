@@ -21,6 +21,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryManager;
 import xbony2.huesodewiki.HuesoDeWiki;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
@@ -50,6 +51,11 @@ public class TagDumpCommand {
 					continue;
 
 				String displayName = item.getName(item.getDefaultInstance()).getString();
+
+				System.out.println("rl: " + rl + ", dn: " + displayName);
+
+				/*var s = RegistryManager.ACTIVE.getRegistry(rl).tags();
+				if (s != null) s.getTagNames().forEach(n -> System.out.println(n));*/
 
 				// TODO: i just want this to compile rn lol -bony
 				/*for(ResourceLocation tag : item.getTags())
