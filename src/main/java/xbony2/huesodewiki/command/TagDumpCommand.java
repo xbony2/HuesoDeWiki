@@ -22,6 +22,8 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.tags.ITag;
+import net.minecraftforge.registries.tags.ITagManager;
 import xbony2.huesodewiki.HuesoDeWiki;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
@@ -54,12 +56,16 @@ public class TagDumpCommand {
 
 				System.out.println("rl: " + rl + ", dn: " + displayName);
 
-				/*var s = RegistryManager.ACTIVE.getRegistry(rl).tags();
-				if (s != null) s.getTagNames().forEach(n -> System.out.println(n));*/
+				//var s = RegistryManager.ACTIVE.getRegistry(rl).tags();
+				//if (s != null) s.getTagNames().forEach(System.out::println);
 
 				// TODO: i just want this to compile rn lol -bony
 				/*for(ResourceLocation tag : item.getTags())
 					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");*/
+			}
+
+			for(ITag x : ForgeRegistries.ITEMS.tags()) {
+				System.out.println(x.getKey().toString() + " - " + x);
 			}
 		}catch(IOException e){
 			HuesoDeWiki.LOGGER.error("Failed to write tag dump file {}", output.getName(), e);
