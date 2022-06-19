@@ -114,7 +114,7 @@ public class InfoboxCreator {
 			return String.format("%.2g", speed);
 		}, DiggerItem.class, SwordItem.class));
 		
-		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack) + 1), ItemStack::isDamageableItem));
+		HuesoDeWikiAPI.parameters.add(new BasicConditionParameter("durability", (itemstack) -> Utils.floatToString(itemstack.getItem().getMaxDamage(itemstack)), ItemStack::isDamageableItem));
 		
 		if(Config.outputEnchantability.get())
 			HuesoDeWikiAPI.parameters.add(new EnchantabilityParameter());

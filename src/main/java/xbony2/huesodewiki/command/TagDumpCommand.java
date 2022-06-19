@@ -52,38 +52,7 @@ public class TagDumpCommand {
 		File output = new File(Minecraft.getInstance().gameDirectory, modAbbrv + ".txt");
 		
 		try(FileWriter writer = new FileWriter(output)){
-			for(Item item : ForgeRegistries.ITEMS){
-				ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
-				
-				if(rl == null || !rl.getNamespace().equals(modid))
-					continue;
-
-				String displayName = item.getName(item.getDefaultInstance()).getString();
-
-				//System.out.println("rl: " + rl + ", dn: " + displayName);
-
-				//var s = RegistryManager.ACTIVE.getRegistry(rl).tags();
-				//if (s != null) s.getTagNames().forEach(System.out::println);
-
-				// TODO: i just want this to compile rn lol -bony
-				/*for(ResourceLocation tag : item.getTags())
-					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");*/
-			}
-
-			// i hate the boilerplate bullshit but IntelliJ is being a real drama queen about it
 			for(ITag<Item> tag : ForgeRegistries.ITEMS.tags()) {
-				//System.out.println(x.getKey().toString() + " - " + x);
-				/*List<Item> matchingItems = tag
-						.stream()
-						.filter(item -> ForgeRegistries.ITEMS.getKey(item).getNamespace().equals(modid))
-						.collect(Collectors.toList());*/
-
-				/*List<Item> matchingItems2 = tag
-						.stream()
-						.map(item -> new ImmutablePair<>(ForgeRegistries.ITEMS.getKey(item), item))
-						.filter(p -> p.right != null)
-						.filter(p -> p.left.getNamespace().equals(modid))
-						.map(rl -> rl.g)*/
 				List<Item> matchingItems = tag
 						.stream()
 						.filter(item -> {
