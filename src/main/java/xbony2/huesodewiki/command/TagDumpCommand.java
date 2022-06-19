@@ -3,6 +3,10 @@ package xbony2.huesodewiki.command;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -24,6 +28,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.tags.ITag;
 import net.minecraftforge.registries.tags.ITagManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import xbony2.huesodewiki.HuesoDeWiki;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
@@ -64,8 +70,33 @@ public class TagDumpCommand {
 					writer.append(tag.toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");*/
 			}
 
-			for(ITag x : ForgeRegistries.ITEMS.tags()) {
-				System.out.println(x.getKey().toString() + " - " + x);
+			// i hate the boilerplate bullshit but IntelliJ is being a real drama queen about it
+			for(ITag<Item> tag : ForgeRegistries.ITEMS.tags()) {
+				//System.out.println(x.getKey().toString() + " - " + x);
+				/*List<Item> matchingItems = tag
+						.stream()
+						.filter(item -> ForgeRegistries.ITEMS.getKey(item).getNamespace().equals(modid))
+						.collect(Collectors.toList());*/
+
+				/*List<Item> matchingItems2 = tag
+						.stream()
+						.map(item -> new ImmutablePair<>(ForgeRegistries.ITEMS.getKey(item), item))
+						.filter(p -> p.right != null)
+						.filter(p -> p.left.getNamespace().equals(modid))
+						.map(rl -> rl.g)*/
+				List<Item> matchingItems = tag
+						.stream()
+						.filter(item -> {
+							ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+							return rl != null && rl.getNamespace().equals(modid);
+						})
+						.collect(Collectors.toList());
+
+				matchingItems.forEach(item -> {
+					String displayName = item.getName(item.getDefaultInstance()).getString();
+					System.out.println(displayName + " - " + tag.getKey().location());
+				});
+
 			}
 		}catch(IOException e){
 			HuesoDeWiki.LOGGER.error("Failed to write tag dump file {}", output.getName(), e);
