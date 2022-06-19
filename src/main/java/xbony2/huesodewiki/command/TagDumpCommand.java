@@ -60,7 +60,7 @@ public class TagDumpCommand {
 
 				String displayName = item.getName(item.getDefaultInstance()).getString();
 
-				System.out.println("rl: " + rl + ", dn: " + displayName);
+				//System.out.println("rl: " + rl + ", dn: " + displayName);
 
 				//var s = RegistryManager.ACTIVE.getRegistry(rl).tags();
 				//if (s != null) s.getTagNames().forEach(System.out::println);
@@ -92,11 +92,11 @@ public class TagDumpCommand {
 						})
 						.collect(Collectors.toList());
 
-				matchingItems.forEach(item -> {
+				for (Item item : matchingItems) {
 					String displayName = item.getName(item.getDefaultInstance()).getString();
-					System.out.println(displayName + " - " + tag.getKey().location());
-				});
-
+					// System.out.println(displayName + " - " + tag.getKey().location());
+					writer.append(tag.getKey().location().toString()).append("!").append(displayName).append("!").append(modAbbrv).append("!\n");
+				}
 			}
 		}catch(IOException e){
 			HuesoDeWiki.LOGGER.error("Failed to write tag dump file {}", output.getName(), e);
