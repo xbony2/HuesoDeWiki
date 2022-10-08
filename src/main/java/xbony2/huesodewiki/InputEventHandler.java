@@ -16,7 +16,7 @@ public class InputEventHandler {
 	
 	@SuppressWarnings("resource")
 	@SubscribeEvent
-	public static void buttonPressed(ScreenEvent.KeyboardKeyPressedEvent.Post event){
+	public static void buttonPressed(ScreenEvent.KeyPressed.Post event){
 		Minecraft mc = Minecraft.getInstance();
 
 		if(mc.level == null)

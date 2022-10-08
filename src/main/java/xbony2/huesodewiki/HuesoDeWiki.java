@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -53,14 +55,10 @@ public class HuesoDeWiki {
 		bus.addListener(Config::onConfigReload);
 
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerKeyMappings));
 	}
 
 	private void clientInit(FMLClientSetupEvent event){
-		copyPageKey = new KeyMapping("key.huesodewiki.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
-		ClientRegistry.registerKeyBinding(copyPageKey);
-		copyNameKey = new KeyMapping("key.huesodewiki.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
-		ClientRegistry.registerKeyBinding(copyNameKey);
-
 		InfoboxCreator.init();
 		RecipeCreator.init();
 		HatnoteCreator.init();
@@ -78,6 +76,13 @@ public class HuesoDeWiki {
 	@SuppressWarnings("unchecked")
 	private <T> void processIMCStream(Stream<InterModComms.IMCMessage> imcs, Class<T> validClass, List<T> targetList){
 		imcs.map(InterModComms.IMCMessage::messageSupplier).map(Supplier::get).filter(validClass::isInstance).forEach(t -> targetList.add((T) t));
+	}
+
+	private void registerKeyMappings(RegisterKeyMappingsEvent event){
+		copyPageKey = new KeyMapping("key.huesodewiki.copybasepage", GLFW.GLFW_KEY_SEMICOLON, "key.categories.huesodewiki");
+		event.register(copyPageKey);
+		copyNameKey = new KeyMapping("key.huesodewiki.copyname", GLFW.GLFW_KEY_APOSTROPHE, "key.categories.huesodewiki");
+		event.register(copyNameKey);
 	}
 
 	private void registerCommands(RegisterCommandsEvent event){

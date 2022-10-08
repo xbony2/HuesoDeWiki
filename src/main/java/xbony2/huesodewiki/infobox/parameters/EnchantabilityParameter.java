@@ -7,7 +7,7 @@ public class EnchantabilityParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
-		return itemstack.getItem().getItemEnchantability(itemstack) > 0;
+		return itemstack.getEnchantmentValue() > 0;
 	}
 	
 	@Override
@@ -17,6 +17,6 @@ public class EnchantabilityParameter implements IInfoboxParameter {
 
 	@Override
 	public String getParameterText(ItemStack itemstack){
-		return Integer.toString(itemstack.getItem().getItemEnchantability(itemstack));
+		return Integer.toString(itemstack.getEnchantmentValue());
 	}
 }
