@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.item.ItemStack;
 import xbony2.huesodewiki.api.infobox.IInfoboxParameter;
 
-public class RegistryNameParameter implements IInfoboxParameter {
+/*public class RegistryNameParameter implements IInfoboxParameter {
 
 	@Override
 	public boolean canAdd(ItemStack itemstack){
@@ -21,4 +21,4 @@ public class RegistryNameParameter implements IInfoboxParameter {
 		// I don't know if this gives exactly what we want, and also it's deprecated, but this class isn't actually used anyway so meh -bony
 		return Registry.ITEM.getKey(itemstack.getItem()).getPath();
 	}
-}
+}*/
