@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
@@ -19,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Ingredient.Value;
 import net.minecraft.world.item.crafting.Ingredient.TagValue;
-import net.minecraft.tags.ItemTags;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
@@ -66,6 +66,14 @@ public class Utils {
 
 	public static String getModAbbrevation(IForgeRegistry<?> entry){
 		return getModAbbrevation(getModName(entry.getRegistryName().getNamespace()));
+	}
+
+	/**
+	 * Thanks to <a href="https://github.com/mezz/JustEnoughItems/commit/a8a0405cec5fddf28efaa320b150089b01c155dc">mezz/JEI</a>  for this solution.
+	 */
+	public static ItemStack getResultItem(Recipe<?> recipe){
+		// If there's a null pointer from this then we have much bigger issues than recipes -bony
+		return recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
 	}
 
 	public static String outputItem(ItemStack itemstack){

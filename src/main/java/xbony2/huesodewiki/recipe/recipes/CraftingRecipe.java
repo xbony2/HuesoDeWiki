@@ -82,7 +82,7 @@ public class CraftingRecipe implements IWikiRecipe {
 			ret.append('\n');
 		}
 
-		ret.append("|O=").append(Utils.outputItemOutput(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))).append('\n');
+		ret.append("|O=").append(Utils.outputItemOutput(Utils.getResultItem(recipe))).append('\n');
 
 		if(shapeless)
 			ret.append("|shapeless=true\n");

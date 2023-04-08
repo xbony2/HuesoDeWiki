@@ -30,7 +30,7 @@ public class FurnaceRecipe implements IWikiRecipe {
 		}
 
 		recipes.forEach((rl, recipe) -> {
-			ItemStack output = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+			ItemStack output = Utils.getResultItem(recipe);
 			
 			if(output.sameItem(itemstack))
 				Collections.addAll(inputs, recipe.getIngredients().get(0).getItems());
