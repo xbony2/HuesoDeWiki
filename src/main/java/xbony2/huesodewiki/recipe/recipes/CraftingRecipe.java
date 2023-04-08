@@ -55,7 +55,7 @@ public class CraftingRecipe implements IWikiRecipe {
 		}
 
 		recipeMap.forEach((rl, recipe) -> {
-			if(recipe.getResultItem().sameItem(itemstack))
+			if(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()).sameItem(itemstack))
 				recipes.add(recipe);
 		});
 		return recipes;
@@ -82,7 +82,7 @@ public class CraftingRecipe implements IWikiRecipe {
 			ret.append('\n');
 		}
 
-		ret.append("|O=").append(Utils.outputItemOutput(recipe.getResultItem())).append('\n');
+		ret.append("|O=").append(Utils.outputItemOutput(recipe.getResultItem(Minecraft.getInstance().level.registryAccess()))).append('\n');
 
 		if(shapeless)
 			ret.append("|shapeless=true\n");
