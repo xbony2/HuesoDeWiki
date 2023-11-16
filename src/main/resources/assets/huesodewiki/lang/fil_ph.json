@@ -1,0 +1,15 @@
+{
+    "key.huesodewiki.copybasepage": "Kopyahin ang pundasyong pahina",
+    "key.huesodewiki.copyname": "Kopyahin ang pangalan ng bagay",
+    "key.categories.huesodewiki": "HuesoDeWiki",
+
+    "msg.huesodewiki.copiedpage": "Kinopya ang pundasyong pahina ng \"%s\" sa clipboard.",
+    "msg.huesodewiki.copiedrecipe": "Kinopya ang recipe ng \"%s\" sa clipboard.",
+    "msg.huesodewiki.copieditemname": "Kinopya ang pangalang \"%s\" sa clipboard.",
+
+    "commands.huesodewiki.dumpstructure.tooLarge": "Masyadong malaki ang pag-tambak ng istraktura!",
+    "commands.huesodewiki.dumpstructure.success": "Kinopya ang padrong pang-istraktura na may %s (na) bloke sa clipboard.",
+    "commands.huesodewiki.dumptags.success": "Tinambak ang mga tag ng namespace %s sa %s.txt.",
+    "commands.huesodewiki.dumptags.write_failed": "'Di naisulat ang file ng pagtambak ng tag, tignan ang tála para sa detalye!",
+    "commands.huesodewiki.argument.enum.invalid": "Maling balyu '%s'"
+}
